@@ -17,6 +17,9 @@ on:
 env:
   REGISTRY: ${{vars.REGISTRY}}
   IMAGE_NAME: ${{vars.IMAGE_NAME}}
+  DB_URL: ${{ secrets.DB_URL }}
+  DB_USERNAME: ${{ secrets.DB_USERNAME }}
+  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
 #3
 jobs:
