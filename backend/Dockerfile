@@ -13,10 +13,9 @@ COPY src ./src
 
 # Build the project using Gradle
 RUN gradle bootJar
-COPY ./build/libs/*.jar app.jar
 
 # Expose the port your application listens on
 EXPOSE 8080
 
 # Define the command to run your application
-CMD ["java", "-jar", "app.jar"]
+CMD ["java", "-jar", "build/libs/backend-0.0.1.jar"]
