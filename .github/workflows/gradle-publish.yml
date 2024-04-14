@@ -15,8 +15,8 @@ on:
         required: true
 #2
 env:
-  REGISTRY: ${{env.REGISTRY}}
-  IMAGE_NAME: ${{env.IMAGE_NAME}}
+  REGISTRY: ${{vars.REGISTRY}}
+  IMAGE_NAME: ${{vars.IMAGE_NAME}}
 
 #3
 jobs:
