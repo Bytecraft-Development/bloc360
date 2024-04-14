@@ -15,8 +15,8 @@ on:
         required: true
 #2
 env:
-  REGISTRY: "your-digitalocean-registry-container-url"
-  IMAGE_NAME: "your-docker-image-name"
+  REGISTRY: ${{env.REGISTRY}}
+  IMAGE_NAME: ${{env.IMAGE_NAME}}
 
 #3
 jobs:
