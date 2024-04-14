@@ -35,9 +35,7 @@ jobs:
           DB_URL: ${{ secrets.DB_URL }}
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-        run: docker build \
-              --build-arg FOO=$FOO \
-              -t $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7) .
+        run: docker build  -t $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7) --build-arg DB_URL=$DB_URL  .
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
         with:
