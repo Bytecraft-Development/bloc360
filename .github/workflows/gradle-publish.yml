@@ -39,7 +39,7 @@ jobs:
 
       - name: Build frontend flutter web
         working-directory: ./frontend
-        run: docker build  -t $(echo $REGISTRY)/$(echo $IMAGE_NAME)-frontend:$(echo $GITHUB_SHA | head -c7) .
+        run: flutter build web
         
       - name: scp frontend files
         uses: appleboy/scp-action@v0.1.7
@@ -48,7 +48,7 @@ jobs:
             username: ${{ secrets.USERNAME }}
             port: ${{ secrets.PORT }}
             key: ${{ secrets.SSHKEY }}
-            source: "~/frontend/build/web/*"
+            source: "frontend/build/web/*"
             target: "/opt/persist/web"
             rm: true
         
