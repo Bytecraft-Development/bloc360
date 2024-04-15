@@ -44,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
     if (response.statusCode == 200) {
       setState(() {
         data = response.body;
-        isLoading = false; // Hide loading indicator after successful fetch
+        isLoading = false; // Hide loading indicator after successful fetch //
       });
     } else {
       // Handle error scenario (e.g., display error message) test
