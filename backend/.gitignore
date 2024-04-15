@@ -38,3 +38,4 @@ out/
 .vscode/
 /**/aplication-local.yml
 backendLog
+/**/workspace.xml
