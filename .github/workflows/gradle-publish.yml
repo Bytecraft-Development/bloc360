@@ -29,13 +29,29 @@ jobs:
       - name: Checkout the repo 
         uses: actions/checkout@v4
         
-      - name: Build container image
+      - name: Build backend container image
         working-directory: ./backend
         env:
           DB_URL: ${{ secrets.DB_URL }}
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         run: docker build  -t $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7) .
+
+      - name: Build frontend flutter web
+        working-directory: ./frontend
+        run: docker build  -t $(echo $REGISTRY)/$(echo $IMAGE_NAME)-frontend:$(echo $GITHUB_SHA | head -c7) .
+        
+      - name: scp frontend files
+        uses: appleboy/scp-action@v0.1.7
+        with:
+            host: ${{ secrets.HOST }}
+            username: ${{ secrets.USERNAME }}
+            port: ${{ secrets.PORT }}
+            key: ${{ secrets.KEY }}
+            source: "frontend/build/web/*"
+            target: "/opt/persist/web"
+            rm: true
+        
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
         with:
