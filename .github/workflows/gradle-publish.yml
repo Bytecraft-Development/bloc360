@@ -39,7 +39,7 @@ jobs:
         with:
           channel: stable
           flutter-version: 3.19.0
-      - run: flutter --version
+      - run: flutter build web
               
       - name: scp frontend files
         uses: appleboy/scp-action@v0.1.7
