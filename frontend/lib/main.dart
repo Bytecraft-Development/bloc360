@@ -47,7 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
         isLoading = false; // Hide loading indicator after successful fetch
       });
     } else {
-      // Handle error scenario (e.g., display error message)
+      // Handle error scenario (e.g., display error message) test
       print('Error fetching data: ${response.statusCode}');
       setState(() {
         isLoading = false; // Hide loading indicator even on error
