@@ -30,7 +30,14 @@ jobs:
           working-directory: ./frontend
       runs-on: ubuntu-latest
       steps:
-      
+      - name: Start only on changes to frontend
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+         filters: |
+           frontend:
+              - 'frontend/**'
+
       - name: Flutter action
         uses: subosito/flutter-action@v2.16.0
 
@@ -58,6 +65,14 @@ jobs:
     steps:
       - name: Checkout the repo 
         uses: actions/checkout@v4
+        
+      - name: Start only on changes to backend
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+         filters: |
+           backend:
+              - 'backend/**'
         
       - name: Build backend container image
         working-directory: ./backend
