@@ -39,7 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
       isLoading = true; // Show loading indicator
     });
 
-    final response = await http.get(Uri.parse('http://bloc360.live:8080/hello'));
+    final response = await http.get(Uri.parse('http://localhost:8080/hello'));
 
     if (response.statusCode == 200) {
       setState(() {
