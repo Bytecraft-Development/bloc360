@@ -9,3 +9,12 @@ spring:
     hibernate:
       ddl-auto: create
     show-sql: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info, logfile, health
+logging:
+  file:
+    name: backendLog
