@@ -23,21 +23,35 @@ env:
 
 #3
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    # Required permissions
+    permissions:
+      pull-requests: read
+    # Set job outputs to values from filter step
+    outputs:
+      backend: ${{ steps.filter.outputs.backend }}
+      frontend: ${{ steps.filter.outputs.frontend }}
+    steps:
+    # For pull requests it's not necessary to checkout the code
+    - uses: dorny/paths-filter@v3
+      id: filter
+      with:
+        filters: |
+          backend:
+            - 'backend/**'
+          frontend:
+            - 'frontend/**'
+            
   build-frontend:
       name: Build frontend
+      needs: changes
+      if: ${{ needs.changes.outputs.frontend == 'true' }}
       defaults:
         run:
           working-directory: ./frontend
       runs-on: ubuntu-latest
       steps:
-      - name: Start only on changes to frontend
-        uses: dorny/paths-filter@v3
-        id: filter
-        with:
-         filters: |
-           frontend:
-              - 'frontend/**'
-
       - name: Flutter action
         uses: subosito/flutter-action@v2.16.0
 
@@ -61,18 +75,12 @@ jobs:
           
   build_backend:
     name: Build backend
+    needs: changes
+    if: ${{ needs.changes.outputs.backend == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repo 
         uses: actions/checkout@v4
-        
-      - name: Start only on changes to backend
-        uses: dorny/paths-filter@v3
-        id: filter
-        with:
-         filters: |
-           backend:
-              - 'backend/**'
         
       - name: Build backend container image
         working-directory: ./backend
