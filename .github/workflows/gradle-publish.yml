@@ -45,7 +45,7 @@ jobs:
             - 'frontend/**'
             
   build-frontend:
-      name: Build frontend
+      name: Build & Deploy frontend
       needs: changes
       if: ${{ needs.changes.outputs.frontend == 'true' }}
       defaults:
@@ -63,15 +63,6 @@ jobs:
           flutter-version: 3.19.0
       - run: flutter build web
               
-  deploy-frontend:
-      name: Deploy frontend
-      needs: build-frontend
-      if: ${{ needs.changes.outputs.frontend == 'true' }}
-      defaults:
-        run:
-          working-directory: ./frontend
-      runs-on: ubuntu-latest
-      steps:
       - name: scp frontend files
         uses: appleboy/scp-action@v0.1.7
         with:
