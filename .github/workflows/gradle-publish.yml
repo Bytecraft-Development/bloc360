@@ -25,29 +25,21 @@ env:
 jobs:
   build-frontend:
       name: install dependencies
+      defaults:
+        run:
+          working-directory: ./frontend
       runs-on: ubuntu-latest
       steps:
       
-      - name: Build frontend flutter web
-        uses: jddeep/Flutter-Runner@1.2.0
-            
+      - name: Flutter action
+        uses: subosito/flutter-action@v2.16.0
+
       - name: Checkout the repo 
         uses: actions/checkout@v4
-  
-      - name: clean stale build and cache
-        uses: ./action
         with:
-          args: clean
-  
-      - name: install dependencies
-        uses: ./action
-        with:
-          args: pub get
-  
-      - name: build apk
-        uses: ./action
-        with:
-          args: build web
+          channel: stable
+          flutter-version: 3.19.0
+      - run: flutter --version
               
       - name: scp frontend files
         uses: appleboy/scp-action@v0.1.7
@@ -56,7 +48,7 @@ jobs:
             username: ${{ secrets.USERNAME }}
             port: ${{ secrets.PORT }}
             key: ${{ secrets.SSHKEY }}
-            source: "frontend/build/web/*"
+            source: "build/web/*"
             target: "/opt/persist/web"
             rm: true
           
