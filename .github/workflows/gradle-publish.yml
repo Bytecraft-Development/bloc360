@@ -24,7 +24,7 @@ env:
 #3
 jobs:
   build-frontend:
-      name: install dependencies
+      name: Build frontend
       defaults:
         run:
           working-directory: ./frontend
@@ -53,6 +53,7 @@ jobs:
             rm: true
           
   build_backend:
+    name: Build backend
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repo 
