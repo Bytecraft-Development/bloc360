@@ -48,7 +48,7 @@ jobs:
             username: ${{ secrets.USERNAME }}
             port: ${{ secrets.PORT }}
             key: ${{ secrets.SSHKEY }}
-            source: "build/web/*"
+            source: "/frontend/build/web/*"
             target: "/opt/persist/web"
             rm: true
           
