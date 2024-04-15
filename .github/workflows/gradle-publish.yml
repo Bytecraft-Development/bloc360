@@ -23,7 +23,44 @@ env:
 
 #3
 jobs:
-  build_and_push:
+  build-frontend:
+      name: install dependencies
+      runs-on: ubuntu-latest
+      steps:
+      
+      - name: Build frontend flutter web
+        uses: jddeep/Flutter-Runner@1.2.0
+            
+      - name: Checkout the repo 
+        uses: actions/checkout@v4
+  
+      - name: clean stale build and cache
+        uses: ./action
+        with:
+          args: clean
+  
+      - name: install dependencies
+        uses: ./action
+        with:
+          args: pub get
+  
+      - name: build apk
+        uses: ./action
+        with:
+          args: build web
+              
+      - name: scp frontend files
+        uses: appleboy/scp-action@v0.1.7
+        with:
+            host: ${{ secrets.HOST }}
+            username: ${{ secrets.USERNAME }}
+            port: ${{ secrets.PORT }}
+            key: ${{ secrets.SSHKEY }}
+            source: "frontend/build/web/*"
+            target: "/opt/persist/web"
+            rm: true
+          
+  build_backend:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repo 
@@ -36,21 +73,6 @@ jobs:
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         run: docker build  -t $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7) .
-
-      - name: Build frontend flutter web
-        working-directory: ./frontend
-        run: flutter build web
-        
-      - name: scp frontend files
-        uses: appleboy/scp-action@v0.1.7
-        with:
-            host: ${{ secrets.HOST }}
-            username: ${{ secrets.USERNAME }}
-            port: ${{ secrets.PORT }}
-            key: ${{ secrets.SSHKEY }}
-            source: "frontend/build/web/*"
-            target: "/opt/persist/web"
-            rm: true
         
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
