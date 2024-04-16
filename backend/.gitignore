@@ -17,6 +17,11 @@ bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 
+### Custom ###
+keystore.p12
+application-local.yml
+resources/application-local.yml
+
 ### IntelliJ IDEA ###
 .idea
 .idea/
