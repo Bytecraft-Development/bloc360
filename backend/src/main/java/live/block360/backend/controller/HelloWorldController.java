@@ -10,7 +10,7 @@ public class HelloWorldController {
 
     @GetMapping("/hello")
     public String helloWorld() {
-        return "Hello Java class!";
+        return "Hello 16 aprilie 2024";
     }
 
 }
