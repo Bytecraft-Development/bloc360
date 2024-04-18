@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.util.List;
@@ -29,11 +30,20 @@ public class User {
     private boolean isVerified;
     private boolean isDeleted;
 
+    private String firstName;
+    private String lastName;
+    private String middleName;
+    private String phone;
+
+    @UpdateTimestamp
+    private Date lastUpdate;
+
+    @ManyToOne
+    private Association association;
+
      @ElementCollection
     private List<String> roles;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private UserInfo userInfo;
 
 }
 

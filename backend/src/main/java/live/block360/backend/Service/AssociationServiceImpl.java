@@ -1,7 +1,6 @@
-package live.block360.backend.Service.ServiceImplementation;
+package live.block360.backend.Service;
 
 import live.block360.backend.Repository.AssociationRepository;
-import live.block360.backend.Service.ServiceInterface.AssociationService;
 import live.block360.backend.dto.createDTO.CreateAssociationDTO;
 import live.block360.backend.exceptions.BusinessException;
 import live.block360.backend.model.Association;

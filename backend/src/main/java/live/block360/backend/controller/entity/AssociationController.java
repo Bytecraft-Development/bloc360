@@ -1,6 +1,6 @@
 package live.block360.backend.controller.entity;
 
-import live.block360.backend.Service.ServiceInterface.AssociationService;
+import live.block360.backend.Service.AssociationService;
 import live.block360.backend.dto.createDTO.CreateAssociationDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
