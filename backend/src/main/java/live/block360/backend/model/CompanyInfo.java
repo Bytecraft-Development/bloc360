@@ -18,22 +18,19 @@ public class CompanyInfo {
 
     private String name;
 
+    private String date;
+
     private String address;
 
     private String juridicForm;
 
+    private int CUI;
+
     private String registrationFiscalNumber;
 
-    private String contactDetails;
+    private String CAEN;
 
-    private String activityObject;
+    private String fiscalCompany;
 
-    private String socialCapital;
-
-    private String ownersDetails;
-
-    private String companyOwners;
-
-    private String otherInformation;
 
 }
