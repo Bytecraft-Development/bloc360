@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import live.block360.backend.dto.AssociationDTO;
 import lombok.*;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 @Entity
@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "association")
+@Table(name="association")
 public class Association {
 
     @Id
@@ -24,6 +24,10 @@ public class Association {
 
     @OneToMany
     List<User> users ;
+
+    @OneToOne
+    private CompanyInfo companyInfo;
+
 
     public AssociationDTO convertToDTO() {
         return AssociationDTO.
