@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="100mm"
+   height="100mm"
+   viewBox="0 0 100 100"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.3-beta (cedbd6c, 2023-05-28)"
+   sodipodi:docname="logo_bloc360.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#999999"
+     borderopacity="1"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showguides="true"
+     inkscape:zoom="1"
+     inkscape:cx="340.5"
+     inkscape:cy="289.5"
+     inkscape:window-width="1801"
+     inkscape:window-height="962"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <ellipse
+       style="fill:none;fill-opacity:1;stroke:#fbb13c;stroke-width:0.89904;stroke-dasharray:none;stroke-opacity:1"
+       id="path2"
+       cx="56.052444"
+       cy="51.100964"
+       rx="33.198669"
+       ry="33.395691"
+       inkscape:label="path2" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.763845;stroke-dasharray:none;stroke-opacity:1"
+       id="rect2"
+       width="74.081299"
+       height="27.090902"
+       x="7.3748012"
+       y="37.063847"
+       inkscape:label="rect2" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:4.76933px;line-height:1.6;font-family:Abel;-inkscape-font-specification:'Abel Bold';letter-spacing:0px;word-spacing:0px;fill:#275dad;fill-opacity:1;stroke:none;stroke-width:0.3577"
+       x="8.2614136"
+       y="60.903828"
+       id="text2"
+       inkscape:label="text2"><tspan
+         sodipodi:role="line"
+         id="tspan2"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.10007px;font-family:'BIZ UDGothic';-inkscape-font-specification:'BIZ UDGothic';letter-spacing:0px;word-spacing:0px;baseline-shift:sub;fill:#275dad;fill-opacity:1;stroke:none;stroke-width:0.3577"
+         x="8.2614136"
+         y="60.903828">Solutii inteligente pentru comunităti unite</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.90774px;line-height:1.6;font-family:Abel;-inkscape-font-specification:'Abel Bold';letter-spacing:0px;word-spacing:0px;fill:#275dad;fill-opacity:1;stroke:none;stroke-width:0.3577"
+       x="14.893213"
+       y="62.083347"
+       id="text2-8"
+       inkscape:label="text2"><tspan
+         sodipodi:role="line"
+         id="tspan2-7"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.90774px;font-family:'BIZ UDGothic';-inkscape-font-specification:'BIZ UDGothic';letter-spacing:0px;word-spacing:0px;baseline-shift:sub;fill:#275dad;fill-opacity:1;stroke:none;stroke-width:0.3577"
+         x="14.893213"
+         y="62.083347">,</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:1.90774px;line-height:1.6;font-family:Abel;-inkscape-font-specification:'Abel Bold';letter-spacing:0px;word-spacing:0px;fill:#275dad;fill-opacity:1;stroke:none;stroke-width:0.3577"
+       x="62.991352"
+       y="62.077824"
+       id="text2-8-9"
+       inkscape:label="text2"><tspan
+         sodipodi:role="line"
+         id="tspan2-7-8"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.90774px;font-family:'BIZ UDGothic';-inkscape-font-specification:'BIZ UDGothic';letter-spacing:0px;word-spacing:0px;baseline-shift:sub;fill:#275dad;fill-opacity:1;stroke:none;stroke-width:0.3577"
+         x="62.991352"
+         y="62.077824">,</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-weight:bold;font-size:22.8713px;line-height:1.6;font-family:'Times New Roman';-inkscape-font-specification:'Times New Roman,  Bold';fill:#275dad;fill-opacity:1;stroke:none;stroke-width:0.571784"
+       x="7.0126977"
+       y="54.721375"
+       id="text1"
+       transform="scale(0.97390538,1.0267938)"
+       inkscape:label="text1"><tspan
+         sodipodi:role="line"
+         id="tspan1"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:22.8713px;font-family:Abel;-inkscape-font-specification:'Abel Bold';fill:#275dad;fill-opacity:1;stroke:none;stroke-width:0.571784"
+         x="7.0126977"
+         y="54.721375">Bloc360</tspan></text>
+  </g>
+</svg>
