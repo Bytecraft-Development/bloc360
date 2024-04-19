@@ -11,7 +11,7 @@ spring:
           key:
             alias: "bloc360.live"
           keystore:
-            location: "classpath:keystore.p12"
+            location: "classpath:windows/keystore.p12"
             password: ${SSLCERTPASS}
             type: "PKCS12"
       pem:
