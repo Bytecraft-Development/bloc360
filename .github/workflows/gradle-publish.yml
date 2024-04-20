@@ -131,6 +131,7 @@ jobs:
             -e DB_USERNAME=${{ secrets.DB_USERNAME }} \
             -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
             -e SSLCERTPASS=${{ secrets.SSLCERTPASS }} \
+            -e KEYCLOAK_URL=${{ secrets.KEYCLOAK_URL }} \
             --restart always \
             --name $(echo $IMAGE_NAME) \
             $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7) 
