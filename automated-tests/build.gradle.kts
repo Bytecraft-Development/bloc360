@@ -12,10 +12,9 @@ repositories {
 dependencies {
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
-    // https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java
-    implementation("org.seleniumhq.selenium:selenium-java:4.19.1")
-    // https://mvnrepository.com/artifact/org.springframework/spring-beans
-    implementation("org.springframework:spring-beans:6.1.6")
+    // https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
+    implementation("org.apache.httpcomponents.client5:httpclient5:5.3.1")
+
 
 }
 
