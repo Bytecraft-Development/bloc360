@@ -69,23 +69,26 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: isLoading
-            ? const CircularProgressIndicator() // Show spinner while loading
-            : Text(data),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    CuiInputPage()), // Navigăm către CuiInputPage
-          );
-        },
-        tooltip:
-        'Go to CUI Input Page', // Mesajul care apare când utilizatorul ține apăsat pe buton
-        child: const Icon(Icons.input), // Iconița butonului flotant
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(
+            child: isLoading
+                ? const CircularProgressIndicator() // Show spinner while loading
+                : Text(data),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        CuiInputPage()), // Navigăm către CuiInputPage
+              );
+            },
+            child: const Text('Introdu CUI-ul'), // Textul butonului
+          ),
+        ],
       ),
     );
   }
