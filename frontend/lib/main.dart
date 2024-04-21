@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'CuiInputPage.dart'; // Importăm pagina CuiInputPage
 
 void main() {
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({Key? key, required this.title});
 
   final String title;
 
@@ -39,7 +40,8 @@ class _MyHomePageState extends State<MyHomePage> {
       isLoading = true; // Show loading indicator
     });
 
-    final response = await http.get(Uri.parse('https://bloc360.live:8080/hello'));
+    final response =
+    await http.get(Uri.parse('https://bloc360.live:8080/hello'));
 
     if (response.statusCode == 200) {
       setState(() {
@@ -73,9 +75,17 @@ class _MyHomePageState extends State<MyHomePage> {
             : Text(data),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: fetchData,
-        tooltip: 'Fetch Data',
-        child: const Icon(Icons.refresh),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    CuiInputPage()), // Navigăm către CuiInputPage
+          );
+        },
+        tooltip:
+        'Go to CUI Input Page', // Mesajul care apare când utilizatorul ține apăsat pe buton
+        child: const Icon(Icons.input), // Iconița butonului flotant
       ),
     );
   }
