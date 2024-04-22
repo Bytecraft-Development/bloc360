@@ -10,7 +10,7 @@ spring:
       client:
         provider:
           bloc360:
-            issuer-uri: https://bloc360.live:8443/realms/bloc360
+            issuer-uri: https://bloc360.live:8443
             authorization-uri: https://bloc360.live:8443/realms/bloc360/protocol/openid-connect/auth
             token-uri: https://bloc360.live:8443/realms/bloc360/protocol/openid-connect/token
         registration:
@@ -24,7 +24,7 @@ spring:
              - openid
              - offline_access
              - profile
-            authorization-grant-type: client_credentials
+            authorization-grant-type: authorization_code
 
   ssl:
     bundle:
