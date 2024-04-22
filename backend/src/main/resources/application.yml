@@ -3,7 +3,29 @@ server:
   ssl:
     bundle: "server"
     enabled-protocols: TLSv1.2
+
 spring:
+  security:
+    oauth2:
+      client:
+        provider:
+          bloc360:
+            issuer-uri: https://bloc360.live:3443/realms/bloc360
+            authorization-uri: https://bloc360.live:3443/realms/bloc360/protocol/openid-connect/auth
+            token-uri: https://bloc360.live:3443/realms/bloc360/protocol/openid-connect/token
+        registration:
+          bloc360:
+            provider: bloc360
+            client-name: bloc360app
+            client-id: bloc360app
+            clientAuthenticationMethod: client_secret_basic
+            client-secret: WshrjCsQ4QORTuPY8GqfyXVod3ws0sI9
+            scope:
+             - openid
+             - offline_access
+             - profile
+            authorization-grant-type: client_credentials
+
   ssl:
     bundle:
       jks:
@@ -37,3 +59,9 @@ management:
 logging:
   file:
     name: backendLog
+  level:
+    org.springframework.security: DEBUG
+#  pattern:
+#    console: %d{dd-MM-yyyy HH:mm:ss} %magenta([%thread]) %highlight(%-5level) %logger.%M - %msg%n
+
+

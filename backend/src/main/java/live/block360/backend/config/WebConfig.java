@@ -1,4 +1,4 @@
-package live.block360.backend.controller.config;
+package live.block360.backend.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
