@@ -1,95 +1,171 @@
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'CuiInputPage.dart'; // Importăm pagina CuiInputPage
+import 'dart:html';
 
-void main() {
-  runApp(const MyApp());
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:keycloak_flutter/keycloak_flutter.dart';
+
+late KeycloakService keycloakService;
+
+void main() async {
+  keycloakService = KeycloakService(KeycloakConfig(
+      url:
+      'https://bloc360.live:8443/realms/bloc360/protocol/openid-connect/auth', // Keycloak auth base url
+      realm: 'sample',
+      clientId: 'sample-flutter'));
+  keycloakService.init(
+    initOptions: KeycloakInitOptions(
+      onLoad: 'check-sso',
+      responseMode: 'query',
+      silentCheckSsoRedirectUri:
+      '${window.location.origin}/silent-check-sso.html',
+    ),
+  );
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key});
-
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
+    return MaterialApp.router(
+      title: 'Keycloak Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+        primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      routerConfig: _router,
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title});
-
-  final String title;
+  MyHomePage({Key? key, this.title}) : super(key: key);
+  final String? title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String data = ""; // Stores the fetched data
-  bool isLoading = false; // Flag to indicate loading state
+  KeycloakProfile? _keycloakProfile;
 
-  Future<void> fetchData() async {
-    setState(() {
-      isLoading = true; // Show loading indicator
-    });
-
-    final response =
-    await http.get(Uri.parse('https://bloc360.live:8080/hello'));
-
-    if (response.statusCode == 200) {
-      setState(() {
-        data = response.body;
-        isLoading = false; // Hide loading indicator after successful fetch //
-      });
-    } else {
-      // Handle error scenario (e.g., display error message) test
-      print('Error fetching data: ${response.statusCode}');
-      setState(() {
-        isLoading = false; // Hide loading indicator even on error
-      });
-    }
+  void _login() {
+    keycloakService.login(KeycloakLoginOptions(
+      redirectUri: '${window.location.origin}',
+    ));
   }
 
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
-    fetchData(); // Fetch data on widget initialization
+    try {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+        keycloakService.keycloakEventsStream.listen((event) async {
+          print(event);
+          if (event.type == KeycloakEventType.onAuthSuccess) {
+            _keycloakProfile = await keycloakService.loadUserProfile();
+          } else {
+            _keycloakProfile = null;
+          }
+          setState(() {});
+        });
+        if (keycloakService.authenticated) {
+          _keycloakProfile = await keycloakService.loadUserProfile(false);
+        }
+        setState(() {});
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    // This method is rerun every time setState is called, for instance as done
+    // by the _incrementCounter method above.
+    //
+    // The Flutter framework has been optimized to make rerunning build methods
+    // fast, so that you can just rebuild anything that needs updating rather
+    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Center(
-            child: isLoading
-                ? const CircularProgressIndicator() // Show spinner while loading
-                : Text(data),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        CuiInputPage()), // Navigăm către CuiInputPage
-              );
-            },
-            child: const Text('Introdu CUI-ul'), // Textul butonului
-          ),
+        // Here we take the value from the MyHomePage object that was created by
+        // the App.build method, and use it to set our appbar title.
+        title: Text('Sample'),
+        actions: [
+          IconButton(
+              icon: Icon(Icons.logout),
+              onPressed: () async {
+                await keycloakService.logout();
+              }),
         ],
       ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              decoration: BoxDecoration(border: Border.all(color: Colors.red)),
+              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+              child: Text(
+                'Ensure you use the sample client included in this example app.',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+            SizedBox(
+              height: 30,
+            ),
+            Text(
+              'Welcome ${_keycloakProfile?.username ?? 'Guest'}',
+              style: Theme.of(context).textTheme.headline4,
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            if (_keycloakProfile?.username == null)
+              ElevatedButton(
+                onPressed: _login,
+                child: Text(
+                  'Login',
+                  style: Theme.of(context).textTheme.headline4,
+                ),
+              ),
+            SizedBox(
+              height: 20,
+            ),
+            if (_keycloakProfile?.username != null)
+              ElevatedButton(
+                onPressed: () async {
+                  print('refreshing token');
+                  await keycloakService.updateToken(1000).then((value) {
+                    print(value);
+                  }).catchError((onError) {
+                    print(onError);
+                  });
+                },
+                child: Text(
+                  'Refresh token',
+                  style: Theme.of(context).textTheme.headline4,
+                ),
+              ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _login,
+        tooltip: 'Login',
+        child: Icon(Icons.login),
+      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
+
+final _router = GoRouter(
+  routes: [
+    GoRoute(
+      path: '/',
+      builder: (context, state) => MyHomePage(),
+    ),
+  ],
+);

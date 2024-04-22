@@ -31,7 +31,7 @@
 
   <title>Bloc360</title>
   <link rel="manifest" href="manifest.json">
-
+  <script src="keycloak.js"></script>
   <script>
     // The value below is injected by flutter build, do not touch.
     const serviceWorkerVersion = null;
@@ -55,5 +55,13 @@
       });
     });
   </script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('flutter-first-frame', function () {
+        navigator.serviceWorker.register('flutter_service_worker.js');
+      });
+    }
+  </script>
+  <script src="main.dart.js" type="application/javascript"></script>
 </body>
 </html>
