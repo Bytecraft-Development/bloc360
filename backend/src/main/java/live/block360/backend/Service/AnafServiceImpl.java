@@ -26,9 +26,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @RequiredArgsConstructor
 public class AnafServiceImpl implements AnafService {
 
-
-    @Autowired
-    private CompanyInfoRepository companyInfoRepository;
+    private final CompanyInfoRepository companyInfoRepository;
 
     @Override
     public void makeAnafRequest(String cui) {
