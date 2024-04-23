@@ -41,6 +41,7 @@ out/
 ### VS Code ###
 .vscode/
 /**/aplication-local.yml
+/**/aplication-local*.yml
 backendLog
 /**/workspace.xml
 *backendLog*
