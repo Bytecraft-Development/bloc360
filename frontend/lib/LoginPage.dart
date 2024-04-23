@@ -1,7 +1,7 @@
 import 'dart:convert';
+import 'dart:html' as html; // Importă biblioteca 'dart:html' pentru a accesa window.localStorage
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 import 'HelloWorld.dart';
 
 class LoginPage extends StatefulWidget {
@@ -26,8 +26,8 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> _loadTokenFromStorage() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    _accessToken = prefs.getString('access_token');
+    // Folosește window.localStorage pentru a citi token-ul de acces salvat
+    _accessToken = html.window.localStorage['access_token'];
     if (_accessToken != null) {
       _navigateToHelloWorldPage();
     }
@@ -53,8 +53,9 @@ class _LoginPageState extends State<LoginPage> {
     if (response.statusCode == 200) {
       Map<String, dynamic> jsonResponse = jsonDecode(response.body);
       _accessToken = jsonResponse['access_token'];
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('access_token', _accessToken!);
+
+      // Salvează token-ul de acces în window.localStorage
+      html.window.localStorage['access_token'] = _accessToken!;
 
       _navigateToHelloWorldPage();
     } else {
