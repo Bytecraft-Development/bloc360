@@ -26,9 +26,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @RequiredArgsConstructor
 public class AnafServiceImpl implements AnafService {
 
-
-    @Autowired
-    private CompanyInfoRepository companyInfoRepository;
+    private final CompanyInfoRepository companyInfoRepository;
 
     @Override
     public void makeAnafRequest(String cui) {
@@ -86,8 +84,12 @@ public class AnafServiceImpl implements AnafService {
                int cod = jsonNode.get("cod").asInt();
                String message = jsonNode.get("message").asText();
 
+
                // Accesarea elementului "found" și salvarea sub-elementelor în variabile
                JsonNode foundNode = jsonNode.get("found").get(0);
+               if (foundNode==null) {
+                   throw new Exception("Cui Invalid");
+               }
                JsonNode dateGeneraleNode = foundNode.get("date_generale");
                int cui = dateGeneraleNode.get("cui").asInt();
                String data = dateGeneraleNode.get("data").asText();

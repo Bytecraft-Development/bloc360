@@ -1,4 +1,4 @@
-package live.block360.backend.controller.config;
+package live.block360.backend.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -15,6 +15,8 @@ class WebConfig implements WebMvcConfigurer {
         registry.addMapping("*").allowedOrigins("https://localhost");
         registry.addMapping("*").allowedOrigins("http://bloc360.live");
         registry.addMapping("*").allowedOrigins("https://bloc360.live");
+        registry.addMapping("*").allowedOrigins("https://bloc360.live:8443");
+        registry.addMapping("*").allowedOrigins("https://bloc360.live:8080");
     }
 };
 

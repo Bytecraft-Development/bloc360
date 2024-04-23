@@ -3,7 +3,13 @@ server:
   ssl:
     bundle: "server"
     enabled-protocols: TLSv1.2
+
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://bloc360.live:8443/realms/bloc360
   ssl:
     bundle:
       jks:
@@ -37,3 +43,6 @@ management:
 logging:
   file:
     name: backendLog
+  level:
+    org.springframework.security: DEBUG
+
