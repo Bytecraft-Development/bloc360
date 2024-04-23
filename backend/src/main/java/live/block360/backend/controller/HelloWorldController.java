@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloWorldController {
     @GetMapping("/hello")
     public String helloWorld(Authentication authentication) {
-        return "Hello users";
+        return "Hello Bloc360Team";
     }
 
 }
