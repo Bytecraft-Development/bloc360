@@ -13,7 +13,8 @@ class HelloWorldPage extends StatelessWidget {
         title: Text('HelloWorld Page'),
       ),
       body: FutureBuilder(
-        future: _fetchHelloWorldData(),
+        future:
+        _fetchHelloWorldData(), // Utilizăm metoda publică _fetchHelloWorldData
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
