@@ -90,6 +90,7 @@ public class AnafServiceImpl implements AnafService {
                if (foundNode==null) {
                    throw new Exception("Cui Invalid");
                }
+
                JsonNode dateGeneraleNode = foundNode.get("date_generale");
                int cui = dateGeneraleNode.get("cui").asInt();
                String data = dateGeneraleNode.get("data").asText();

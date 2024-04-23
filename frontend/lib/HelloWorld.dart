@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'CuiInputPage.dart';
 
 class HelloWorldPage extends StatelessWidget {
   final String? accessToken;
@@ -13,22 +14,39 @@ class HelloWorldPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('HelloWorld Page'),
       ),
-      body: FutureBuilder(
-        future: _fetchHelloWorldData(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else {
-            return Center(child: Text('Hello, World!'));
-          }
-        },
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          FutureBuilder(
+            future: _fetchHelloWorldData(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Center(child: Text('Error: ${snapshot.error}'));
+              } else {
+                // Afișează textul primit în răspunsul de la server
+                return Center(child: Text(snapshot.data.toString()));
+              }
+            },
+          ),
+          SizedBox(height: 20), // Spațiu între text și buton
+          ElevatedButton(
+            onPressed: () {
+              // Navighează către pagina CuiInputPage
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CuiInputPage()),
+              );
+            },
+            child: Text('Go to CuiInputPage'),
+          ),
+        ],
       ),
     );
   }
 
-  Future<void> _fetchHelloWorldData() async {
+  Future<String> _fetchHelloWorldData() async {
     final response = await http.get(
       Uri.parse('https://bloc360.live:8080/hello'),
       headers: <String, String>{
@@ -37,11 +55,11 @@ class HelloWorldPage extends StatelessWidget {
     );
 
     if (response.statusCode == 200) {
-      // Procesează răspunsul de la server
-      print('Response from server: ${response.body}');
+      // Returnează textul primit în răspunsul de la server
+      return response.body;
     } else {
-      // Tratează cazurile în care cererea a eșuat
-      print('Failed to fetch data: ${response.statusCode}');
+      // Returnează un mesaj de eroare în cazul eșuării cererii
+      throw Exception('Failed to fetch data: ${response.statusCode}');
     }
   }
 }
