@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'HelloWorld.dart'; // Importăm pagina HelloWorld
 
 void main() => runApp(MyApp());
 
@@ -62,11 +63,12 @@ class _LoginPageState extends State<LoginPage> {
       // Salvează token-ul de acces într-o variabilă globală sau în shared_preferences
       print('Access Token: $tokenType $_accessToken');
 
-      // Navighează către pagina Hello World
-      Navigator.push(
+      // Navighează către pagina Hello World și trimite token-ul în header-ul cererii
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-            builder: (context) => HelloWorldPage(accessToken: _accessToken)),
+          builder: (context) => HelloWorldPage(accessToken: _accessToken),
+        ),
       );
     } else {
       // Tratează cazurile în care autentificarea a eșuat
@@ -99,49 +101,5 @@ class _LoginPageState extends State<LoginPage> {
         ],
       ),
     );
-  }
-}
-
-class HelloWorldPage extends StatelessWidget {
-  final String? accessToken;
-
-  const HelloWorldPage({Key? key, required this.accessToken}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('HelloWorld Page'),
-      ),
-      body: FutureBuilder(
-        future: _fetchHelloWorldData(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else {
-            return Center(child: Text('Hello, World!'));
-          }
-        },
-      ),
-    );
-  }
-
-  Future<void> _fetchHelloWorldData() async {
-    final response = await http.get(
-      Uri.parse('https://bloc360.live:8080/hello'),
-      headers: <String, String>{
-        'Authorization': 'Bearer $accessToken',
-      },
-    );
-
-    if (response.statusCode == 200) {
-      // Procesează răspunsul de la server
-      print('Response from server: ${response.body}');
-    } else {
-      // Tratează cazurile în care cererea a eșuat
-      print('Failed to fetch data: ${response.statusCode}');
-    }
   }
 }
