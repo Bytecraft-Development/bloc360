@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:frontend/HelloWorld.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
-import 'HelloWorld.dart';
+import 'dart:html';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -18,25 +18,6 @@ class _LoginPageState extends State<LoginPage> {
   final String _clientId = 'bloc360token';
 
   String? _accessToken;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadTokenFromStorage();
-  }
-
-  Future<void> _loadTokenFromStorage() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    _accessToken = prefs.getString('access_token');
-    if (_accessToken != null) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => HelloWorldPage(accessToken: _accessToken),
-        ),
-      );
-    }
-  }
 
   Future<void> _login() async {
     String username = _usernameController.text;
@@ -58,9 +39,11 @@ class _LoginPageState extends State<LoginPage> {
     if (response.statusCode == 200) {
       Map<String, dynamic> jsonResponse = jsonDecode(response.body);
       _accessToken = jsonResponse['access_token'];
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('access_token', _accessToken!);
 
+      // Salvează token-ul de acces în localStorage
+      window.localStorage['access_token'] = _accessToken!;
+
+      // Navighează către pagina HelloWorldPage
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -74,27 +57,32 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(20.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          TextField(
-            controller: _usernameController,
-            decoration: InputDecoration(labelText: 'Username'),
-          ),
-          SizedBox(height: 20.0),
-          TextField(
-            controller: _passwordController,
-            decoration: InputDecoration(labelText: 'Password'),
-            obscureText: true,
-          ),
-          SizedBox(height: 20.0),
-          ElevatedButton(
-            onPressed: _login,
-            child: Text('Login'),
-          ),
-        ],
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Login Page'),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            TextField(
+              controller: _usernameController,
+              decoration: InputDecoration(labelText: 'Username'),
+            ),
+            SizedBox(height: 20.0),
+            TextField(
+              controller: _passwordController,
+              decoration: InputDecoration(labelText: 'Password'),
+              obscureText: true,
+            ),
+            SizedBox(height: 20.0),
+            ElevatedButton(
+              onPressed: _login,
+              child: Text('Login'),
+            ),
+          ],
+        ),
       ),
     );
   }
