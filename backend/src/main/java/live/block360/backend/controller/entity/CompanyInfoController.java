@@ -23,7 +23,7 @@ public class CompanyInfoController {
            anafService.makeAnafRequest(jsonBody);
            return ResponseEntity.ok("Company Info Created");
        }catch (Exception e){
+           return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
        }
-       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Company Info Creation Fail");
    }
 }

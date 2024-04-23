@@ -2,6 +2,7 @@ package live.block360.backend.Service;
 
 
 import live.block360.backend.Repository.CompanyInfoRepository;
+import live.block360.backend.exceptions.AnafRequestException;
 import live.block360.backend.model.CompanyInfo;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpResponse;
@@ -11,6 +12,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -29,7 +31,7 @@ public class AnafServiceImpl implements AnafService {
     private final CompanyInfoRepository companyInfoRepository;
 
     @Override
-    public void makeAnafRequest(String cui) {
+    public void makeAnafRequest(String cui) throws AnafRequestException {
         String url = "https://facturacloud.ro/app/index.php?section=apianaf";
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date();
@@ -65,7 +67,8 @@ public class AnafServiceImpl implements AnafService {
             parseResponse(result.toString());
 
         } catch (Exception e) {
-            e.printStackTrace();
+            // Aruncarea unei excepții personalizate în cazul unor erori
+            throw new AnafRequestException(HttpStatus.BAD_REQUEST,"Error processing Anaf response");
         }
     }
 
@@ -113,7 +116,7 @@ public class AnafServiceImpl implements AnafService {
 
                companyInfoRepository.save(company);
            } catch (Exception e) {
-               e.printStackTrace();
+               throw new AnafRequestException(HttpStatus.BAD_REQUEST,"Error processing Anaf response");
            }
        }
 
