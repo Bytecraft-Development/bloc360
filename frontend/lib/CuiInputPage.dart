@@ -24,6 +24,7 @@ class _CuiInputPageState extends State<CuiInputPage> {
           Uri.parse('https://bloc360.live:8080/createCompany'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization': 'Bearer $accessToken',
           },
           body: jsonEncode(<String, String>{
             'cui': cui,
