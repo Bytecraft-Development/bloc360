@@ -1,7 +1,8 @@
 import 'dart:convert';
-import 'dart:html' as html;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'HelloWorld.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -16,6 +17,8 @@ class _LoginPageState extends State<LoginPage> {
       'https://bloc360.live:8443/realms/bloc360/protocol/openid-connect/token';
   final String _clientId = 'bloc360token';
 
+  String? _accessToken;
+
   @override
   void initState() {
     super.initState();
@@ -23,9 +26,10 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> _loadTokenFromStorage() async {
-    // Verifică dacă există un token de acces în localStorage
-    if (html.window.localStorage.containsKey('accessToken')) {
-      Navigator.pushReplacementNamed(context, '/helloworld');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    _accessToken = prefs.getString('access_token');
+    if (_accessToken != null) {
+      _navigateToHelloWorldPage();
     }
   }
 
@@ -48,43 +52,48 @@ class _LoginPageState extends State<LoginPage> {
 
     if (response.statusCode == 200) {
       Map<String, dynamic> jsonResponse = jsonDecode(response.body);
-      String accessToken = jsonResponse['access_token'];
-      // Salvează token-ul de acces în localStorage
-      html.window.localStorage['accessToken'] = accessToken;
-      Navigator.pushReplacementNamed(context, '/helloworld');
+      _accessToken = jsonResponse['access_token'];
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('access_token', _accessToken!);
+
+      _navigateToHelloWorldPage();
     } else {
       print('Failed to login: ${response.statusCode}');
     }
   }
 
+  Future<void> _navigateToHelloWorldPage() async {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => HelloWorldPage(accessToken: _accessToken),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Login'),
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(20.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            TextField(
-              controller: _usernameController,
-              decoration: InputDecoration(labelText: 'Username'),
-            ),
-            SizedBox(height: 20.0),
-            TextField(
-              controller: _passwordController,
-              decoration: InputDecoration(labelText: 'Password'),
-              obscureText: true,
-            ),
-            SizedBox(height: 20.0),
-            ElevatedButton(
-              onPressed: _login,
-              child: Text('Login'),
-            ),
-          ],
-        ),
+    return Padding(
+      padding: EdgeInsets.all(20.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          TextField(
+            controller: _usernameController,
+            decoration: InputDecoration(labelText: 'Username'),
+          ),
+          SizedBox(height: 20.0),
+          TextField(
+            controller: _passwordController,
+            decoration: InputDecoration(labelText: 'Password'),
+            obscureText: true,
+          ),
+          SizedBox(height: 20.0),
+          ElevatedButton(
+            onPressed: _login,
+            child: Text('Login'),
+          ),
+        ],
       ),
     );
   }
