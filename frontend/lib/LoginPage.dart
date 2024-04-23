@@ -1,8 +1,7 @@
 import 'dart:convert';
+import 'dart:html' as html;
 import 'package:flutter/material.dart';
-import 'package:frontend/HelloWorld.dart';
 import 'package:http/http.dart' as http;
-import 'dart:html';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -17,7 +16,18 @@ class _LoginPageState extends State<LoginPage> {
       'https://bloc360.live:8443/realms/bloc360/protocol/openid-connect/token';
   final String _clientId = 'bloc360token';
 
-  String? _accessToken;
+  @override
+  void initState() {
+    super.initState();
+    _loadTokenFromStorage();
+  }
+
+  Future<void> _loadTokenFromStorage() async {
+    // Verifică dacă există un token de acces în localStorage
+    if (html.window.localStorage.containsKey('accessToken')) {
+      Navigator.pushReplacementNamed(context, '/helloworld');
+    }
+  }
 
   Future<void> _login() async {
     String username = _usernameController.text;
@@ -38,18 +48,10 @@ class _LoginPageState extends State<LoginPage> {
 
     if (response.statusCode == 200) {
       Map<String, dynamic> jsonResponse = jsonDecode(response.body);
-      _accessToken = jsonResponse['access_token'];
-
+      String accessToken = jsonResponse['access_token'];
       // Salvează token-ul de acces în localStorage
-      window.localStorage['access_token'] = _accessToken!;
-
-      // Navighează către pagina HelloWorldPage
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => HelloWorldPage(accessToken: _accessToken),
-        ),
-      );
+      html.window.localStorage['accessToken'] = accessToken;
+      Navigator.pushReplacementNamed(context, '/helloworld');
     } else {
       print('Failed to login: ${response.statusCode}');
     }
@@ -59,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login Page'),
+        title: Text('Login'),
       ),
       body: Padding(
         padding: EdgeInsets.all(20.0),

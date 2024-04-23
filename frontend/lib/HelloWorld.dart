@@ -1,34 +1,34 @@
+import 'dart:convert';
+import 'dart:html' as html;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class HelloWorldPage extends StatelessWidget {
-  final String? accessToken;
-
-  const HelloWorldPage({Key? key, required this.accessToken}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('HelloWorld Page'),
+        title: Text('Hello World'),
       ),
-      body: FutureBuilder(
-        future:
-        _fetchHelloWorldData(), // Utilizăm metoda publică _fetchHelloWorldData
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else {
-            return Center(child: Text('Hello, World!'));
-          }
-        },
+      body: Center(
+        child: FutureBuilder(
+          future: _fetchHelloWorldData(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator();
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else {
+              return Text('Hello, World!');
+            }
+          },
+        ),
       ),
     );
   }
 
-  Future<void> _fetchHelloWorldData() async {
+  Future<String> _fetchHelloWorldData() async {
+    String? accessToken = html.window.localStorage['accessToken'];
     final response = await http.get(
       Uri.parse('https://bloc360.live:8080/hello'),
       headers: <String, String>{
@@ -37,11 +37,9 @@ class HelloWorldPage extends StatelessWidget {
     );
 
     if (response.statusCode == 200) {
-      // Procesează răspunsul de la server
-      print('Response from server: ${response.body}');
+      return response.body;
     } else {
-      // Tratează cazurile în care cererea a eșuat
-      print('Failed to fetch data: ${response.statusCode}');
+      throw Exception('Failed to fetch data');
     }
   }
 }
