@@ -33,6 +33,8 @@ class _LoginPageState extends State<LoginPage> {
       'https://bloc360.live:8443/realms/bloc360/protocol/openid-connect/token';
   final String _clientId = 'bloc360token';
 
+  String? _accessToken;
+
   Future<void> _login() async {
     String username = _usernameController.text;
     String password = _passwordController.text;
@@ -54,13 +56,18 @@ class _LoginPageState extends State<LoginPage> {
     if (response.statusCode == 200) {
       // Procesează răspunsul și salvează token-ul de acces
       Map<String, dynamic> jsonResponse = jsonDecode(response.body);
-      String accessToken = jsonResponse['access_token'];
+      _accessToken = jsonResponse['access_token'];
       String tokenType = jsonResponse['token_type'];
 
       // Salvează token-ul de acces într-o variabilă globală sau în shared_preferences
-      print('Access Token: $tokenType $accessToken');
+      print('Access Token: $tokenType $_accessToken');
 
-      // Redirecționează utilizatorul către altă pagină în aplicație sau afișează mesajul de succes
+      // Navighează către pagina Hello World
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => HelloWorldPage(accessToken: _accessToken)),
+      );
     } else {
       // Tratează cazurile în care autentificarea a eșuat
       print('Failed to login: ${response.statusCode}');
@@ -92,5 +99,49 @@ class _LoginPageState extends State<LoginPage> {
         ],
       ),
     );
+  }
+}
+
+class HelloWorldPage extends StatelessWidget {
+  final String? accessToken;
+
+  const HelloWorldPage({Key? key, required this.accessToken}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('HelloWorld Page'),
+      ),
+      body: FutureBuilder(
+        future: _fetchHelloWorldData(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else {
+            return Center(child: Text('Hello, World!'));
+          }
+        },
+      ),
+    );
+  }
+
+  Future<void> _fetchHelloWorldData() async {
+    final response = await http.get(
+      Uri.parse('https://bloc360.live:8080/hello'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $accessToken',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      // Procesează răspunsul de la server
+      print('Response from server: ${response.body}');
+    } else {
+      // Tratează cazurile în care cererea a eșuat
+      print('Failed to fetch data: ${response.statusCode}');
+    }
   }
 }
