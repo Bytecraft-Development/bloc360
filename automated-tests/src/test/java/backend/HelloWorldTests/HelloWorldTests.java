@@ -25,6 +25,6 @@ public class HelloWorldTests extends BaseTest {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         assertNotNull(response);
         assertEquals(200, response.statusCode());
-        assertEquals("Hello 16 aprilie 2024", response.body());
+        assertEquals("Hello users", response.body());
     }
 }
