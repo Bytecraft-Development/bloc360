@@ -1,171 +1,138 @@
-import 'dart:html';
-
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:keycloak_flutter/keycloak_flutter.dart';
+import 'package:flutter/services.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
-late KeycloakService keycloakService;
+// initialize GoogleSignIn with scopes
+const List<String> scopes = <String>[
+  'email',
+  'profile',
+];
+
+GoogleSignIn _googleSignIn = GoogleSignIn(
+  scopes: scopes,
+);
 
 void main() async {
-  keycloakService = KeycloakService(KeycloakConfig(
-      url:
-      'https://bloc360.live:8443/realms/bloc360/protocol/openid-connect/auth', // Keycloak auth base url
-      realm: 'sample',
-      clientId: 'sample-flutter'));
-  keycloakService.init(
-    initOptions: KeycloakInitOptions(
-      onLoad: 'check-sso',
-      responseMode: 'query',
-      silentCheckSsoRedirectUri:
-      '${window.location.origin}/silent-check-sso.html',
-    ),
-  );
-  runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'Keycloak Demo',
-      debugShowCheckedModeBanner: false,
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+
+    return MaterialApp(
+      title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      routerConfig: _router,
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, this.title}) : super(key: key);
-  final String? title;
+  const MyHomePage({super.key});
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  KeycloakProfile? _keycloakProfile;
-
-  void _login() {
-    keycloakService.login(KeycloakLoginOptions(
-      redirectUri: '${window.location.origin}',
-    ));
-  }
-
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    try {
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-        keycloakService.keycloakEventsStream.listen((event) async {
-          print(event);
-          if (event.type == KeycloakEventType.onAuthSuccess) {
-            _keycloakProfile = await keycloakService.loadUserProfile();
-          } else {
-            _keycloakProfile = null;
-          }
-          setState(() {});
-        });
-        if (keycloakService.authenticated) {
-          _keycloakProfile = await keycloakService.loadUserProfile(false);
-        }
-        setState(() {});
+
+    // listen onCurrentUserChanged  and call keyycloak login
+
+    _googleSignIn.onCurrentUserChanged.listen((event) {
+      event?.authentication.then((value) {
+        String accessToken = value.accessToken!;
+
+        print('Access Token $accessToken');
+
+        _login('google', accessToken);
       });
-    } catch (e) {
-      print(e);
-    }
+    }).onError((error) {
+      print(error);
+    });
+  }
+
+  void _login(String provider, String token) async {
+    //Dio to call keycloak login endpoint
+    Dio dio = Dio();
+    Map<String, String> data = {};
+
+    data['grant_type'] = 'urn:ietf:params:oauth:grant-type:token-exchange';
+    data['subject_token_type'] =
+    'urn:ietf:params:oauth:token-type:access_token';
+    data['client_id'] = 'authenticationClientId';
+    data['subject_token'] = token;
+    data['subject_issuer'] = provider;
+
+    final response = await dio.post(
+        'https://bloc360.live:8443/realms/bloc360/protocol/openid-connect/token',
+        data: data,
+        options: Options(contentType: Headers.formUrlEncodedContentType));
+
+    print('Status ${response.statusCode}');
+    print(response.data);
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text('Sample'),
-        actions: [
-          IconButton(
-              icon: Icon(Icons.logout),
-              onPressed: () async {
-                await keycloakService.logout();
-              }),
+        centerTitle: true,
+        title: const Text("Social Login Example"),
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CircleAvatar(
+            backgroundImage: const NetworkImage(
+                "https://www.xda-developers.com/files/2018/02/Flutter-Framework-Feature-Image-Red.png"),
+            minRadius: MediaQuery.of(context).size.width / 4,
+          ),
+          const SizedBox(
+            height: 280,
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+            child: MaterialButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0)),
+              padding: const EdgeInsets.all(10.0),
+              onPressed: () => _googleSignIn.signIn(),
+              color: Colors.white,
+              elevation: 5,
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(
+                        "https://storage.googleapis.com/gd-wagtail-prod-assets/original_images/evolving_google_identity_videoposter_006.jpg"),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 10.0),
+                    child: Text("Login with Google    "),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              decoration: BoxDecoration(border: Border.all(color: Colors.red)),
-              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-              child: Text(
-                'Ensure you use the sample client included in this example app.',
-                style: TextStyle(color: Colors.red),
-              ),
-            ),
-            SizedBox(
-              height: 30,
-            ),
-            Text(
-              'Welcome ${_keycloakProfile?.username ?? 'Guest'}',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            if (_keycloakProfile?.username == null)
-              ElevatedButton(
-                onPressed: _login,
-                child: Text(
-                  'Login',
-                  style: Theme.of(context).textTheme.headline4,
-                ),
-              ),
-            SizedBox(
-              height: 20,
-            ),
-            if (_keycloakProfile?.username != null)
-              ElevatedButton(
-                onPressed: () async {
-                  print('refreshing token');
-                  await keycloakService.updateToken(1000).then((value) {
-                    print(value);
-                  }).catchError((onError) {
-                    print(onError);
-                  });
-                },
-                child: Text(
-                  'Refresh token',
-                  style: Theme.of(context).textTheme.headline4,
-                ),
-              ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _login,
-        tooltip: 'Login',
-        child: Icon(Icons.login),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
-
-final _router = GoRouter(
-  routes: [
-    GoRoute(
-      path: '/',
-      builder: (context, state) => MyHomePage(),
-    ),
-  ],
-);
