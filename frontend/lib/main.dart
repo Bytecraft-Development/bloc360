@@ -1,135 +1,93 @@
-import 'package:dio/dio.dart';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:http/http.dart' as http;
 
-// initialize GoogleSignIn with scopes
-const List<String> scopes = <String>[
-  'email',
-  'profile',
-];
-
-GoogleSignIn _googleSignIn = GoogleSignIn(
-  scopes: scopes,
-);
-
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MyApp());
-}
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
-
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+      title: 'Keycloak Login Example',
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Keycloak Login Example'),
+        ),
+        body: LoginPage(),
       ),
-      home: const MyHomePage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
-
+class LoginPage extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  void initState() {
-    super.initState();
+class _LoginPageState extends State<LoginPage> {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
-    // listen onCurrentUserChanged  and call keyycloak login
+  final String _keycloakTokenUrl =
+      'https://bloc360.live:8443/realms/bloc360/protocol/openid-connect/token';
+  final String _clientId = 'bloc360token';
 
-    _googleSignIn.onCurrentUserChanged.listen((event) {
-      event?.authentication.then((value) {
-        String accessToken = value.accessToken!;
+  Future<void> _login() async {
+    String username = _usernameController.text;
+    String password = _passwordController.text;
 
-        print('Access Token $accessToken');
+    // Trimite cererea pentru a obține token-ul de acces de la Keycloak
+    final response = await http.post(
+      Uri.parse(_keycloakTokenUrl),
+      headers: <String, String>{
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: <String, String>{
+        'client_id': _clientId,
+        'username': username,
+        'password': password,
+        'grant_type': 'password',
+      },
+    );
 
-        _login('google', accessToken);
-      });
-    }).onError((error) {
-      print(error);
-    });
-  }
+    if (response.statusCode == 200) {
+      // Procesează răspunsul și salvează token-ul de acces
+      Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+      String accessToken = jsonResponse['access_token'];
+      String tokenType = jsonResponse['token_type'];
 
-  void _login(String provider, String token) async {
-    //Dio to call keycloak login endpoint
-    Dio dio = Dio();
-    Map<String, String> data = {};
+      // Salvează token-ul de acces într-o variabilă globală sau în shared_preferences
+      print('Access Token: $tokenType $accessToken');
 
-    data['grant_type'] = 'urn:ietf:params:oauth:grant-type:token-exchange';
-    data['subject_token_type'] =
-    'urn:ietf:params:oauth:token-type:access_token';
-    data['client_id'] = 'authenticationClientId';
-    data['subject_token'] = token;
-    data['subject_issuer'] = provider;
-
-    final response = await dio.post(
-        'https://bloc360.live:8443/realms/bloc360/protocol/openid-connect/token',
-        data: data,
-        options: Options(contentType: Headers.formUrlEncodedContentType));
-
-    print('Status ${response.statusCode}');
-    print(response.data);
+      // Redirecționează utilizatorul către altă pagină în aplicație sau afișează mesajul de succes
+    } else {
+      // Tratează cazurile în care autentificarea a eșuat
+      print('Failed to login: ${response.statusCode}');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text("Social Login Example"),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+    return Padding(
+      padding: EdgeInsets.all(20.0),
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          CircleAvatar(
-            backgroundImage: const NetworkImage(
-                "https://www.xda-developers.com/files/2018/02/Flutter-Framework-Feature-Image-Red.png"),
-            minRadius: MediaQuery.of(context).size.width / 4,
+        children: <Widget>[
+          TextField(
+            controller: _usernameController,
+            decoration: InputDecoration(labelText: 'Username'),
           ),
-          const SizedBox(
-            height: 280,
+          SizedBox(height: 20.0),
+          TextField(
+            controller: _passwordController,
+            decoration: InputDecoration(labelText: 'Password'),
+            obscureText: true,
           ),
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-            child: MaterialButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0)),
-              padding: const EdgeInsets.all(10.0),
-              onPressed: () => _googleSignIn.signIn(),
-              color: Colors.white,
-              elevation: 5,
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  CircleAvatar(
-                    backgroundImage: NetworkImage(
-                        "https://storage.googleapis.com/gd-wagtail-prod-assets/original_images/evolving_google_identity_videoposter_006.jpg"),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 10.0),
-                    child: Text("Login with Google    "),
-                  ),
-                ],
-              ),
-            ),
+          SizedBox(height: 20.0),
+          ElevatedButton(
+            onPressed: _login,
+            child: Text('Login'),
           ),
         ],
       ),
