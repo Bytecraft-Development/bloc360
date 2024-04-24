@@ -20,15 +20,18 @@ class _CuiInputPageState extends State<CuiInputPage> {
       });
 
       try {
+        final requestBody = jsonEncode(<String, String>{
+          'cui': cui,
+        });
+
+        print('Request body: $requestBody');
+
         final response = await http.post(
           Uri.parse('https://bloc360.live:8080/createCompany'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
-            'Authorization': 'Bearer $accessToken',
           },
-          body: jsonEncode(<String, String>{
-            'cui': cui,
-          }),
+          body: requestBody,
         );
 
         if (response.statusCode == 200) {
