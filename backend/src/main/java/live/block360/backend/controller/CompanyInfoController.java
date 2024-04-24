@@ -1,4 +1,4 @@
-package live.block360.backend.controller.entity;
+package live.block360.backend.controller;
 
 import live.block360.backend.Service.AnafService;
 import lombok.RequiredArgsConstructor;

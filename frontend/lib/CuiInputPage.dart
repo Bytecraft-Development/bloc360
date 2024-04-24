@@ -24,12 +24,11 @@ class _CuiInputPageState extends State<CuiInputPage> {
           Uri.parse('https://bloc360.live:8080/createCompany'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
-            'Authorization': 'Bearer $accessToken',
           },
-          body: jsonEncode(<String, String>{
-            'cui': cui,
-          }),
+          // Trimite doar valoarea CUI direct
+          body: cui,
         );
+
 
         if (response.statusCode == 200) {
           setState(() {
@@ -40,11 +39,11 @@ class _CuiInputPageState extends State<CuiInputPage> {
           print('Failed to create association: ${response.statusCode}');
           setState(() {
             _isLoading = false;
-            _message = 'Failed to create association: ${response.statusCode}';
+            _message = 'Company info are not correct: ${response.statusCode}';
           });
         }
       } catch (e) {
-        print('Exception creating association: $e');
+        print('Exception creating company: $e');
         setState(() {
           _isLoading = false;
           _message = 'Exception creating association: $e';
