@@ -2,8 +2,10 @@ package live.block360.backend.Service;
 
 
 import live.block360.backend.Repository.CompanyInfoRepository;
+import live.block360.backend.Repository.FeatureToggleRepository;
 import live.block360.backend.exceptions.AnafRequestException;
 import live.block360.backend.model.CompanyInfo;
+import live.block360.backend.model.FeatureToggle;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -29,46 +31,53 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class AnafServiceImpl implements AnafService {
 
     private final CompanyInfoRepository companyInfoRepository;
+    private final FeatureToggleRepository featureToggleRepository;
+
 
     @Override
     public void makeAnafRequest(String cui) throws AnafRequestException {
-        String url = "https://facturacloud.ro/app/index.php?section=apianaf";
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = new Date();
-        String formattedDate = dateFormat.format(date);
-        String json = "[{\"cui\": " + cui + ", \"data\": \"" + formattedDate + "\"}]";
-        // Utilizarea stringului JSON în cererea HTTP sau în alte scopuri
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-        HttpPost request = new HttpPost(url);
+        FeatureToggle featureToggle = featureToggleRepository.findByName("AnafServiceImpl");
+        if(featureToggle != null && featureToggle.isEnabled()) {
+            String url = "https://facturacloud.ro/app/index.php?section=apianaf";
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = new Date();
+            String formattedDate = dateFormat.format(date);
+            String json = "[{\"cui\": " + cui + ", \"data\": \"" + formattedDate + "\"}]";
+            // Utilizarea stringului JSON în cererea HTTP sau în alte scopuri
+            CloseableHttpClient httpClient = HttpClients.createDefault();
+            HttpPost request = new HttpPost(url);
 
-        try {
-            // Setarea corpului cererii ca un StringEntity cu tipul "application/json"
-            StringEntity stringEntity = new StringEntity(json, ContentType.APPLICATION_JSON);
-            request.setEntity(stringEntity);
+            try {
+                // Setarea corpului cererii ca un StringEntity cu tipul "application/json"
+                StringEntity stringEntity = new StringEntity(json, ContentType.APPLICATION_JSON);
+                request.setEntity(stringEntity);
 
-            // Executarea cererii și obținerea răspunsului
-            HttpResponse response = httpClient.execute(request);
+                // Executarea cererii și obținerea răspunsului
+                HttpResponse response = httpClient.execute(request);
 
-            // Citirea răspunsului
-            BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-            StringBuilder result = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                result.append(line);
+                // Citirea răspunsului
+                BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+                StringBuilder result = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    result.append(line);
+                }
+                result.toString();
+                // Afișarea răspunsului
+                result.toString();
+
+                // Închiderea clientului HTTP
+                httpClient.close();
+
+                // Parcurgerea răspunsului și parsarea datelor
+                parseResponse(result.toString());
+
+            } catch (Exception e) {
+                // Aruncarea unei excepții personalizate în cazul unor erori
+                throw new AnafRequestException(HttpStatus.BAD_REQUEST, "Error processing Anaf response");
             }
-            result.toString();
-            // Afișarea răspunsului
-            result.toString();
-
-            // Închiderea clientului HTTP
-            httpClient.close();
-
-            // Parcurgerea răspunsului și parsarea datelor
-            parseResponse(result.toString());
-
-        } catch (Exception e) {
-            // Aruncarea unei excepții personalizate în cazul unor erori
-            throw new AnafRequestException(HttpStatus.BAD_REQUEST,"Error processing Anaf response");
+        }else{
+            throw new RuntimeException("feature toggle is not enabled");
         }
     }
 
@@ -106,6 +115,7 @@ public class AnafServiceImpl implements AnafService {
 
                CompanyInfo company = new CompanyInfo()
                        .builder()
+                       .date(data)
                        .CUI(cui)
                        .name(denumire)
                        .address(adresa)
