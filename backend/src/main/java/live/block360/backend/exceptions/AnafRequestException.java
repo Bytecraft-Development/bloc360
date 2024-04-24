@@ -12,5 +12,6 @@ public class AnafRequestException extends RuntimeException{
         public HttpStatus getHttpStatus() {
             return httpStatus;
         }
+
     }
 
