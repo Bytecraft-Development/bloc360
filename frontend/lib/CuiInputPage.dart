@@ -28,7 +28,7 @@ class _CuiInputPageState extends State<CuiInputPage> {
           // Trimite doar valoarea CUI direct
           body: cui,
         );
-        print('Request body: $requestBody');
+
 
         if (response.statusCode == 200) {
           setState(() {
