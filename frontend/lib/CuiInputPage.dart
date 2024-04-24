@@ -39,11 +39,11 @@ class _CuiInputPageState extends State<CuiInputPage> {
           print('Failed to create association: ${response.statusCode}');
           setState(() {
             _isLoading = false;
-            _message = 'Failed to create association: ${response.statusCode}';
+            _message = 'Company info are not correct: ${response.statusCode}';
           });
         }
       } catch (e) {
-        print('Exception creating association: $e');
+        print('Exception creating company: $e');
         setState(() {
           _isLoading = false;
           _message = 'Exception creating association: $e';
