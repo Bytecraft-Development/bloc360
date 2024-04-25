@@ -12,9 +12,7 @@ public class HelloWorldController {
     @GetMapping("/hello")
     public String helloWorld(Authentication authentication) {
         Jwt aaa = (Jwt) authentication.getCredentials();
-        aaa.getClaims().get("email");
-        aaa.getClaims().get("name");
-        return "Hello Bloc360Team" + ". Welcome " +  aaa.getClaims().get("email");
+        return "Hello Bloc360Team" + ". Welcome " +  aaa.getClaims().get("name");
     }
 
 }
