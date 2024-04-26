@@ -36,7 +36,9 @@ public class KeyCloackUserServiceImpl implements KeycloackUserService {
     @Override
     public UserRegistrationRecord createUser(UserRegistrationRecord record) {
         FeatureToggle featureToggle = featureToggleRepository.findByName("KeyCloack Create User");
+/*
         if (featureToggle != null && featureToggle.isEnabled()) {
+*/
             UserRepresentation user = new UserRepresentation();
             user.setEnabled(true);
             user.setUsername(record.username());
@@ -62,9 +64,9 @@ public class KeyCloackUserServiceImpl implements KeycloackUserService {
 
             }
             return null;
-        } else {
-            throw new RuntimeException("feature toggle is off");
-        }
+//        } else {
+//            throw new RuntimeException("feature toggle is off");
+//        }
     }
 
 
