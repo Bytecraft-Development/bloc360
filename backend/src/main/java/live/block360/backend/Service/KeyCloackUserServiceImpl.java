@@ -1,5 +1,6 @@
 package live.block360.backend.Service;
 
+import jakarta.mail.MessagingException;
 import jakarta.ws.rs.core.Response;
 import live.block360.backend.Repository.FeatureToggleRepository;
 import live.block360.backend.model.FeatureToggle;
@@ -7,6 +8,7 @@ import live.block360.backend.model.UserRegistrationRecord;
 import lombok.RequiredArgsConstructor;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.RealmResource;
+import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
@@ -15,25 +17,26 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Properties;
 
 @Service
 
 public class KeyCloackUserServiceImpl implements KeycloackUserService {
 
     private final FeatureToggleRepository featureToggleRepository;
-    private String realm="bloc360";
+    private String realm = "bloc360";
 
-   private Keycloak keycloak;
+    private Keycloak keycloak;
 
     public KeyCloackUserServiceImpl(FeatureToggleRepository featureToggleRepository, Keycloak keycloak) {
         this.featureToggleRepository = featureToggleRepository;
-        this.keycloak=keycloak;
+        this.keycloak = keycloak;
     }
 
     @Override
     public UserRegistrationRecord createUser(UserRegistrationRecord record) {
         FeatureToggle featureToggle = featureToggleRepository.findByName("KeyCloack Create User");
-        if(featureToggle!=null &&featureToggle.isEnabled()) {
+        if (featureToggle != null && featureToggle.isEnabled()) {
             UserRepresentation user = new UserRepresentation();
             user.setEnabled(true);
             user.setUsername(record.username());
@@ -59,13 +62,29 @@ public class KeyCloackUserServiceImpl implements KeycloackUserService {
 
             }
             return null;
-        }else {
+        } else {
             throw new RuntimeException("feature toggle is off");
         }
     }
 
+
+    private UsersResource getUsersResource() {
+        RealmResource realm1 = keycloak.realm(realm);
+        return realm1.users();
+    }
+
     @Override
     public UserRepresentation getUserById(String userId) {
-        return null;
+
+        return getUsersResource().get(userId).toRepresentation();
     }
+
 }
+
+
+
+
+
+
+
+

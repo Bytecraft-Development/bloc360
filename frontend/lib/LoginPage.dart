@@ -3,6 +3,7 @@ import 'dart:html' as html; // Importă biblioteca 'dart:html' pentru a accesa w
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'HelloWorld.dart';
+import 'RegistrationPage.dart'
 
 class LoginPage extends StatefulWidget {
   @override
@@ -61,6 +62,12 @@ class _LoginPageState extends State<LoginPage> {
     } else {
       print('Failed to login: ${response.statusCode}');
     }
+  }
+  void _navigateToRegistrationPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => RegistrationPage()),
+    );
   }
 
   Future<void> _navigateToHelloWorldPage() async {
