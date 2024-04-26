@@ -3,7 +3,7 @@ import 'dart:html' as html; // Importă biblioteca 'dart:html' pentru a accesa w
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'HelloWorld.dart';
-import 'RegistrationPage.dart'
+import 'RegistrationPage.dart';
 
 class LoginPage extends StatefulWidget {
   @override
