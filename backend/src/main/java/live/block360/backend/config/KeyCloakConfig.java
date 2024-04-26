@@ -12,7 +12,7 @@ public class KeyCloakConfig {
 
 
     private String adminCLientID= "admin-cli";
-    private String adminCLientSecret= "o8q5j5FeLgBRTclA3j5klNhQujwG14rl";
+    private String adminCLientSecret= "sy7YrEIZoi0AeQ86HiRbz39A4ZTNYWRN";
     private String realms="bloc360";
     private String authServerUrl="https://bloc360.live:8443/";
 
