@@ -11,9 +11,9 @@ class RegistrationPage extends StatefulWidget {
 class _RegistrationPageState extends State {
   TextEditingController _usernameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
   TextEditingController _firstNameController = TextEditingController();
   TextEditingController _lastNameController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
 
   Future<void> _registerUser() async {
     String _message = '';
@@ -26,9 +26,9 @@ class _RegistrationPageState extends State {
       body: jsonEncode(<String, String>{
         'username': _usernameController.text,
         'email': _emailController.text,
-        'password': _passwordController.text,
         'firstName': _firstNameController.text,
         'lastName': _lastNameController.text,
+        'password': _passwordController.text,
       }),
     );
 
@@ -60,17 +60,17 @@ class _RegistrationPageState extends State {
                 decoration: InputDecoration(labelText: 'Email'),
               ),
               TextField(
-                controller: _passwordController,
-                obscureText: true,
-                decoration: InputDecoration(labelText: 'Password'),
-              ),
-              TextField(
                 controller: _firstNameController,
                 decoration: InputDecoration(labelText: 'First Name'),
               ),
               TextField(
                 controller: _lastNameController,
                 decoration: InputDecoration(labelText: 'Last Name'),
+              ),
+              TextField(
+                controller: _passwordController,
+                obscureText: true,
+                decoration: InputDecoration(labelText: 'Password'),
               ),
               SizedBox(height: 16.0),
               ElevatedButton(
