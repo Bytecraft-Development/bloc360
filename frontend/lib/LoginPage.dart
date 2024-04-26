@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:html' as html; // Importă biblioteca 'dart:html' pentru a accesa window.localStorage
+import 'dart:html' as html;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'HelloWorld.dart';
@@ -10,7 +10,7 @@ class LoginPage extends StatefulWidget {
   _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends State{
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -27,7 +27,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> _loadTokenFromStorage() async {
-    // Folosește window.localStorage pentru a citi token-ul de acces salvat
     _accessToken = html.window.localStorage['access_token'];
     if (_accessToken != null) {
       _navigateToHelloWorldPage();
@@ -55,19 +54,12 @@ class _LoginPageState extends State<LoginPage> {
       Map<String, dynamic> jsonResponse = jsonDecode(response.body);
       _accessToken = jsonResponse['access_token'];
 
-      // Salvează token-ul de acces în window.localStorage
       html.window.localStorage['access_token'] = _accessToken!;
 
       _navigateToHelloWorldPage();
     } else {
       print('Failed to login: ${response.statusCode}');
     }
-  }
-  void _navigateToRegistrationPage() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => RegistrationPage()),
-    );
   }
 
   Future<void> _navigateToHelloWorldPage() async {
@@ -76,6 +68,13 @@ class _LoginPageState extends State<LoginPage> {
       MaterialPageRoute(
         builder: (context) => HelloWorldPage(accessToken: _accessToken),
       ),
+    );
+  }
+
+  void _navigateToRegistrationPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => RegistrationPage()),
     );
   }
 
@@ -100,6 +99,11 @@ class _LoginPageState extends State<LoginPage> {
           ElevatedButton(
             onPressed: _login,
             child: Text('Login'),
+          ),
+          SizedBox(height: 10.0),
+          ElevatedButton(
+            onPressed: _navigateToRegistrationPage,
+            child: Text('Register'),
           ),
         ],
       ),
