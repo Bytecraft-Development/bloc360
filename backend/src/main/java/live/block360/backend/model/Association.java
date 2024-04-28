@@ -28,6 +28,8 @@ public class Association {
     @OneToOne
     private CompanyInfo companyInfo;
 
+    @ManyToOne
+    private ExpenseModule expenseModule;
 
     public AssociationDTO convertToDTO() {
         return AssociationDTO.
