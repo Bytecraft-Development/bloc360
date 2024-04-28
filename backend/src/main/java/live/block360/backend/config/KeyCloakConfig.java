@@ -1,6 +1,6 @@
 package live.block360.backend.config;
 
-import lombok.Value;
+import org.springframework.beans.factory.annotation.Value;
 import org.keycloak.OAuth2Constants;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
@@ -10,11 +10,17 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class KeyCloakConfig {
 
+    @Value("${keycloak.adminClientId}")
+    private String adminCLientID;
 
-    private String adminCLientID= "admin-cli";
-    private String adminCLientSecret= "sy7YrEIZoi0AeQ86HiRbz39A4ZTNYWRN";
-    private String realms="bloc360";
-    private String authServerUrl="https://bloc360.live:8443/";
+    @Value("${keycloak.adminClientSecret}")
+    private String adminCLientSecret;
+
+    @Value("${keycloak.realm}")
+    private String realms;
+
+    @Value("${keycloak.urls.auth}")
+    private String authServerUrl;
 
 
     @Bean
@@ -28,7 +34,6 @@ public class KeyCloakConfig {
                 .clientId(adminCLientID)
                 .clientSecret(adminCLientSecret)
                 .build();
-
     }
 
 
