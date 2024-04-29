@@ -2,6 +2,7 @@ package live.block360.backend.Service;
 
 import jakarta.ws.rs.core.Response;
 import live.block360.backend.Repository.FeatureToggleRepository;
+import live.block360.backend.config.KeyCloakConfig;
 import live.block360.backend.model.FeatureToggle;
 import live.block360.backend.model.UserRegistrationRecord;
 import org.keycloak.admin.client.Keycloak;
@@ -22,6 +23,8 @@ public class KeyCloackUserServiceImpl implements KeycloackUserService {
     private String realm = "bloc360";
 
     private Keycloak keycloak;
+
+    private KeyCloakConfig keyCloakConfig;
 
     public KeyCloackUserServiceImpl(FeatureToggleRepository featureToggleRepository, Keycloak keycloak) {
         this.featureToggleRepository = featureToggleRepository;
@@ -56,7 +59,6 @@ public class KeyCloackUserServiceImpl implements KeycloackUserService {
             throw new RuntimeException("feature toggle is off");
         }
     }
-
 
         private RolesResource getRolesResource () {
             return keycloak.realm(realm).roles();

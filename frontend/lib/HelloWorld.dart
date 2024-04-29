@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'CuiInputPage.dart';
+import 'RegistrationPage.dart';
+import 'ExpenseModule.dart';
 
 class HelloWorldPage extends StatelessWidget {
   final String? accessToken;
@@ -30,7 +32,7 @@ class HelloWorldPage extends StatelessWidget {
               }
             },
           ),
-          SizedBox(height: 20), // Spațiu între text și buton
+          SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
               // Navighează către pagina CuiInputPage
@@ -41,10 +43,22 @@ class HelloWorldPage extends StatelessWidget {
             },
             child: Text('Go to CuiInputPage'),
           ),
+          ElevatedButton(
+            onPressed: () {
+              // Navighează către pagina ExpensePage
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ExpensePage()),
+              );
+            },
+            child: Text('Go to ExpensePage'),
+          ),
         ],
       ),
     );
   }
+
+
 
   Future<String> _fetchHelloWorldData() async {
     final response = await http.get(
