@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'CuiInputPage.dart';
 import 'RegistrationPage.dart';
-import 'ExpenseModule.dart';
+import 'ExpensePage.dart';
 
 class HelloWorldPage extends StatelessWidget {
   final String? accessToken;
