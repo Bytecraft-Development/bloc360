@@ -2,7 +2,7 @@ package Utils;
 
 public class Constants {
 
-    public static String BASE_URL = "https://bloc360.live:8080";
+    public static String BASE_URL = "http://localhost:8080";
     public static String HELLO_ENDPOINT = "/hello";
     public static String CREATE_ASSOCIATION_ENDPOINT = "/createAssociation";
 

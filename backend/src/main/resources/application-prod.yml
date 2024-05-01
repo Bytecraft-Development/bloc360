@@ -1,11 +1,29 @@
 server:
   port: 8080
+  ssl:
+    bundle: "server"
+    enabled-protocols: TLSv1.2
+
 spring:
   security:
     oauth2:
       resourceserver:
         jwt:
           issuer-uri: https://bloc360.live:8443/realms/bloc360
+  ssl:
+    bundle:
+      jks:
+        server:
+          key:
+            alias: "bloc360.live"
+          keystore:
+            location: "classpath:keystore.p12"
+            password: ${SSLCERTPASS}
+            type: "PKCS12"
+      pem:
+        client:
+          truststore:
+            certificate: "classpath:bloc360.cer"
   application:
     name: backend
   datasource:
