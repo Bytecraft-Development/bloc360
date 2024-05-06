@@ -18,4 +18,4 @@ RUN gradle bootJar
 EXPOSE 8080
 
 # Define the command to run your application
-CMD ["java", "-jar", "build/libs/backend-0.0.1.jar", "-Dspring.profiles.active=prod"]
+CMD ["java", "-Dspring.profiles.active=prod", "-jar", "build/libs/backend-0.0.1.jar"]
