@@ -13,6 +13,7 @@ public class HelloWorldController {
     public String helloWorld(Authentication authentication) {
 //        Jwt aaa = (Jwt) authentication.getCredentials();
 //        return "Hello Bloc360Team" + ". Welcome " +  aaa.getClaims().get("name");
+        // dumb commit to trigger build
         return "Hello Bloc360Team";
     }
 
