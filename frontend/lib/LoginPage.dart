@@ -80,32 +80,34 @@ class _LoginPageState extends State{
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(20.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          TextField(
-            controller: _usernameController,
-            decoration: InputDecoration(labelText: 'Username'),
-          ),
-          SizedBox(height: 20.0),
-          TextField(
-            controller: _passwordController,
-            decoration: InputDecoration(labelText: 'Password'),
-            obscureText: true,
-          ),
-          SizedBox(height: 20.0),
-          ElevatedButton(
-            onPressed: _login,
-            child: Text('Login'),
-          ),
-          SizedBox(height: 10.0),
-          ElevatedButton(
-            onPressed: _navigateToRegistrationPage,
-            child: Text('Register'),
-          ),
-        ],
+    return Scaffold(
+      body: Padding(
+        padding: EdgeInsets.all(20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            TextField(
+              controller: _usernameController,
+              decoration: InputDecoration(labelText: 'Username'),
+            ),
+            SizedBox(height: 20.0),
+            TextField(
+              controller: _passwordController,
+              decoration: InputDecoration(labelText: 'Password'),
+              obscureText: true,
+            ),
+            SizedBox(height: 20.0),
+            ElevatedButton(
+              onPressed: _login,
+              child: Text('Login'),
+            ),
+            SizedBox(height: 10.0),
+            ElevatedButton(
+              onPressed: _navigateToRegistrationPage,
+              child: Text('Register'),
+            ),
+          ],
+        ),
       ),
     );
   }
