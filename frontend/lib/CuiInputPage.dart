@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/config/environment_config.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class CuiInputPage extends StatefulWidget {
   @override
@@ -21,7 +21,7 @@ class _CuiInputPageState extends State<CuiInputPage> {
 
       try {
         final response = await http.post(
-          Uri.parse('https://bloc360.live:8080/createCompany'),
+          Uri.parse('${EnvironmentConfig.API_URL}/createCompany'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           },

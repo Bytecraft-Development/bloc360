@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'HelloWorld.dart';
 import 'RegistrationPage.dart';
+import 'config/environment_config.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -14,8 +15,6 @@ class _LoginPageState extends State{
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  final String _keycloakTokenUrl =
-      'https://bloc360.live:8443/realms/bloc360/protocol/openid-connect/token';
   final String _clientId = 'bloc360token';
 
   String? _accessToken;
@@ -38,7 +37,7 @@ class _LoginPageState extends State{
     String password = _passwordController.text;
 
     final response = await http.post(
-      Uri.parse(_keycloakTokenUrl),
+      Uri.parse(EnvironmentConfig.KEYCLOAK_LOGIN_URL),
       headers: <String, String>{
         'Content-Type': 'application/x-www-form-urlencoded',
       },
