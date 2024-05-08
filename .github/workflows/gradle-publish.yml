@@ -41,6 +41,7 @@ jobs:
         filters: |
           backend:
             - 'backend/**'
+            - '.github/workflows/**'
           frontend:
             - 'frontend/**'
             
