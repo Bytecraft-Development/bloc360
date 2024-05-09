@@ -12,7 +12,7 @@ COPY settings.gradle .
 COPY src ./src
 
 # Build the project using Gradle
-RUN gradle test bootJar
+RUN gradle test bootJar --scan
 
 # Expose the port your application listens on
 EXPOSE 8080
