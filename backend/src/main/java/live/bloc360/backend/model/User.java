@@ -41,7 +41,7 @@ public class User {
     @ManyToOne
     private Association association;
 
-     @ElementCollection
+    @ElementCollection
     private List<String> roles;
 
 
