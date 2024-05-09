@@ -73,7 +73,7 @@ Future<void> _login() async {
 }
 
 Future<void> _navigateToHelloWorldPage() async {
-  Navigator.push(
+  Navigator.pushReplacement(
     context,
     MaterialPageRoute(
       builder: (context) => HelloWorldPage(accessToken: _accessToken),
