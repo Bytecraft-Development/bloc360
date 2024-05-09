@@ -29,7 +29,7 @@ public class Association {
     private CompanyInfo companyInfo;
 
     @ManyToOne
-    private ExpenseModule expenseModule;
+    private Expense expense;
 
     public AssociationDTO convertToDTO() {
         return AssociationDTO.

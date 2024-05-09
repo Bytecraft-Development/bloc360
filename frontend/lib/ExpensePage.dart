@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ExpensePage extends StatefulWidget {
+  const ExpensePage({super.key});
+
   @override
   _ExpensePageState createState() => _ExpensePageState();
 }
@@ -13,7 +15,7 @@ class _ExpensePageState extends State<ExpensePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Expense Tracker'),
+        title: const Text('Expense Tracker'),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -22,24 +24,24 @@ class _ExpensePageState extends State<ExpensePage> {
             alignment: Alignment.center,
             child: Text(
               'Selected Date: ${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}',
-              style: TextStyle(fontSize: 18),
+              style: const TextStyle(fontSize: 18),
             ),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
               _showDatePicker(context);
             },
-            child: Text('Select Date'),
+            child: const Text('Select Date'),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Expanded(
             child: ListView.builder(
               itemCount: expenses.length + 1,
               itemBuilder: (context, index) {
                 if (index == expenses.length) {
                   return ListTile(
-                    title: Text('Add Expense'),
+                    title: const Text('Add Expense'),
                     onTap: () {
                       _addExpense();
                     },

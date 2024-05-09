@@ -9,7 +9,6 @@ import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -18,7 +17,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ExpenseModule {
+public class Expense {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
