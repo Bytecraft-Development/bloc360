@@ -17,8 +17,6 @@ class _LoginPageState extends State {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  final String _clientId = 'bloc360token';
-
   String? _accessToken;
 
   @override
@@ -54,7 +52,7 @@ Future<void> _login() async {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
     body: <String, String>{
-      'client_id': _clientId,
+      'client_id': EnvironmentConfig.KEYCLOAK_CLIENT_ID,
       'username': username,
       'password': password,
       'grant_type': 'password',
