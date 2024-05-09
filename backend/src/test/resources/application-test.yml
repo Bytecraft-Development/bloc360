@@ -1,11 +1,17 @@
-#
-#spring:
-#  jpa:
-#    database-platform: org.hibernate.dialect.H2Dialect
-#  application:
-#    name: backend
-#  datasource:
-#    username: user
-#    password: password
-#    url: jdbc:h2:mem:dbtest
-#
+keycloak:
+  realm: bloc360
+  domain: bloc360.live:8443
+  adminClientId: test
+  adminClientSecret: test
+  client: test
+  urls:
+    auth: https://bloc360.live:8443/
+
+spring:
+  application:
+    name: backend
+  datasource:
+    username: sa
+    password: sa
+    url: jdbc:h2:mem:db;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
