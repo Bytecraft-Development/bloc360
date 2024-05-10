@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:html' as html;
 import 'package:flutter/material.dart';
+import 'package:frontend/pages/tos_page.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'HelloWorld.dart';
@@ -85,6 +86,15 @@ void _navigateToRegistrationPage() {
     MaterialPageRoute(builder: (context) => RegistrationPage()),
   );
 }
+
+  void _navigateToTermsOfService() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TermsOfService(),
+      ),
+    );
+  }
 
 @override
 Widget build(BuildContext context) {
