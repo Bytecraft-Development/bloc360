@@ -376,7 +376,7 @@ class _LoginViewState extends State<LoginView> {
 
   Widget googleButton() {
     return ElevatedButton.icon(
-      icon: Image.network('assets/icon/google.png',
+      icon: Image.asset('assets/icon/google.png',
           height: 18), // Înlocuiește cu calea corectă a imaginii
       label: Text(
         'Google',
@@ -401,7 +401,7 @@ class _LoginViewState extends State<LoginView> {
 
   Widget facebookButton() {
     return ElevatedButton.icon(
-      icon: Image.network('assets/icon/facebook.png',
+      icon: Image.asset('assets/icon/facebook.png',
           height: 18), // Asigură-te că ai acces la această imagine
       label: Text(
         'Facebook',
