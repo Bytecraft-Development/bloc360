@@ -7,6 +7,7 @@ import 'package:frontend/pages/tos_page.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 
 void main() {
+  usePathUrlStrategy();
   runApp(MyApp());
 }
 
@@ -14,7 +15,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.put(SimpleUIController());
-    usePathUrlStrategy();
     return MaterialApp(
       initialRoute: '/login-page',
       routes: {
