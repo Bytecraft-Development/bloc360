@@ -376,8 +376,9 @@ class _LoginViewState extends State<LoginView> {
 
   Widget googleButton() {
     return ElevatedButton.icon(
-      icon: Image.asset('frontend/assets/icon/google.png',
-          height: 18), // Înlocuiește cu calea corectă a imaginii
+      icon: Image.network(
+          'https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png',
+          height: 35), // Înlocuiește cu calea corectă a imaginii
       label: Text(
         'Google',
         style: TextStyle(
@@ -401,8 +402,9 @@ class _LoginViewState extends State<LoginView> {
 
   Widget facebookButton() {
     return ElevatedButton.icon(
-      icon: Image.asset('frontend/assets/icon/facebook.png',
-          height: 18), // Asigură-te că ai acces la această imagine
+      icon: Image.network(
+          'https://static.vecteezy.com/system/resources/previews/018/930/476/non_2x/facebook-logo-facebook-icon-transparent-free-png.png',
+          height: 35), // Asigură-te că ai acces la această imagine
       label: Text(
         'Facebook',
         style: TextStyle(
