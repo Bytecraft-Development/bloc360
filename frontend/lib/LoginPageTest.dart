@@ -36,8 +36,8 @@ class _LoginViewState extends State<LoginView> {
   }
 
   Future<void> _launchURL(String url) async {
-    if (await canLaunchUrl(url as Uri)) {
-      await launchUrl(url as Uri);
+    if (await canLaunch(url)) {
+      await launch(url);
     } else {
       throw 'Could not launch $url';
     }
@@ -390,7 +390,7 @@ class _LoginViewState extends State<LoginView> {
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
                             _launchURL(
-                                'https://bloc360.live/privacy'); // Presupunem că există un link diferit pentru Politica de Confidențialitate
+                                'https://bloc360.live/tos'); // Presupunem că există un link diferit pentru Politica de Confidențialitate
                           },
                       ),
                     ],
@@ -398,6 +398,9 @@ class _LoginViewState extends State<LoginView> {
                 ),
 
                 /// Login Button
+                SizedBox(
+                  height: size.height * 0.03,
+                ),
                 loginButton(),
                 SizedBox(
                   height: size.height * 0.03,
