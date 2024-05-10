@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'dart:html' as html;
@@ -8,6 +9,7 @@ import 'RegistrationPage.dart';
 import 'config/environment_config.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../constants.dart';
 import 'package:frontend/controller/simple_ui_controller.dart';
@@ -31,6 +33,14 @@ class _LoginViewState extends State<LoginView> {
   void initState() {
     super.initState();
     _loadTokenFromStorage();
+  }
+
+  Future<void> _launchURL(String url) async {
+    if (await canLaunchUrl(url as Uri)) {
+      await launchUrl(url as Uri);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   Future<void> _loadTokenFromStorage() async {
@@ -144,29 +154,48 @@ class _LoginViewState extends State<LoginView> {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius:
-            BorderRadius.circular(30), // Bordură rotunjită pe întreaga pagină
+        borderRadius: BorderRadius.circular(30),
       ),
-      child: Row(
+      child: Stack(
         children: [
-          Expanded(
-            flex: 5,
-            child: _buildMainBody(
-              size,
-              simpleUIController,
-            ),
-          ),
-          SizedBox(width: size.width * 0.06),
-          Expanded(
-            flex: 4,
-            child: RotatedBox(
-              quarterTurns: 3,
-              child: Lottie.asset(
-                'coin.json',
-                height: size.height * 0.3,
-                width: double.infinity,
-                fit: BoxFit.fill,
+          Row(
+            children: [
+              Expanded(
+                flex: 5, // Menține proporția pentru formular
+                child: _buildMainBody(
+                  size,
+                  simpleUIController,
+                ),
               ),
+              Expanded(
+                flex: 5, // Menține proporția pentru imagine
+                child: Padding(
+                  padding: EdgeInsets.only(left: size.width * 0.01),
+                  child: RotatedBox(
+                    quarterTurns: 4,
+                    child: Image.network(
+                      'assets/icon/logo.png', // Înlocuiește aceasta cu calea către imaginea ta
+                      height: size.height * 0.4,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Positioned(
+            right:
+                10, // Ajustează aceste valori pentru a muta logo-ul mai aproape de marginea dreaptă
+            top: 10, // Ajustează pentru a muta logo-ul mai sus
+            child: Image.network(
+              'assets/icon/icon.png', // Acesta este modul corect de a referi o imagine locală
+              width: size.width *
+                  0.2, // Ajustează lățimea în funcție de necesități
+              height: size.height *
+                  0.2, // Ajustează înălțimea în funcție de necesități
+              fit: BoxFit
+                  .cover, // Adaugă fit pentru a controla cum imaginea umple spațiul alocat
             ),
           ),
         ],
@@ -330,13 +359,42 @@ class _LoginViewState extends State<LoginView> {
                 SizedBox(
                   height: size.height * 0.01,
                 ),
-                Text(
-                  'Creating an account means you\'re okay with our Terms of Services and our Privacy Policy',
-                  style: kLoginTermsAndPrivacyStyle(size),
+                RichText(
                   textAlign: TextAlign.center,
-                ),
-                SizedBox(
-                  height: size.height * 0.02,
+                  text: TextSpan(
+                    style: kLoginTermsAndPrivacyStyle(
+                        size), // Acesta trebuie să fie stilul general al textului
+                    children: <TextSpan>[
+                      TextSpan(
+                          text:
+                              'Creating an account means you\'re okay with our '),
+                      TextSpan(
+                        text: 'Terms of Services',
+                        style: TextStyle(
+                          color: Colors
+                              .blue, // S-ar putea să vrei să adaugi subliniere dacă dorești
+                          decoration: TextDecoration.underline,
+                        ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            _launchURL('https://bloc360.live/tos');
+                          },
+                      ),
+                      TextSpan(text: ' and our '),
+                      TextSpan(
+                        text: 'Privacy Policy',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          decoration: TextDecoration.underline,
+                        ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            _launchURL(
+                                'https://bloc360.live/privacy'); // Presupunem că există un link diferit pentru Politica de Confidențialitate
+                          },
+                      ),
+                    ],
+                  ),
                 ),
 
                 /// Login Button
