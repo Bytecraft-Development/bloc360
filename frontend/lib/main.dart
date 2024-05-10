@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/LoginPage.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'LoginPageTest.dart';
 import 'controller/simple_ui_controller.dart';
 import 'package:frontend/pages/tos_page.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
-import 'LoginPage.dart';
 
 void main() {
   runApp(MyApp());
