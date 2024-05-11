@@ -28,12 +28,4 @@ logging:
   level:
     org.springframework.security: DEBUG
 
-keycloak:
-  realm: ${KEYCLOAK_REALM}
-  domain: ${KEYCLOAK_DOMAIN}
-  adminClientId: ${KEYCLOAK_ADMINCLIENTID}
-  adminClientSecret: ${KEYCLOAK_CLIENTSECRET}
-  client: ${KEYCLOAK_CLIENT}
-  urls:
-    auth: ${KEYCLOAK_AUTH}
-
+bbbbbb
