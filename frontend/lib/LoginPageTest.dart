@@ -173,8 +173,8 @@ class _LoginViewState extends State<LoginView> {
                   padding: EdgeInsets.only(left: size.width * 0.01),
                   child: RotatedBox(
                     quarterTurns: 4,
-                    child: Image.network(
-                      'assets/icon/logo.png', // Înlocuiește aceasta cu calea către imaginea ta
+                    child: Image.asset(
+                      'icon/people.png', // Înlocuiește aceasta cu calea către imaginea ta
                       height: size.height * 0.4,
                       width: double.infinity,
                       fit: BoxFit.cover,
@@ -188,8 +188,8 @@ class _LoginViewState extends State<LoginView> {
             right:
                 10, // Ajustează aceste valori pentru a muta logo-ul mai aproape de marginea dreaptă
             top: 10, // Ajustează pentru a muta logo-ul mai sus
-            child: Image.network(
-              'assets/icon/icon.png', // Acesta este modul corect de a referi o imagine locală
+            child: Image.asset(
+              'icon/logo-bloc360.png', // Acesta este modul corect de a referi o imagine locală
               width: size.width *
                   0.2, // Ajustează lățimea în funcție de necesități
               height: size.height *
@@ -437,9 +437,8 @@ class _LoginViewState extends State<LoginView> {
 
   Widget googleButton() {
     return ElevatedButton.icon(
-      icon: Image.network(
-          'https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png',
-          height: 35), // Înlocuiește cu calea corectă a imaginii
+      icon: Image.asset('icon/google.png',
+          height: 18), // Înlocuiește cu calea corectă a imaginii
       label: Text(
         'Google',
         style: TextStyle(
@@ -463,9 +462,8 @@ class _LoginViewState extends State<LoginView> {
 
   Widget facebookButton() {
     return ElevatedButton.icon(
-      icon: Image.network(
-          'https://static.vecteezy.com/system/resources/previews/018/930/476/non_2x/facebook-logo-facebook-icon-transparent-free-png.png',
-          height: 35), // Asigură-te că ai acces la această imagine
+      icon: Image.asset('icon/facebook.png',
+          height: 18), // Asigură-te că ai acces la această imagine
       label: Text(
         'Facebook',
         style: TextStyle(
