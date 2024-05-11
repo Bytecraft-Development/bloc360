@@ -1,21 +1,22 @@
 import 'dart:convert';
-import 'dart:html' as html; // Importă biblioteca 'dart:html' pentru a accesa window.localStorage
+import 'dart:html' as html;
 import 'package:flutter/material.dart';
+import 'package:frontend/pages/tos_page.dart';
 import 'package:http/http.dart' as http;
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'HelloWorld.dart';
+import 'RegistrationPage.dart';
+import 'config/environment_config.dart';
 
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends State {
+
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
-  final String _keycloakTokenUrl =
-      'https://bloc360.live:8443/realms/bloc360/protocol/openid-connect/token';
-  final String _clientId = 'bloc360token';
 
   String? _accessToken;
 
@@ -23,79 +24,112 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
     _loadTokenFromStorage();
+
   }
+
 
   Future<void> _loadTokenFromStorage() async {
-    // Folosește window.localStorage pentru a citi token-ul de acces salvat
     _accessToken = html.window.localStorage['access_token'];
-    if (_accessToken != null) {
-      _navigateToHelloWorldPage();
+    if (_accessToken == null) {
+      return;
     }
-  }
-
-  Future<void> _login() async {
-    String username = _usernameController.text;
-    String password = _passwordController.text;
-
-    final response = await http.post(
-      Uri.parse(_keycloakTokenUrl),
-      headers: <String, String>{
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: <String, String>{
-        'client_id': _clientId,
-        'username': username,
-        'password': password,
-        'grant_type': 'password',
-      },
-    );
-
-    if (response.statusCode == 200) {
-      Map<String, dynamic> jsonResponse = jsonDecode(response.body);
-      _accessToken = jsonResponse['access_token'];
-
-      // Salvează token-ul de acces în window.localStorage
-      html.window.localStorage['access_token'] = _accessToken!;
-
+    Map<String, dynamic> decodedToken = JwtDecoder.decode(_accessToken!);
+    int _expiry = decodedToken['exp'];
+    if (DateTime.now().millisecondsSinceEpoch < _expiry * 1000) {
       _navigateToHelloWorldPage();
     } else {
-      print('Failed to login: ${response.statusCode}');
+      html.window.localStorage.remove('access_token');
     }
   }
 
-  Future<void> _navigateToHelloWorldPage() async {
-    Navigator.pushReplacement(
+
+Future<void> _login() async {
+  String username = _usernameController.text;
+  String password = _passwordController.text;
+
+  final response = await http.post(
+    Uri.parse(EnvironmentConfig.KEYCLOAK_LOGIN_URL),
+    headers: <String, String>{
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: <String, String>{
+      'client_id': EnvironmentConfig.KEYCLOAK_CLIENT_ID,
+      'username': username,
+      'password': password,
+      'grant_type': 'password',
+    },
+  );
+
+  if (response.statusCode == 200) {
+    Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+    _accessToken = jsonResponse['access_token'];
+    html.window.localStorage['access_token'] = _accessToken!;
+
+    _navigateToHelloWorldPage();
+  } else {
+    print('Failed to login: ${response.statusCode}');
+  }
+}
+
+Future<void> _navigateToHelloWorldPage() async {
+  Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(
+      builder: (context) => HelloWorldPage(accessToken: _accessToken),
+    ),
+  );
+}
+
+void _navigateToRegistrationPage() {
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => RegistrationPage()),
+  );
+}
+
+  void _navigateToTermsOfService() {
+    Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => HelloWorldPage(accessToken: _accessToken),
+        builder: (context) => TermsOfService(),
       ),
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(20.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          TextField(
-            controller: _usernameController,
-            decoration: InputDecoration(labelText: 'Username'),
-          ),
-          SizedBox(height: 20.0),
-          TextField(
-            controller: _passwordController,
-            decoration: InputDecoration(labelText: 'Password'),
-            obscureText: true,
-          ),
-          SizedBox(height: 20.0),
-          ElevatedButton(
-            onPressed: _login,
-            child: Text('Login'),
-          ),
-        ],
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    body: FractionallySizedBox(
+      widthFactor: 0.5,
+      heightFactor: 1,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(20.0, 0, 20, 0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            TextField(
+              controller: _usernameController,
+              decoration: InputDecoration(labelText: 'Username'),
+            ),
+            SizedBox(height: 20.0),
+            TextField(
+              controller: _passwordController,
+              decoration: InputDecoration(labelText: 'Password'),
+              obscureText: true,
+            ),
+            SizedBox(height: 20.0),
+            ElevatedButton(
+              onPressed: _login,
+              child: Text('Login'),
+            ),
+            SizedBox(height: 10.0),
+            ElevatedButton(
+              onPressed: _navigateToRegistrationPage,
+              child: Text('Register'),
+            ),
+          ],
+        ),
       ),
-    );
-  }
-}
+    ),
+  );
+}}

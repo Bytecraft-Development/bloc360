@@ -5,7 +5,7 @@ plugins {
 	id 'io.spring.dependency-management' version '1.1.4'
 }
 
-group = 'live.block360'
+group = 'live.bloc360'
 version = '0.0.1'
 
 java {
@@ -35,7 +35,8 @@ dependencies {
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '3.2.5'
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-oauth2-resource-server', version: '3.2.5'
 	implementation group: 'org.keycloak', name: 'keycloak-admin-client', version: '24.0.3'
-
+	implementation group: 'org.keycloak', name: 'keycloak-core', version: '24.0.3'
+	testImplementation group: 'com.h2database', name: 'h2', version: '2.2.224'
 }
 
 tasks.named('test') {

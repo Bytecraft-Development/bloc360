@@ -12,10 +12,11 @@ COPY settings.gradle .
 COPY src ./src
 
 # Build the project using Gradle
-RUN gradle bootJar
+RUN gradle test bootJar --scan
 
 # Expose the port your application listens on
 EXPOSE 8080
+RUN mv build/libs/backend-*.jar build/libs/app.jar
 
 # Define the command to run your application
-CMD ["java", "-jar", "build/libs/backend-0.0.1.jar"]
+CMD ["java", "-Dspring.profiles.active=prod", "-jar", "build/libs/app.jar"]
