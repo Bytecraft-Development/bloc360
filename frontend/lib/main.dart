@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/views/dashboard/dashboard_view.dart';
+import 'package:frontend/views/main/main_view.dart';
+import 'package:frontend/views/main/main_viewmodel.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'LoginPageTest.dart';
@@ -22,7 +25,7 @@ class MyApp extends StatelessWidget {
         '/tos': (context) => TermsOfService(),
       },
       title: 'Bloc360',
-      home: LoginView(),
+      home: MainView(),
     );
   }
 }
