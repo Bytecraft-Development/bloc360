@@ -27,5 +27,3 @@ logging:
     name: backendLog
   level:
     org.springframework.security: DEBUG
-
-bbbbbb
