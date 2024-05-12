@@ -174,7 +174,7 @@ class _LoginViewState extends State<LoginView> {
                   child: RotatedBox(
                     quarterTurns: 4,
                     child: Image.asset(
-                      'people.png', // Înlocuiește aceasta cu calea către imaginea ta
+                      'assets/images/people.png', // Înlocuiește aceasta cu calea către imaginea ta
                       height: size.height * 0.4,
                       width: double.infinity,
                       fit: BoxFit.cover,
@@ -189,7 +189,7 @@ class _LoginViewState extends State<LoginView> {
                 10, // Ajustează aceste valori pentru a muta logo-ul mai aproape de marginea dreaptă
             top: 10, // Ajustează pentru a muta logo-ul mai sus
             child: Image.asset(
-              'logo-bloc360.png', // Acesta este modul corect de a referi o imagine locală
+              'assets/images/logo-bloc360.png', // Acesta este modul corect de a referi o imagine locală
               width: size.width *
                   0.2, // Ajustează lățimea în funcție de necesități
               height: size.height *
@@ -437,7 +437,7 @@ class _LoginViewState extends State<LoginView> {
 
   Widget googleButton() {
     return ElevatedButton.icon(
-      icon: Image.asset('google.png',
+      icon: Image.asset('assets/images/google.png',
           height: 18), // Înlocuiește cu calea corectă a imaginii
       label: Text(
         'Google',
@@ -462,7 +462,7 @@ class _LoginViewState extends State<LoginView> {
 
   Widget facebookButton() {
     return ElevatedButton.icon(
-      icon: Image.asset('facebook.png',
+      icon: Image.asset('assets/images/facebook.png',
           height: 18), // Asigură-te că ai acces la această imagine
       label: Text(
         'Facebook',
