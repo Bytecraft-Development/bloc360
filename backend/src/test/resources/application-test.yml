@@ -19,6 +19,6 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: bloc360bytecraft@gmail.com
-    password: ${EMAIL_APP_PASSWORD}
+    password: sa
     properties.mail.smtp.auth: true
     properties.mail.smtp.starttls.enable: true
