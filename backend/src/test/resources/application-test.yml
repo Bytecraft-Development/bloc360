@@ -15,3 +15,10 @@ spring:
     password: sa
     url: jdbc:h2:mem:db;DB_CLOSE_DELAY=-1
     driver-class-name: org.h2.Driver
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: bloc360bytecraft@gmail.com
+    password: ${EMAIL_APP_PASSWORD}
+    properties.mail.smtp.auth: true
+    properties.mail.smtp.starttls.enable: true
