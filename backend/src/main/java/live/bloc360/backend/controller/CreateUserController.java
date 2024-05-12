@@ -17,7 +17,6 @@ public class CreateUserController {
 
     private final KeycloackUserService keycloackUserService;
 
-
     @PostMapping("/createUser")
     public UserRegistrationRecord createuser(@RequestBody UserRegistrationRecord user) {
         return keycloackUserService.createUser(user);
