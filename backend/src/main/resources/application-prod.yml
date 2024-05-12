@@ -34,6 +34,13 @@ spring:
     hibernate:
       ddl-auto: create
     show-sql: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: bloc360bytecraft@gmail.com
+    password: ${EMAIL_APP_PASSWORD}
+    properties.mail.smtp.auth: true
+    properties.mail.smtp.starttls.enable: true
 
 management:
   endpoints:
