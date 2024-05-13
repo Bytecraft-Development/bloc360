@@ -16,7 +16,13 @@ spring:
     hibernate:
       ddl-auto: create
     show-sql: true
-
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: bloc360bytecraft@gmail.com
+    password: ${EMAIL_APP_PASSWORD}
+    properties.mail.smtp.auth: true
+    properties.mail.smtp.starttls.enable: true
 management:
   endpoints:
     web:
@@ -27,3 +33,12 @@ logging:
     name: backendLog
   level:
     org.springframework.security: DEBUG
+
+keycloak:
+  realm: ${KEYCLOAK_REALM}
+  domain: ${KEYCLOAK_DOMAIN}
+  adminClientId: ${KEYCLOAK_ADMINCLIENTID}
+  adminClientSecret: ${KEYCLOAK_CLIENTSECRET}
+  client: ${KEYCLOAK_CLIENT}
+  urls:
+    auth: ${KEYCLOAK_AUTH}

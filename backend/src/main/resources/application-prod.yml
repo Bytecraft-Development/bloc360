@@ -24,41 +24,7 @@ spring:
         client:
           truststore:
             certificate: "classpath:bloc360.cer"
-  application:
-    name: backend
-  datasource:
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
-    url: ${DB_URL}
-  jpa:
-    hibernate:
-      ddl-auto: create
-    show-sql: true
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: bloc360bytecraft@gmail.com
-    password: ${EMAIL_APP_PASSWORD}
-    properties.mail.smtp.auth: true
-    properties.mail.smtp.starttls.enable: true
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: info, logfile, health
-logging:
-  file:
-    name: backendLog
-  level:
-    org.springframework.security: DEBUG
 
-keycloak:
-  realm: ${KEYCLOAK_REALM}
-  domain: ${KEYCLOAK_DOMAIN}
-  adminClientId: ${KEYCLOAK_ADMINCLIENTID}
-  adminClientSecret: ${KEYCLOAK_CLIENTSECRET}
-  client: ${KEYCLOAK_CLIENT}
-  urls:
-    auth: ${KEYCLOAK_AUTH}
+
 
