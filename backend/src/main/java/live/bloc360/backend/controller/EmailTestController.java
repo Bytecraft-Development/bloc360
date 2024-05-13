@@ -1,4 +1,4 @@
-package live.bloc360.backend.controller;
+/*package live.bloc360.backend.controller;
 
 import live.bloc360.backend.service.EmailServiceImpl;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,4 +18,4 @@ public class EmailTestController {
         emailServiceImpl.sendSimpleMessage(mail, "Test email from SpringBoot", "This is a test mail");
     }
 
-}
+} */
