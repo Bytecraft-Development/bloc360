@@ -49,7 +49,7 @@ class MainHeader extends ViewModelWidget<MainViewModel> {
         horizontalSpaceSmall,
         const CircleAvatar(
           radius: 15,
-          backgroundImage: AssetImage('assets/images/image_1.png'),
+          backgroundImage: AssetImage('assets/images/google.png'),
         ),
       ],
     );

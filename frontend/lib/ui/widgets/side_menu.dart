@@ -10,7 +10,7 @@ class SideMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: kTertiaryColor5,
+      backgroundColor: kTertiaryColor,
       child: ListView(
         children: [
           DrawerHeader(
@@ -82,14 +82,14 @@ class DrawerListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: press,
-      horizontalTitleGap: 0.0,
+      horizontalTitleGap: 10,
       leading: Icon(
         icon,
         color: kBlackColor,
       ),
       title: Text(
         title,
-        style: const TextStyle(color: kBlackColor),
+        style: const TextStyle(color: kWhiteColor),
       ),
     );
   }

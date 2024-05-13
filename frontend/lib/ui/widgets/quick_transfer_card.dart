@@ -38,37 +38,37 @@ class QuickTransferCard extends StatelessWidget {
                       children: const [
                         CircleAvatar(
                           backgroundImage:
-                              AssetImage('assets/images/image_2.png'),
+                              AssetImage('assets/images/google.png'),
                         ),
                         horizontalSpaceTiny,
                         CircleAvatar(
                           backgroundImage:
-                              AssetImage('assets/images/image_3.png'),
+                              AssetImage('assets/images/google.png'),
                         ),
                         horizontalSpaceTiny,
                         CircleAvatar(
                           backgroundImage:
-                              AssetImage('assets/images/image_4.png'),
+                              AssetImage('assets/images/google.png'),
                         ),
                         horizontalSpaceTiny,
                         CircleAvatar(
                           backgroundImage:
-                              AssetImage('assets/images/image_1.png'),
+                              AssetImage('assets/images/google.png'),
                         ),
                         horizontalSpaceTiny,
                         CircleAvatar(
                           backgroundImage:
-                              AssetImage('assets/images/image_2.png'),
+                              AssetImage('assets/images/google.png'),
                         ),
                         horizontalSpaceTiny,
                         CircleAvatar(
                           backgroundImage:
-                              AssetImage('assets/images/image_3.png'),
+                              AssetImage('assets/images/google.png'),
                         ),
                         horizontalSpaceTiny,
                         CircleAvatar(
                           backgroundImage:
-                              AssetImage('assets/images/image_1.png'),
+                              AssetImage('assets/images/google.png'),
                         ),
                       ],
                     ),

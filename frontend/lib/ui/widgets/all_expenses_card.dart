@@ -34,7 +34,7 @@ class AllExpensesCard extends ViewModelWidget<MainViewModel> {
             radius: 100,
             lineWidth: 30,
             backgroundColor: kBlackColor,
-            progressColor: kTertiaryColor5,
+            progressColor: kTertiaryColor3,
             percent: 0.3,
             center: Column(
               mainAxisAlignment: MainAxisAlignment.center,

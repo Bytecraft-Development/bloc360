@@ -21,7 +21,7 @@ class WalletCard extends StatelessWidget {
       padding: kEdgeInsetsAllNormal,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: kTertiaryColor5,
+        color: kSecondaryColor4,
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -31,7 +31,8 @@ class WalletCard extends StatelessWidget {
             height: 40,
             width: 40,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(7), color: kBlackColor),
+                borderRadius: BorderRadius.circular(7),
+                color: kSecondaryColor3),
             child: Icon(icon),
           ),
           Text(
