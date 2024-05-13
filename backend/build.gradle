@@ -36,7 +36,7 @@ dependencies {
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-oauth2-resource-server', version: '3.2.5'
 	implementation group: 'org.keycloak', name: 'keycloak-admin-client', version: '24.0.3'
 	implementation group: 'org.keycloak', name: 'keycloak-core', version: '24.0.3'
-	//implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '3.1.5'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '3.1.5'
 	testImplementation group: 'com.h2database', name: 'h2', version: '2.2.224'
 }
 
