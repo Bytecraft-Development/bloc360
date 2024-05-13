@@ -130,6 +130,7 @@ jobs:
             docker stop $(echo $IMAGE_NAME)
             # Remove old container
             docker rm $(echo $IMAGE_NAME)
+            docker rmi $(docker images -q registry.digitalocean.com/bloc360/bloc360)
             # Run a new container from a new image
             docker run -d -p 8080:8080 \
             -e DB_URL=${{ secrets.DB_URL }} \
