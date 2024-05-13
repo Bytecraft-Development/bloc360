@@ -103,42 +103,44 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
+    var size = MediaQuery.of(context).size; // Obținerea dimensiunilor ecranului
+    double paddingValue = size.width *
+        0.04; // Calcularea padding-ului ca 5% din lățimea ecranului
+
     SimpleUIController simpleUIController = Get.find<SimpleUIController>();
 
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
-        backgroundColor:
-            Colors.black12, // Asigură-te că fundalul Scaffold este transparent
-        body: Center(
-          child: Container(
-            width: size.width *
-                0.8, // Ajustează aceasta pentru a seta lățimea dorită a dreptunghiului
-            height: size.height *
-                0.9, // Ajustează aceasta pentru a seta înălțimea dorită a dreptunghiului
-            decoration: BoxDecoration(
-              color: Colors.white, // Culoarea de fundal a containerului
-              borderRadius: BorderRadius.circular(
-                  50), // Radiusul pentru margini rotunjite
-              boxShadow: [
-                // Umbra pentru un efect de elevație
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  spreadRadius: 5,
-                  blurRadius: 7,
-                  offset: Offset(0, 3),
-                ),
-              ],
-            ),
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                if (constraints.maxWidth > 600) {
-                  return _buildLargeScreen(size, simpleUIController);
-                } else {
-                  return _buildSmallScreen(size, simpleUIController);
-                }
-              },
+        backgroundColor: Colors.black12,
+        body: SingleChildScrollView(
+          child: Center(
+            child: Container(
+              width: size.width * 0.8,
+              height: size.height * 0.9,
+              padding: EdgeInsets.all(
+                  paddingValue), // Aplicarea padding-ului bazat pe procent
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(50),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  if (constraints.maxWidth > 600) {
+                    return _buildLargeScreen(size, simpleUIController);
+                  } else {
+                    return _buildSmallScreen(size, simpleUIController);
+                  }
+                },
+              ),
             ),
           ),
         ),
@@ -146,7 +148,6 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
-  /// For large screens
   Widget _buildLargeScreen(
     Size size,
     SimpleUIController simpleUIController,
@@ -158,45 +159,25 @@ class _LoginViewState extends State<LoginView> {
       ),
       child: Stack(
         children: [
+          Positioned(
+            right: 10, // Poziționarea logo-ului
+            top: 10,
+            child: Image.asset(
+              'assets/images/logo-bloc360.png',
+              width: size.width * 0.2,
+              height: size.height * 0.2,
+              fit: BoxFit.cover,
+            ),
+          ),
           Row(
+            // Asigură-te că Row este adăugat după Positioned, pentru ca imaginea din Row să vină deasupra logo-ului
             children: [
               Expanded(
-                flex: 5, // Menține proporția pentru formular
-                child: _buildMainBody(
-                  size,
-                  simpleUIController,
-                ),
+                flex: 5,
+                child: _buildMainBody(size, simpleUIController),
               ),
-              Expanded(
-                flex: 5, // Menține proporția pentru imagine
-                child: Padding(
-                  padding: EdgeInsets.only(left: size.width * 0.01),
-                  child: RotatedBox(
-                    quarterTurns: 4,
-                    child: Image.asset(
-                      'assets/images/people.png', // Înlocuiește aceasta cu calea către imaginea ta
-                      height: size.height * 0.4,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-              ),
+              _buildImage(size), // Imaginea care va acoperi logo-ul
             ],
-          ),
-          Positioned(
-            right:
-                10, // Ajustează aceste valori pentru a muta logo-ul mai aproape de marginea dreaptă
-            top: 10, // Ajustează pentru a muta logo-ul mai sus
-            child: Image.asset(
-              'assets/images/logo-bloc360.png', // Acesta este modul corect de a referi o imagine locală
-              width: size.width *
-                  0.2, // Ajustează lățimea în funcție de necesități
-              height: size.height *
-                  0.2, // Ajustează înălțimea în funcție de necesități
-              fit: BoxFit
-                  .cover, // Adaugă fit pentru a controla cum imaginea umple spațiul alocat
-            ),
           ),
         ],
       ),
@@ -221,6 +202,9 @@ class _LoginViewState extends State<LoginView> {
     Size size,
     SimpleUIController simpleUIController,
   ) {
+    double horizontalPadding =
+        size.width * 0.04; // 4% din lățimea ecranului pentru padding lateral
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment:
@@ -238,7 +222,7 @@ class _LoginViewState extends State<LoginView> {
           height: size.height * 0.03,
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 170),
+          padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
           child: Text(
             'Intra in cont',
             style: kLoginTitleStyle(size),
@@ -248,7 +232,7 @@ class _LoginViewState extends State<LoginView> {
           height: 10,
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 170),
+          padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
           child: Text(
             'Bine ai venit! Alege o metoda de log-in:',
             style: kLoginSubtitleStyle(size).copyWith(fontSize: 18),
@@ -256,7 +240,7 @@ class _LoginViewState extends State<LoginView> {
         ),
         SizedBox(height: 30),
         Padding(
-          padding: const EdgeInsets.only(left: 190),
+          padding: EdgeInsets.symmetric(horizontal: size.width * 0.04),
           child: Row(
             children: [
               googleButton(),
@@ -270,19 +254,21 @@ class _LoginViewState extends State<LoginView> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.only(
-                  left: 20, right: 10), // Ajustează padding-ul cum consideri
+              padding: EdgeInsets.symmetric(
+                  horizontal:
+                      horizontalPadding), // Ajustează padding-ul cum consideri
               child: SizedBox(
-                width: 120, // Ajustează lățimea cum consideri
+                width: size.width * 0.03, // Ajustează lățimea cum consideri
                 child: Divider(thickness: 2),
               ),
             ),
             Text('sau foloseste email-ul'),
             Padding(
-              padding: const EdgeInsets.only(
-                  left: 5, right: 30), // Ajustează padding-ul cum consideri
+              padding: EdgeInsets.symmetric(
+                  horizontal:
+                      horizontalPadding), // Ajustează padding-ul cum consideri
               child: SizedBox(
-                width: 120, // Ajustează lățimea cum consideri
+                width: size.width * 0.03, // Ajustează lățimea cum consideri
                 child: Divider(thickness: 2),
               ),
             ),
@@ -290,7 +276,7 @@ class _LoginViewState extends State<LoginView> {
         ),
         SizedBox(height: 30),
         Padding(
-          padding: const EdgeInsets.only(left: 170, right: 180),
+          padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
           child: Form(
             child: Column(
               children: [
@@ -482,6 +468,27 @@ class _LoginViewState extends State<LoginView> {
           side: BorderSide(
               color: Colors
                   .grey), // Adaugă un border albastru pentru a menține recunoașterea vizuală a Facebook
+        ),
+      ),
+    );
+  }
+
+  Widget _buildImage(Size size) {
+    return Flexible(
+      flex: size.width > 1409
+          ? 5
+          : 3, // Ajustează proporția flexibilă în funcție de dimensiunea ecranului
+      child: Padding(
+        padding: EdgeInsets.only(left: size.width * 0.01),
+        child: RotatedBox(
+          quarterTurns: 4,
+          child: Image.asset(
+            'assets/images/people.png',
+            height: size.height *
+                (size.width > 1409 ? 0.4 : 0.3), // Ajustează înălțimea imaginii
+            width: double.infinity,
+            fit: BoxFit.cover,
+          ),
         ),
       ),
     );
