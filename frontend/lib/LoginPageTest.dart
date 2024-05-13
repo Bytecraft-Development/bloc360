@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'dart:convert';
 import 'dart:html' as html;
 import 'package:http/http.dart' as http;
@@ -197,13 +198,11 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
-  /// Main Body
   Widget _buildMainBody(
     Size size,
     SimpleUIController simpleUIController,
   ) {
-    double horizontalPadding =
-        size.width * 0.04; // 4% din lățimea ecranului pentru padding lateral
+    double horizontalPadding = size.width * 0.04;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -213,103 +212,129 @@ class _LoginViewState extends State<LoginView> {
         size.width > 600
             ? Container()
             : Lottie.asset(
-                'assets/wave.json',
+                'assets/json/wave.json',
                 height: size.height * 0.2,
                 width: size.width,
                 fit: BoxFit.fill,
               ),
-        SizedBox(
-          height: size.height * 0.03,
-        ),
+        SizedBox(height: size.height * 0.03),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+          padding:
+              EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 0),
           child: Text(
             'Intra in cont',
             style: kLoginTitleStyle(size),
           ),
         ),
-        const SizedBox(
-          height: 10,
-        ),
+        const SizedBox(height: 10),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+          padding:
+              EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 0),
           child: Text(
-            'Bine ai venit! Alege o metoda de log-in:',
-            style: kLoginSubtitleStyle(size).copyWith(fontSize: 18),
+            'Bine ai venit! Alege o metoda de log in:',
+            style: kLoginSubtitleStyle(size).copyWith(
+              fontSize: 16,
+              color: Colors.grey,
+            ),
           ),
         ),
         SizedBox(height: 30),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: size.width * 0.04),
+          padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               googleButton(),
-              SizedBox(width: 30),
+              SizedBox(width: 10),
               facebookButton(),
             ],
           ),
         ),
         SizedBox(height: 40),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal:
-                      horizontalPadding), // Ajustează padding-ul cum consideri
-              child: SizedBox(
-                width: size.width * 0.03, // Ajustează lățimea cum consideri
-                child: Divider(thickness: 2),
+        Padding(
+          padding: EdgeInsets.symmetric(
+              horizontal:
+                  horizontalPadding), // Ajustează padding-ul cum consideri
+          child: Row(
+            children: [
+              SizedBox(
+                width: 115, // Ajustează lățimea cum consideri
+                child: Divider(thickness: 1),
               ),
-            ),
-            Text('sau foloseste email-ul'),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal:
-                      horizontalPadding), // Ajustează padding-ul cum consideri
-              child: SizedBox(
-                width: size.width * 0.03, // Ajustează lățimea cum consideri
-                child: Divider(thickness: 2),
+              SizedBox(width: 8), // Adaugă spațiu între divizor și text
+              Text(
+                'sau foloseste email-ul',
+                style: GoogleFonts.inter(
+                  fontSize: 13,
+                  color: Color(0xFF616161),
+                ),
               ),
-            ),
-          ],
+              SizedBox(width: 8), // Adaugă spațiu între text și divizor
+              SizedBox(
+                width: 115, // Ajustează lățimea cum consideri
+                child: Divider(thickness: 1),
+              ),
+            ],
+          ),
         ),
-        SizedBox(height: 30),
+        SizedBox(height: 20),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
           child: Form(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
-                  height: size.height * 0.02,
-                ),
-                TextFormField(
-                  controller: _usernameController,
-                  decoration: const InputDecoration(
-                    prefixIcon: Icon(Icons.email_rounded),
-                    hintText: 'email',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
-                    ),
+                SizedBox(height: size.height * 0.02),
+                Container(
+                  width: 390,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: Color(0xFFECF4FF),
+                    borderRadius: BorderRadius.circular(5),
                   ),
-                  // The validator receives the text that the user has entered.
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter email';
-                    } else if (!value.endsWith('@gmail.com')) {
-                      return 'please enter valid email';
-                    }
-                    return null;
-                  },
+                  child: TextFormField(
+                    style: TextStyle(),
+                    controller: _usernameController,
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.email_outlined),
+                      hintText: 'E-mail',
+                      fillColor: Color(0xFFECF4FF),
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Colors.grey,
+                            width: 1.0), // Stilul outline-ului
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.transparent),
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue),
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter email';
+                      } else if (!value.endsWith('@gmail.com')) {
+                        return 'please enter valid email';
+                      }
+                      return null;
+                    },
+                  ),
                 ),
-                SizedBox(
-                  height: size.height * 0.02,
-                ),
-
-                /// password
-                Obx(
-                  () => TextFormField(
-                    style: kTextFormFieldStyle(),
+                SizedBox(height: size.height * 0.03),
+                Container(
+                  width: 390,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: Color(0xFFECF4FF),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: TextFormField(
+                    style: TextStyle(), // Poți specifica un stil dacă e necesar
                     controller: _passwordController,
                     obscureText: simpleUIController.isObscure.value,
                     decoration: InputDecoration(
@@ -317,19 +342,29 @@ class _LoginViewState extends State<LoginView> {
                       suffixIcon: IconButton(
                         icon: Icon(
                           simpleUIController.isObscure.value
-                              ? Icons.visibility
-                              : Icons.visibility_off,
+                              ? Icons.visibility_off_outlined
+                              : Icons.visibility_outlined,
                         ),
                         onPressed: () {
                           simpleUIController.isObscureActive();
                         },
                       ),
                       hintText: 'Password',
-                      border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                      fillColor: Color(0xFFECF4FF),
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.transparent),
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue),
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
                       ),
                     ),
-                    // The validator receives the text that the user has entered.
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter some text';
@@ -342,23 +377,20 @@ class _LoginViewState extends State<LoginView> {
                     },
                   ),
                 ),
-                SizedBox(
-                  height: size.height * 0.01,
-                ),
+                SizedBox(height: size.height * 0.01),
                 RichText(
                   textAlign: TextAlign.center,
                   text: TextSpan(
-                    style: kLoginTermsAndPrivacyStyle(
-                        size), // Acesta trebuie să fie stilul general al textului
+                    style: kLoginTermsAndPrivacyStyle(size),
                     children: <TextSpan>[
                       TextSpan(
-                          text:
-                              'Creating an account means you\'re okay with our '),
+                        text:
+                            'Creating an account means you\'re okay with our ',
+                      ),
                       TextSpan(
                         text: 'Terms of Services',
                         style: TextStyle(
-                          color: Colors
-                              .blue, // S-ar putea să vrei să adaugi subliniere dacă dorești
+                          color: Colors.blue,
                           decoration: TextDecoration.underline,
                         ),
                         recognizer: TapGestureRecognizer()
@@ -375,24 +407,15 @@ class _LoginViewState extends State<LoginView> {
                         ),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-                            _launchURL(
-                                'https://bloc360.live/tos'); // Presupunem că există un link diferit pentru Politica de Confidențialitate
+                            _launchURL('https://bloc360.live/tos');
                           },
                       ),
                     ],
                   ),
                 ),
-
-                /// Login Button
-                SizedBox(
-                  height: size.height * 0.03,
-                ),
+                SizedBox(height: size.height * 0.03),
                 loginButton(),
-                SizedBox(
-                  height: size.height * 0.03,
-                ),
-
-                /// Navigate To Login Screen
+                SizedBox(height: size.height * 0.03),
                 GestureDetector(
                   onTap: () {
                     Navigator.pop(context);
@@ -423,24 +446,40 @@ class _LoginViewState extends State<LoginView> {
 
   Widget googleButton() {
     return ElevatedButton.icon(
-      icon: Image.asset('assets/images/google.png',
-          height: 18), // Înlocuiește cu calea corectă a imaginii
+      icon: Image.asset(
+        'assets/images/google.png',
+        height: 18, // Înlocuiește cu calea corectă a imaginii
+      ),
       label: Text(
         'Google',
         style: TextStyle(
-            color: Colors.black), // Setează culoarea textului la negru
+          color: Colors.black, // Setează culoarea textului la negru
+        ),
       ),
       onPressed: () {
         // Logica pentru Google login
       },
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.white,
-        minimumSize: Size(190, 60),
+        backgroundColor: Colors.white, // Setează culoarea de fundal la alb
+        foregroundColor:
+            Colors.black, // Setează culoarea textului/iconițelor la negru
+        minimumSize: Size(200, 60),
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
-          side: BorderSide(color: Colors.grey),
+          side: BorderSide(
+              color: Color(0xFFCDCDCD),
+              width: 2), // Grosimea bordurii ajustată la 2
+        ),
+        elevation: 0, // Elimină orice umbrire sub buton
+      ).copyWith(
+        backgroundColor: MaterialStateProperty.resolveWith<Color>(
+          (Set<MaterialState> states) {
+            if (states.contains(MaterialState.pressed)) {
+              return Colors.grey[200]!; // Culoarea pentru starea 'pressed'
+            }
+            return Colors.white; // Culoarea implicită
+          },
         ),
       ),
     );
@@ -459,15 +498,24 @@ class _LoginViewState extends State<LoginView> {
         // Logica pentru Facebook login
       },
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.white,
-        minimumSize: Size(190, 60),
+        backgroundColor: Colors.white, // Setează culoarea de fundal la alb
+        foregroundColor:
+            Colors.black, // Setează culoarea textului/iconițelor la negru
+        minimumSize: Size(200, 60),
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
-          side: BorderSide(
-              color: Colors
-                  .grey), // Adaugă un border albastru pentru a menține recunoașterea vizuală a Facebook
+          side: BorderSide(color: Color(0xFFCDCDCD), width: 2),
+        ),
+        elevation: 0, // Elimină orice umbrire sub buton
+      ).copyWith(
+        backgroundColor: MaterialStateProperty.resolveWith<Color>(
+          (Set<MaterialState> states) {
+            if (states.contains(MaterialState.pressed)) {
+              return Colors.grey[200]!; // Culoarea pentru starea 'pressed'
+            }
+            return Colors.white; // Culoarea implicită
+          },
         ),
       ),
     );
@@ -497,11 +545,11 @@ class _LoginViewState extends State<LoginView> {
   // Login Button
   Widget loginButton() {
     return SizedBox(
-      width: double.infinity,
+      width: 400,
       height: 45,
       child: ElevatedButton(
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(Colors.indigo),
+          backgroundColor: MaterialStateProperty.all(Color(0xFF275DAD)),
           shape: MaterialStateProperty.all(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(9),
@@ -512,8 +560,8 @@ class _LoginViewState extends State<LoginView> {
         child: Text(
           'Login',
           style: TextStyle(
-              color:
-                  Colors.white), // Aici setezi culoarea textului ca fiind albă
+              color: Color(
+                  0xFFE3E9F1)), // Aici setezi culoarea textului ca fiind albă
         ),
       ),
     );
