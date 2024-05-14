@@ -102,11 +102,11 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size; // Obținerea dimensiunilor ecranului
-    double paddingValue = size.width *
-        0.04; // Calcularea padding-ului ca 5% din lățimea ecranului
+    double paddingValue = size.width * 0.04; // Calcularea padding-ului ca 5% din lățimea ecranului
 
     SimpleUIController simpleUIController = Get.find<SimpleUIController>();
 
@@ -116,32 +116,78 @@ class _LoginViewState extends State<LoginView> {
         backgroundColor: Colors.black12,
         body: SingleChildScrollView(
           child: Center(
-            child: Container(
-              width: size.width * 0.8,
-              height: size.height * 0.9,
-              padding: EdgeInsets.all(
-                  paddingValue), // Aplicarea padding-ului bazat pe procent
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(50),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: Offset(0, 3),
+            child: Column(
+              children: [
+                SizedBox(height: 40),
+                Container(
+                  width: size.width * 0.8,
+                  height: size.height * 0.9,
+                  padding: EdgeInsets.all(
+                      paddingValue), // Aplicarea padding-ului bazat pe procent
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(50),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  if (constraints.maxWidth > 600) {
-                    return _buildLargeScreen(size, simpleUIController);
-                  } else {
-                    return _buildSmallScreen(size, simpleUIController);
-                  }
-                },
-              ),
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      if (constraints.maxWidth > 600) {
+                        return _buildLargeScreen(size, simpleUIController);
+                      } else {
+                        return _buildSmallScreen(size, simpleUIController);
+                      }
+                    },
+                  ),
+                ),
+                // Adăugarea RichText aici:
+                SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      style: kLoginTermsAndPrivacyStyle(size),
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: 'Creating an account means you\'re okay with our ',
+                        ),
+                        TextSpan(
+                          text: 'Terms of Services',
+                          style: TextStyle(
+                            color: Colors.blue,
+                            decoration: TextDecoration.underline,
+                            fontSize:10,
+                          ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              _launchURL('https://bloc360.live/tos');
+                            },
+                        ),
+                        TextSpan(text: ' and our '),
+                        TextSpan(
+                          text: 'Privacy Policy',
+                          style: TextStyle(
+                            color: Colors.blue,
+                            decoration: TextDecoration.underline,
+                            fontSize: 10,
+                          ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              _launchURL('https://bloc360.live/tos');
+                            },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
@@ -377,43 +423,44 @@ class _LoginViewState extends State<LoginView> {
                     },
                   ),
                 ),
-                SizedBox(height: size.height * 0.01),
-                RichText(
-                  textAlign: TextAlign.center,
-                  text: TextSpan(
-                    style: kLoginTermsAndPrivacyStyle(size),
-                    children: <TextSpan>[
-                      TextSpan(
-                        text:
-                            'Creating an account means you\'re okay with our ',
-                      ),
-                      TextSpan(
-                        text: 'Terms of Services',
-                        style: TextStyle(
-                          color: Colors.blue,
-                          decoration: TextDecoration.underline,
-                        ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            _launchURL('https://bloc360.live/tos');
+                SizedBox(height: size.height * 0.02),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Obx(() => Checkbox(
+                          value: simpleUIController.isRememberMe.value,
+                          onChanged: (value) {
+                            simpleUIController.isRememberMe.value = value!;
                           },
-                      ),
-                      TextSpan(text: ' and our '),
-                      TextSpan(
-                        text: 'Privacy Policy',
-                        style: TextStyle(
-                          color: Colors.blue,
-                          decoration: TextDecoration.underline,
+                          activeColor: Colors.blue,
+                        )),
+                        Text(
+                          'Ține minte',
+                          style: TextStyle(
+                            color: Color(0xFF616161),
+                          ),
                         ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            _launchURL('https://bloc360.live/tos');
-                          },
+                      ],
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left:175), // Ajustează padding-ul cum dorești
+                      child: TextButton(
+                        onPressed: () {
+                          print("Forgot Password");
+                        },
+                        child: Text(
+                          'Am uitat parola',
+                          style: TextStyle(
+                            color: Colors.blue,
+                          ),
+                        ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                SizedBox(height: size.height * 0.03),
+                SizedBox(height: size.height * 0.02),
                 loginButton(),
                 SizedBox(height: size.height * 0.03),
                 GestureDetector(
@@ -421,21 +468,27 @@ class _LoginViewState extends State<LoginView> {
                     Navigator.pop(context);
                     simpleUIController.isObscure.value = true;
                   },
-                  child: RichText(
-                    text: TextSpan(
-                      text: 'Nu ai un cont?',
-                      style: kHaveAnAccountStyle(size),
-                      children: [
-                        TextSpan(
-                          text: " Inregistreaza-te",
-                          style: kLoginOrSignUpTextStyle(
-                            size,
-                          ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 90, vertical: 8.0), // Ajustează valorile padding-ului după cum dorești
+                    child: RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                        text: 'Nu ai un cont?',
+                        style: kHaveAnAccountStyle(size).copyWith(
+                          fontSize: 14.0, // Ajustează dimensiunea textului
                         ),
-                      ],
+                        children: [
+                          TextSpan(
+                            text: " Creeaza cont nou",
+                            style: kLoginOrSignUpTextStyle(size).copyWith(
+                              fontSize: 14.0, // Ajustează dimensiunea textului
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
+                  ),
               ],
             ),
           ),
@@ -545,7 +598,7 @@ class _LoginViewState extends State<LoginView> {
   // Login Button
   Widget loginButton() {
     return SizedBox(
-      width: 400,
+      width: 390,
       height: 45,
       child: ElevatedButton(
         style: ButtonStyle(

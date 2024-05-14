@@ -1,9 +1,10 @@
 import 'package:get/get.dart';
 
 class SimpleUIController extends GetxController {
-  RxBool isObscure = true.obs;
+  var isObscure = true.obs;
+  var isRememberMe = false.obs;
 
-  isObscureActive() {
-    isObscure.value = !isObscure.value;
+  void isObscureActive() {
+  isObscure.value = !isObscure.value;
   }
-}
+  }
