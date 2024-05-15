@@ -1,33 +1,28 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/config/environment_config.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:convert';
 import 'dart:html' as html;
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'HelloWorld.dart';
-import 'RegistrationPage.dart';
-import 'config/environment_config.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../constants.dart';
 import 'package:frontend/controller/simple_ui_controller.dart';
 
-import 'config/environment_config.dart';
 
 class LoginView extends StatefulWidget {
-  const LoginView({Key? key}) : super(key: key);
+  const LoginView({super.key});
 
   @override
   State<LoginView> createState() => _LoginViewState();
 }
-
 class _LoginViewState extends State<LoginView> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
   String? _accessToken;
 
   @override
@@ -37,8 +32,8 @@ class _LoginViewState extends State<LoginView> {
   }
 
   Future<void> _launchURL(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url));
     } else {
       throw 'Could not launch $url';
     }
@@ -94,14 +89,6 @@ class _LoginViewState extends State<LoginView> {
       ),
     );
   }
-
-  void _navigateToRegistrationPage() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => RegistrationPage()),
-    );
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -167,7 +154,7 @@ class _LoginViewState extends State<LoginView> {
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              _launchURL('https://bloc360.live/tos');
+                              _launchURL('${EnvironmentConfig.API_URL}/tos');
                             },
                         ),
                         TextSpan(text: ' and our '),
@@ -180,7 +167,7 @@ class _LoginViewState extends State<LoginView> {
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              _launchURL('https://bloc360.live/tos');
+                              _launchURL('${EnvironmentConfig.API_URL}/privacy');
                             },
                         ),
                       ],

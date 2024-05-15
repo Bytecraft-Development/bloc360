@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/views/dashboard/dashboard_view.dart';
-import 'package:frontend/views/main/main_view.dart';
-import 'package:frontend/views/main/main_viewmodel.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'LoginPageTest.dart';
-import 'ExpensePage.dart';
-import 'controller/simple_ui_controller.dart';
-import 'package:frontend/pages/tos_page.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
+import 'package:frontend/pages/privacy_policy.dart';
+import 'package:frontend/pages/tos_page.dart';
+import 'package:frontend/views/main/main_view.dart';
+import 'package:get/get.dart';
+
+import 'LoginPageTest.dart';
+import 'controller/simple_ui_controller.dart';
 
 void main() {
   usePathUrlStrategy();
@@ -24,7 +22,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/login-page': (context) => LoginView(),
         '/tos': (context) => TermsOfService(),
-        '/expense': (context) => ExpensePage(),
+        '/privacy': (context) => const PrivacyPolicy(),
       },
       title: 'Bloc360',
       home: MainView(),
