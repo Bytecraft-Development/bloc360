@@ -6,6 +6,7 @@ import 'package:frontend/views/main/main_view.dart';
 import 'package:get/get.dart';
 
 import 'LoginPageTest.dart';
+import 'ExpensePage.dart';
 import 'controller/simple_ui_controller.dart';
 
 void main() {
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
         '/login-page': (context) => LoginView(),
         '/tos': (context) => TermsOfService(),
         '/privacy': (context) => const PrivacyPolicy(),
+        '/expenses': (context) =>ExpensePage(),
       },
       title: 'Bloc360',
       home: MainView(),
