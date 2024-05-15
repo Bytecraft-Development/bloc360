@@ -5,6 +5,7 @@ import 'package:frontend/views/main/main_viewmodel.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'LoginPageTest.dart';
+import 'ExpensePage.dart';
 import 'controller/simple_ui_controller.dart';
 import 'package:frontend/pages/tos_page.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/login-page': (context) => LoginView(),
         '/tos': (context) => TermsOfService(),
+        '/expense': (context) => ExpensePage(),
       },
       title: 'Bloc360',
       home: MainView(),
