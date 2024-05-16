@@ -129,7 +129,7 @@ class PrivacyPolicy extends StatelessWidget {
                 ),
                 TextSpan(
                   text:
-                      'If you have any questions about this Privacy Policy, please contact us at support@bloc360.live.\n\n',
+                      'If you have any questions about this Privacy Policy, please contact us at suport@bloc360.live.\n\n',
                 ),
               ],
             ),
