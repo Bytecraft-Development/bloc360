@@ -13,13 +13,13 @@ import 'package:url_launcher/url_launcher.dart';
 import '../constants.dart';
 import 'package:frontend/controller/simple_ui_controller.dart';
 
-
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
 
   @override
   State<LoginView> createState() => _LoginViewState();
 }
+
 class _LoginViewState extends State<LoginView> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -93,7 +93,8 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size; // Obținerea dimensiunilor ecranului
-    double paddingValue = size.width * 0.04; // Calcularea padding-ului ca 5% din lățimea ecranului
+    double paddingValue = size.width *
+        0.04; // Calcularea padding-ului ca 5% din lățimea ecranului
 
     SimpleUIController simpleUIController = Get.find<SimpleUIController>();
 
@@ -109,8 +110,8 @@ class _LoginViewState extends State<LoginView> {
                 Container(
                   width: size.width * 0.8,
                   height: size.height * 0.9,
-                  padding: EdgeInsets.all(
-                      paddingValue), // Aplicarea padding-ului bazat pe procent
+                  padding: EdgeInsets.all(paddingValue),
+                  // Aplicarea padding-ului bazat pe procent
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(50),
@@ -143,14 +144,15 @@ class _LoginViewState extends State<LoginView> {
                       style: kLoginTermsAndPrivacyStyle(size),
                       children: <TextSpan>[
                         TextSpan(
-                          text: 'Creating an account means you\'re okay with our ',
+                          text:
+                              'Creating an account means you\'re okay with our ',
                         ),
                         TextSpan(
                           text: 'Terms of Services',
                           style: TextStyle(
                             color: Colors.blue,
                             decoration: TextDecoration.underline,
-                            fontSize:10,
+                            fontSize: 10,
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
@@ -167,7 +169,8 @@ class _LoginViewState extends State<LoginView> {
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              _launchURL('${EnvironmentConfig.API_URL}/privacy');
+                              _launchURL(
+                                  '${EnvironmentConfig.API_URL}/privacy');
                             },
                         ),
                       ],
@@ -367,7 +370,11 @@ class _LoginViewState extends State<LoginView> {
                     borderRadius: BorderRadius.circular(5),
                   ),
                   child: TextFormField(
-                    style: TextStyle(), // Poți specifica un stil dacă e necesar
+                    onFieldSubmitted: (value) {
+                      _login();
+                    },
+                    style: TextStyle(),
+                    // Poți specifica un stil dacă e necesar
                     controller: _passwordController,
                     obscureText: simpleUIController.isObscure.value,
                     decoration: InputDecoration(
@@ -417,12 +424,12 @@ class _LoginViewState extends State<LoginView> {
                     Row(
                       children: [
                         Obx(() => Checkbox(
-                          value: simpleUIController.isRememberMe.value,
-                          onChanged: (value) {
-                            simpleUIController.isRememberMe.value = value!;
-                          },
-                          activeColor: Colors.blue,
-                        )),
+                              value: simpleUIController.isRememberMe.value,
+                              onChanged: (value) {
+                                simpleUIController.isRememberMe.value = value!;
+                              },
+                              activeColor: Colors.blue,
+                            )),
                         Text(
                           'Ține minte',
                           style: TextStyle(
@@ -432,7 +439,8 @@ class _LoginViewState extends State<LoginView> {
                       ],
                     ),
                     Padding(
-                      padding: EdgeInsets.only(left:175), // Ajustează padding-ul cum dorești
+                      padding: EdgeInsets.only(left: 175),
+                      // Ajustează padding-ul cum dorești
                       child: TextButton(
                         onPressed: () {
                           print("Forgot Password");
@@ -456,7 +464,9 @@ class _LoginViewState extends State<LoginView> {
                     simpleUIController.isObscure.value = true;
                   },
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 90, vertical: 8.0), // Ajustează valorile padding-ului după cum dorești
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 90, vertical: 8.0),
+                    // Ajustează valorile padding-ului după cum dorești
                     child: RichText(
                       textAlign: TextAlign.center,
                       text: TextSpan(
@@ -475,7 +485,7 @@ class _LoginViewState extends State<LoginView> {
                       ),
                     ),
                   ),
-                  ),
+                ),
               ],
             ),
           ),
@@ -500,9 +510,10 @@ class _LoginViewState extends State<LoginView> {
         // Logica pentru Google login
       },
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.white, // Setează culoarea de fundal la alb
-        foregroundColor:
-            Colors.black, // Setează culoarea textului/iconițelor la negru
+        backgroundColor: Colors.white,
+        // Setează culoarea de fundal la alb
+        foregroundColor: Colors.black,
+        // Setează culoarea textului/iconițelor la negru
         minimumSize: Size(200, 60),
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         shape: RoundedRectangleBorder(
@@ -538,9 +549,10 @@ class _LoginViewState extends State<LoginView> {
         // Logica pentru Facebook login
       },
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.white, // Setează culoarea de fundal la alb
-        foregroundColor:
-            Colors.black, // Setează culoarea textului/iconițelor la negru
+        backgroundColor: Colors.white,
+        // Setează culoarea de fundal la alb
+        foregroundColor: Colors.black,
+        // Setează culoarea textului/iconițelor la negru
         minimumSize: Size(200, 60),
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         shape: RoundedRectangleBorder(
@@ -563,9 +575,8 @@ class _LoginViewState extends State<LoginView> {
 
   Widget _buildImage(Size size) {
     return Flexible(
-      flex: size.width > 1409
-          ? 5
-          : 3, // Ajustează proporția flexibilă în funcție de dimensiunea ecranului
+      flex: size.width > 1409 ? 5 : 3,
+      // Ajustează proporția flexibilă în funcție de dimensiunea ecranului
       child: Padding(
         padding: EdgeInsets.only(left: size.width * 0.01),
         child: RotatedBox(
