@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/config/environment_config.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
@@ -48,7 +49,7 @@ class _SignUpViewState extends State<SignUpView> {
 
   Future<void> _registerUser() async {
     String _message = '';
-    final String url = 'https://bloc360.live:8080/createUser';
+    final String url = '${EnvironmentConfig.API_URL}/createUser';
     final response = await http.post(
       Uri.parse(url),
       headers: <String, String>{
