@@ -1,17 +1,16 @@
-
 import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
-import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'LoginPageTest.dart';
+
 import '../constants.dart';
 import '../controller/simple_ui_controller.dart';
-import 'config/environment_config.dart';
+import 'LoginPageTest.dart';
 
 class SignUpView extends StatefulWidget {
   const SignUpView({Key? key}) : super(key: key);
@@ -79,6 +78,7 @@ class _SignUpViewState extends State<SignUpView> {
   }
 
   SimpleUIController simpleUIController = Get.put(SimpleUIController());
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -156,7 +156,8 @@ class _SignUpViewState extends State<SignUpView> {
                       ),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
-                          context.go('/tos'); // Folosește context.go pentru a naviga la Terms of Services
+                          context.go(
+                              '/tos'); // Folosește context.go pentru a naviga la Terms of Services
                         },
                     ),
                     TextSpan(text: ' and our '),
@@ -169,7 +170,8 @@ class _SignUpViewState extends State<SignUpView> {
                       ),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
-                          context.go('/privacy'); // Folosește context.go pentru a naviga la Privacy Policy
+                          context.go(
+                              '/privacy'); // Folosește context.go pentru a naviga la Privacy Policy
                         },
                     ),
                   ],
@@ -181,6 +183,7 @@ class _SignUpViewState extends State<SignUpView> {
       ),
     );
   }
+
   /// For Small screens
   Widget _buildSmallScreen(
       Size size, SimpleUIController simpleUIController, ThemeData theme) {
@@ -213,8 +216,9 @@ class _SignUpViewState extends State<SignUpView> {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment:
-        size.width > 600 ? MainAxisAlignment.center : MainAxisAlignment.start,
+        mainAxisAlignment: size.width > 600
+            ? MainAxisAlignment.center
+            : MainAxisAlignment.start,
         children: [
           SizedBox(height: size.height * 0.03),
           Padding(
@@ -369,7 +373,7 @@ class _SignUpViewState extends State<SignUpView> {
                   ),
                   SizedBox(height: size.height * 0.02),
                   Obx(
-                        () => Container(
+                    () => Container(
                       width: 390,
                       height: 50,
                       decoration: BoxDecoration(
@@ -455,11 +459,14 @@ class _SignUpViewState extends State<SignUpView> {
                               text: " Mergi catre Login",
                               style: kLoginOrSignUpTextStyle(size).copyWith(
                                 fontSize: 14.0,
-                                color: Colors.blue, // Adaugă o culoare pentru a indica faptul că este un link
+                                color: Colors
+                                    .blue, // Adaugă o culoare pentru a indica faptul că este un link
                               ),
-                              recognizer: TapGestureRecognizer()..onTap = () {
-                                context.go('/login-page'); // Folosește context.go pentru a naviga la ruta de login
-                              },
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  context.go(
+                                      '/login-page'); // Folosește context.go pentru a naviga la ruta de login
+                                },
                             ),
                           ],
                         ),
@@ -478,20 +485,36 @@ class _SignUpViewState extends State<SignUpView> {
   /// Image on the right side for large screens
   Widget _buildImage(Size size) {
     return Flexible(
-      flex: size.width > 1409
-          ? 5
-          : 3, // Adjust flex value based on screen width
+      flex:
+          size.width > 1409 ? 5 : 3, // Adjust flex value based on screen width
       child: Padding(
         padding: EdgeInsets.only(left: size.width * 0.01),
-        child: RotatedBox(
-          quarterTurns: 4,
-          child: Image.asset(
-            'assets/images/people.png',
-            height: size.height *
-                (size.width > 1409 ? 0.4 : 0.3), // Adjust image height
-            width: double.infinity,
-            fit: BoxFit.cover,
-          ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Flexible(
+              flex: 3,
+              child: Image.asset(
+                'assets/images/logo-bloc360.png',
+                width: size.width * 0.3,
+                height: size.height * 0.3,
+                fit: BoxFit.contain,
+              ),
+            ),
+            Flexible(
+              flex: 7,
+              child: RotatedBox(
+                quarterTurns: 4,
+                child: Image.asset(
+                  'assets/images/register.png',
+                  height: size.height *
+                      (size.width > 1409 ? 0.6 : 0.4), // Adjust image height
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
