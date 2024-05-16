@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/config/environment_config.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:convert';
 import 'dart:html' as html;
@@ -144,8 +145,7 @@ class _LoginViewState extends State<LoginView> {
                       style: kLoginTermsAndPrivacyStyle(size),
                       children: <TextSpan>[
                         TextSpan(
-                          text:
-                              'Creating an account means you\'re okay with our ',
+                          text: 'Creating an account means you\'re okay with our ',
                         ),
                         TextSpan(
                           text: 'Terms of Services',
@@ -156,7 +156,7 @@ class _LoginViewState extends State<LoginView> {
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              _launchURL('${EnvironmentConfig.API_URL}/tos');
+                              context.go('/tos'); // Folosește context.go pentru a naviga la Terms of Services
                             },
                         ),
                         TextSpan(text: ' and our '),
@@ -169,8 +169,7 @@ class _LoginViewState extends State<LoginView> {
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              _launchURL(
-                                  '${EnvironmentConfig.API_URL}/privacy');
+                              context.go('/privacy'); // Folosește context.go pentru a naviga la Privacy Policy
                             },
                         ),
                       ],
