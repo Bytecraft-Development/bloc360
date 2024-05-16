@@ -17,6 +17,7 @@ void main() {
 
 class MyApp extends StatelessWidget {
   final GoRouter _router = GoRouter(
+    initialLocation: '/login-page',
     routes: [
       GoRoute(
         path: '/',
