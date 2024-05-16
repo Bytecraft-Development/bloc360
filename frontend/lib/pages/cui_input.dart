@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/config/environment_config.dart';
+import 'package:frontend/config/environment.dart';
 import 'package:http/http.dart' as http;
 
 class CuiInputPage extends StatefulWidget {

@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/config/environment.dart';
 import 'package:http/http.dart' as http;
 
-import 'CuiInputPage.dart';
-import 'ExpensePage.dart';
+import 'cui_input.dart';
+import 'expenses.dart';
+import 'dart:html' as html;
 
 class HelloWorldPage extends StatelessWidget {
-  final String? accessToken;
 
-  const HelloWorldPage({Key? key, required this.accessToken}) : super(key: key);
+
+  const HelloWorldPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -60,10 +62,13 @@ class HelloWorldPage extends StatelessWidget {
 
 
   Future<String> _fetchHelloWorldData() async {
+    var _accessToken = html.window.localStorage['access_token'];
+
     final response = await http.get(
-      Uri.parse('https://bloc360.live:8080/hello'),
+
+        Uri.parse('${EnvironmentConfig.API_URL}/hello'),
       headers: <String, String>{
-        'Authorization': 'Bearer $accessToken',
+        'Authorization': 'Bearer $_accessToken',
       },
     );
 

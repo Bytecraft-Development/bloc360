@@ -46,6 +46,7 @@ dependencies:
   url_launcher: ^6.0.12
   percent_indicator: ^4.0.0
   stacked: ^3.4.2
+  openid_client: ^0.4.8
 
 
 

@@ -1,18 +1,20 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/config/environment_config.dart';
+import 'package:frontend/config/environment.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:convert';
 import 'dart:html' as html;
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'HelloWorld.dart';
+import 'hello_world.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../constants.dart';
+import '../config/constants.dart';
 import 'package:frontend/controller/simple_ui_controller.dart';
+import 'package:openid_client/openid_client_io.dart';
+import 'package:openid_client/openid_client.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -54,6 +56,29 @@ class _LoginViewState extends State<LoginView> {
     }
   }
 
+  Future<void> _googleLogin() async {
+    var uri = Uri.parse(EnvironmentConfig.KEYCLOAK_LOGIN_URL);
+    var clientId = EnvironmentConfig.KEYCLOAK_CLIENT_ID;
+
+    var issuer = await Issuer.discover(uri);
+    var client = Client(issuer, clientId);
+
+    var authenticator = Authenticator(
+      client,
+      scopes: ['openid', 'profile', 'email'],
+      port: 4000,
+    );
+
+    var c = await authenticator.authorize();
+    var token = c.idToken;
+
+    _accessToken = token.toString();
+    html.window.localStorage['access_token'] = _accessToken!;
+
+    _navigateToHelloWorldPage();
+  }
+
+
   Future<void> _login() async {
     String username = _usernameController.text;
     String password = _passwordController.text;
@@ -83,12 +108,7 @@ class _LoginViewState extends State<LoginView> {
   }
 
   Future<void> _navigateToHelloWorldPage() async {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => HelloWorldPage(accessToken: _accessToken),
-      ),
-    );
+    context.go('/hello', extra: _accessToken);
   }
 
   @override
@@ -510,7 +530,7 @@ class _LoginViewState extends State<LoginView> {
         ),
       ),
       onPressed: () {
-        // Logica pentru Google login
+        _googleLogin();
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.white,

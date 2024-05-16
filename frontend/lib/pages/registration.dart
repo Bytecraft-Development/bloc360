@@ -3,15 +3,15 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/config/environment_config.dart';
+import 'package:frontend/config/environment.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 
-import '../constants.dart';
-import '../controller/simple_ui_controller.dart';
-import 'LoginPageTest.dart';
+import '../config/constants.dart';
+import '../../controller/simple_ui_controller.dart';
+import 'login.dart';
 
 class SignUpView extends StatefulWidget {
   const SignUpView({Key? key}) : super(key: key);

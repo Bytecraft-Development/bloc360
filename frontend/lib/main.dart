@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
+import 'package:frontend/pages/hello_world.dart';
 import 'package:frontend/pages/privacy_policy.dart';
-import 'package:frontend/pages/tos_page.dart';
-import 'package:frontend/views/main/main_view.dart';
+import 'package:frontend/pages/tos.dart';
 import 'package:frontend/controller/simple_ui_controller.dart';
 import 'package:go_router/go_router.dart';
 import 'package:get/get.dart';
-import 'RegistrationPageTest.dart';
-import 'LoginPageTest.dart';
-import 'ExpensePage.dart';
+import 'pages/registration.dart';
+import 'pages/login.dart';
+import 'pages/expenses.dart';
 
 void main() {
   usePathUrlStrategy();
@@ -20,12 +20,12 @@ class MyApp extends StatelessWidget {
     initialLocation: '/login-page',
     routes: [
       GoRoute(
-        path: '/',
-        builder: (context, state) => MainView(),
-      ),
-      GoRoute(
         path: '/login-page',
         builder: (context, state) => LoginView(),
+      ),
+      GoRoute(
+        path: '/hello',
+        builder: (context, state) => HelloWorldPage(),
       ),
       GoRoute(
         path: '/tos',
