@@ -478,7 +478,11 @@ class _LoginViewState extends State<LoginView> {
                             text: " Creeaza cont nou",
                             style: kLoginOrSignUpTextStyle(size).copyWith(
                               fontSize: 14.0, // Ajustează dimensiunea textului
+                              color: Colors.blue, // Poți adăuga o culoare pentru a indica faptul că este un link
                             ),
+                            recognizer: TapGestureRecognizer()..onTap = () {
+                              context.go('/register'); // Folosește context.go pentru a naviga la ruta de înregistrare
+                            },
                           ),
                         ],
                       ),
