@@ -204,10 +204,8 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
-  Widget _buildLargeScreen(
-    Size size,
-    SimpleUIController simpleUIController,
-  ) {
+
+  Widget _buildLargeScreen(Size size, SimpleUIController simpleUIController) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -216,7 +214,7 @@ class _LoginViewState extends State<LoginView> {
       child: Stack(
         children: [
           Positioned(
-            right: 10, // Poziționarea logo-ului
+            right: 10,
             top: 10,
             child: Image.asset(
               'assets/images/logo-bloc360.png',
@@ -226,13 +224,12 @@ class _LoginViewState extends State<LoginView> {
             ),
           ),
           Row(
-            // Asigură-te că Row este adăugat după Positioned, pentru ca imaginea din Row să vină deasupra logo-ului
             children: [
               Expanded(
                 flex: 5,
-                child: _buildMainBody(size, simpleUIController),
+                child: _buildMainBody(size, simpleUIController, showWave: false),
               ),
-              _buildImage(size), // Imaginea care va acoperi logo-ul
+              _buildImage(size),
             ],
           ),
         ],
@@ -240,38 +237,41 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
-  /// For Small screens
-  Widget _buildSmallScreen(
-    Size size,
-    SimpleUIController simpleUIController,
-  ) {
+  Widget _buildSmallScreen(Size size, SimpleUIController simpleUIController) {
     return Center(
-      child: _buildMainBody(
-        size,
-        simpleUIController,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(height: size.height * 0.03),
+            Lottie.asset(
+              'assets/images/wave.json',
+              height: size.height * 0.2,
+              width: size.width,
+              fit: BoxFit.fill,
+            ),
+            SizedBox(height: size.height * 0.03),
+            _buildMainBody(size, simpleUIController, showWave: false),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildMainBody(
-    Size size,
-    SimpleUIController simpleUIController,
-  ) {
+  Widget _buildMainBody(Size size, SimpleUIController simpleUIController, {bool showWave = true}) {
     double horizontalPadding = size.width * 0.04;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment:
-          size.width > 600 ? MainAxisAlignment.center : MainAxisAlignment.start,
+      size.width > 600 ? MainAxisAlignment.center : MainAxisAlignment.start,
       children: [
-        size.width > 600
-            ? Container()
-            : Lottie.asset(
-                'assets/json/wave.json',
-                height: size.height * 0.2,
-                width: size.width,
-                fit: BoxFit.fill,
-              ),
+        if (showWave)
+          Lottie.asset(
+            'assets/images/wave.json',
+            height: size.height * 0.2,
+            width: size.width,
+            fit: BoxFit.fill,
+          ),
         SizedBox(height: size.height * 0.03),
         Padding(
           padding:
