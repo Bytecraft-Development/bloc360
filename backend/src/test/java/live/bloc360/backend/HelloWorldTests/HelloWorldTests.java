@@ -2,7 +2,6 @@ package live.bloc360.backend.HelloWorldTests;
 
 
 import live.bloc360.backend.BaseTest;
-import live.bloc360.backend.BackendApplication;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
