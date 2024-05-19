@@ -16,8 +16,6 @@ import static live.bloc360.backend.Utils.Constants.HELLO_ENDPOINT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@SpringBootTest
-@ActiveProfiles("test-local")
 public class HelloWorldTests extends BaseTest {
 
     @Test
@@ -29,6 +27,6 @@ public class HelloWorldTests extends BaseTest {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         assertNotNull(response);
         assertEquals(200, response.statusCode());
-//        assertEquals("Hello Bloc360Team", response.body());
+        assertEquals("Hello Bloc360Team", response.body());
     }
 }
