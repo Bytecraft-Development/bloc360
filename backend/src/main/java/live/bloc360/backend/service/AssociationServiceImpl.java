@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.keycloak.representations.idm.UserRepresentation;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -50,6 +51,10 @@ public class AssociationServiceImpl implements AssociationService {
             throw new RuntimeException("User not found");
         }
         return associationRepository.findByAdminUsername(username).isPresent();
+    }
+
+    public Optional<Association> findByAdminUsername(String adminUsername) {
+        return associationRepository.findByAdminUsername(adminUsername);
     }
 
 
