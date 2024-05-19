@@ -22,3 +22,5 @@ spring:
     password: sa
     properties.mail.smtp.auth: true
     properties.mail.smtp.starttls.enable: true
+
+baseUrl: http://localhost:8080

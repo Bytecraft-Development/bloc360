@@ -16,23 +16,23 @@ public class AssociationServiceImpl implements AssociationService {
 
     private final AssociationRepository associationRepository;
     private final FeatureToggleRepository featureToggleRepository;
+
     @Override
     public Association createAssociation(CreateAssociationDTO createAssociationDTO) {
         FeatureToggle featureToggle = featureToggleRepository.findByName("Association Create");
-        if (featureToggle != null && featureToggle.isEnabled()) {
-            associationRepository.findByName(createAssociationDTO.getName()).ifPresent(association -> {
-                throw new BusinessException(HttpStatus.BAD_REQUEST, "Association already exists");
-            });
-            Association association = Association
-                    .builder()
-                    .name(createAssociationDTO.getName())
-                    .build();
-            return associationRepository.save(association);
-        }
-        else {
+        if (featureToggle == null || !featureToggle.isEnabled()) {
             throw new RuntimeException("Feature Toggle is not enable");
         }
+
+        associationRepository.findByName(createAssociationDTO.getName()).ifPresent(association -> {
+            throw new BusinessException(HttpStatus.BAD_REQUEST, "Association already exists");
+        });
+        Association association = Association
+                .builder()
+                .name(createAssociationDTO.getName())
+                .build();
+        return associationRepository.save(association);
     }
 
 
-    }
+}
