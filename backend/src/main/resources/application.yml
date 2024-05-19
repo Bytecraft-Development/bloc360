@@ -17,12 +17,10 @@ spring:
       ddl-auto: create
     show-sql: true
   mail:
-    host: smtp.gmail.com
-    port: 587
-    username: bloc360bytecraft@gmail.com
-    password: ${EMAIL_APP_PASSWORD}
-    properties.mail.smtp.auth: true
-    properties.mail.smtp.starttls.enable: true
+    sendgrid:
+      api:
+        key: ${SENDGRID_API_KEY}
+
 management:
   endpoints:
     web:
