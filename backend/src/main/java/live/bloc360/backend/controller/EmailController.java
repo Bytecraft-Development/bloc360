@@ -3,18 +3,14 @@ package live.bloc360.backend.controller;
 import com.sendgrid.helpers.mail.objects.Content;
 import live.bloc360.backend.service.EmailServiceSendGrid;
 import lombok.SneakyThrows;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.AbstractMap;
-
 @RestController
-public class EmailTestController {
+public class EmailController {
     private final EmailServiceSendGrid emailServiceSendGrid;
 
-    public EmailTestController(EmailServiceSendGrid emailServiceSendGrid) {
+    public EmailController(EmailServiceSendGrid emailServiceSendGrid) {
         this.emailServiceSendGrid = emailServiceSendGrid;
     }
 
