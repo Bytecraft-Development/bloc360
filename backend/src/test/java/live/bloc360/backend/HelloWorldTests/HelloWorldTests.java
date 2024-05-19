@@ -16,8 +16,6 @@ import static live.bloc360.backend.Utils.Constants.HELLO_ENDPOINT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-@ActiveProfiles("test")
 public class HelloWorldTests extends BaseTest {
 
     @Test
