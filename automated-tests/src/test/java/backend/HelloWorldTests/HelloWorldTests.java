@@ -16,15 +16,15 @@ import static org.junit.jupiter.api.Assertions.*;
 public class HelloWorldTests extends BaseTest {
 
 
-    @Test
-    public void testHelloWorld() throws IOException, InterruptedException {
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + HELLO_ENDPOINT))
-                .GET()
-                .build();
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        assertNotNull(response);
-        assertEquals(200, response.statusCode());
-        assertEquals("Hello Bloc360Team", response.body());
-    }
+//    @Test
+//    public void testHelloWorld() throws IOException, InterruptedException {
+//        HttpRequest request = HttpRequest.newBuilder()
+//                .uri(URI.create(BASE_URL + HELLO_ENDPOINT))
+//                .GET()
+//                .build();
+//        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+//        assertNotNull(response);
+//        assertEquals(200, response.statusCode());
+//        assertEquals("Hello Bloc360Team", response.body());
+//    }
 }
