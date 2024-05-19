@@ -58,8 +58,6 @@ class _LoginViewState extends State<LoginView> {
 
 
   Future<void> _googleLogin() async {
-
-
     var uri = Uri.parse(EnvironmentConfig.KEYCLOAK_BASE_URL);
     var clientId = EnvironmentConfig.KEYCLOAK_CLIENT_ID;
 
@@ -101,7 +99,7 @@ class _LoginViewState extends State<LoginView> {
       _accessToken = jsonResponse['access_token'];
       html.window.localStorage['access_token'] = _accessToken!;
 
-      _navigateToHelloWorldPage();
+      context.go('/dashboard');
     } else {
       print('Failed to login: ${response.statusCode}');
     }
