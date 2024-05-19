@@ -26,10 +26,8 @@ private final AssociationService associationService;
      try{
           Jwt tokenColect = (Jwt) authentication.getCredentials();
           String adminUsername = (String) tokenColect.getClaims().get("preferred_username");
-         System.out.println("Admin Username from JWT: " + adminUsername);
          createAssociationDTO.setAdminUsername(adminUsername);
          associationService.createAssociation(createAssociationDTO,adminUsername);
-         System.out.println("CreateAssociationDTO: " + createAssociationDTO);
          return ResponseEntity.ok("Association created");
      }catch (Exception e){
          return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Association creation failed");
