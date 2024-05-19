@@ -113,9 +113,8 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size; // Obținerea dimensiunilor ecranului
-    double paddingValue = size.width *
-        0.04; // Calcularea padding-ului ca 5% din lățimea ecranului
+    var size = MediaQuery.of(context).size;
+    double paddingValue = size.width * 0.04;
 
     SimpleUIController simpleUIController = Get.find<SimpleUIController>();
 
@@ -132,7 +131,6 @@ class _LoginViewState extends State<LoginView> {
                   width: size.width * 0.8,
                   height: size.height * 0.9,
                   padding: EdgeInsets.all(paddingValue),
-                  // Aplicarea padding-ului bazat pe procent
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(50),
@@ -155,7 +153,6 @@ class _LoginViewState extends State<LoginView> {
                     },
                   ),
                 ),
-                // Adăugarea RichText aici:
                 SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -176,7 +173,7 @@ class _LoginViewState extends State<LoginView> {
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              context.go('/tos'); // Folosește context.go pentru a naviga la Terms of Services
+                              context.go('/tos');
                             },
                         ),
                         TextSpan(text: ' and our '),
@@ -189,7 +186,7 @@ class _LoginViewState extends State<LoginView> {
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              context.go('/privacy'); // Folosește context.go pentru a naviga la Privacy Policy
+                              context.go('/privacy');
                             },
                         ),
                       ],
@@ -203,7 +200,6 @@ class _LoginViewState extends State<LoginView> {
       ),
     );
   }
-
 
   Widget _buildLargeScreen(Size size, SimpleUIController simpleUIController) {
     return Container(
@@ -227,7 +223,7 @@ class _LoginViewState extends State<LoginView> {
             children: [
               Expanded(
                 flex: 5,
-                child: _buildMainBody(size, simpleUIController, showWave: false),
+                child: _buildMainBodyLarge(size, simpleUIController),
               ),
               _buildImage(size),
             ],
@@ -243,39 +239,23 @@ class _LoginViewState extends State<LoginView> {
         child: Column(
           children: [
             SizedBox(height: size.height * 0.03),
-            Lottie.asset(
-              'assets/images/wave.json',
-              height: size.height * 0.2,
-              width: size.width,
-              fit: BoxFit.fill,
-            ),
-            SizedBox(height: size.height * 0.03),
-            _buildMainBody(size, simpleUIController, showWave: false),
+            _buildMainBodySmall(size, simpleUIController),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildMainBody(Size size, SimpleUIController simpleUIController, {bool showWave = true}) {
+  Widget _buildMainBodyLarge(Size size, SimpleUIController simpleUIController) {
     double horizontalPadding = size.width * 0.04;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment:
-      size.width > 600 ? MainAxisAlignment.center : MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        if (showWave)
-          Lottie.asset(
-            'assets/images/wave.json',
-            height: size.height * 0.2,
-            width: size.width,
-            fit: BoxFit.fill,
-          ),
         SizedBox(height: size.height * 0.03),
         Padding(
-          padding:
-              EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 0),
+          padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 0),
           child: Text(
             'Intra in cont',
             style: kLoginTitleStyle(size),
@@ -283,8 +263,7 @@ class _LoginViewState extends State<LoginView> {
         ),
         const SizedBox(height: 10),
         Padding(
-          padding:
-              EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 0),
+          padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 0),
           child: Text(
             'Bine ai venit! Alege o metoda de log in:',
             style: kLoginSubtitleStyle(size).copyWith(
@@ -299,24 +278,22 @@ class _LoginViewState extends State<LoginView> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              googleButton(),
+              googleButton(size),
               SizedBox(width: 10),
-              facebookButton(),
+              facebookButton(size),
             ],
           ),
         ),
         SizedBox(height: 40),
         Padding(
-          padding: EdgeInsets.symmetric(
-              horizontal:
-                  horizontalPadding), // Ajustează padding-ul cum consideri
+          padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
           child: Row(
             children: [
               SizedBox(
-                width: 115, // Ajustează lățimea cum consideri
+                width: 115,
                 child: Divider(thickness: 1),
               ),
-              SizedBox(width: 8), // Adaugă spațiu între divizor și text
+              SizedBox(width: 8),
               Text(
                 'sau foloseste email-ul',
                 style: GoogleFonts.inter(
@@ -324,9 +301,9 @@ class _LoginViewState extends State<LoginView> {
                   color: Color(0xFF616161),
                 ),
               ),
-              SizedBox(width: 8), // Adaugă spațiu între text și divizor
+              SizedBox(width: 8),
               SizedBox(
-                width: 115, // Ajustează lățimea cum consideri
+                width: 115,
                 child: Divider(thickness: 1),
               ),
             ],
@@ -348,7 +325,6 @@ class _LoginViewState extends State<LoginView> {
                     borderRadius: BorderRadius.circular(5),
                   ),
                   child: TextFormField(
-                    style: TextStyle(),
                     controller: _usernameController,
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.email_outlined),
@@ -357,8 +333,9 @@ class _LoginViewState extends State<LoginView> {
                       filled: true,
                       border: OutlineInputBorder(
                         borderSide: BorderSide(
-                            color: Colors.grey,
-                            width: 1.0), // Stilul outline-ului
+                          color: Colors.grey,
+                          width: 1.0,
+                        ),
                         borderRadius: BorderRadius.all(Radius.circular(5)),
                       ),
                       enabledBorder: OutlineInputBorder(
@@ -392,8 +369,6 @@ class _LoginViewState extends State<LoginView> {
                     onFieldSubmitted: (value) {
                       _login();
                     },
-                    style: TextStyle(),
-                    // Poți specifica un stil dacă e necesar
                     controller: _passwordController,
                     obscureText: simpleUIController.isObscure.value,
                     decoration: InputDecoration(
@@ -443,12 +418,12 @@ class _LoginViewState extends State<LoginView> {
                     Row(
                       children: [
                         Obx(() => Checkbox(
-                              value: simpleUIController.isRememberMe.value,
-                              onChanged: (value) {
-                                simpleUIController.isRememberMe.value = value!;
-                              },
-                              activeColor: Colors.blue,
-                            )),
+                          value: simpleUIController.isRememberMe.value,
+                          onChanged: (value) {
+                            simpleUIController.isRememberMe.value = value!;
+                          },
+                          activeColor: Colors.blue,
+                        )),
                         Text(
                           'Ține minte',
                           style: TextStyle(
@@ -475,7 +450,7 @@ class _LoginViewState extends State<LoginView> {
                   ],
                 ),
                 SizedBox(height: size.height * 0.02),
-                loginButton(),
+                loginButton(size),
                 SizedBox(height: size.height * 0.03),
                 GestureDetector(
                   onTap: () {
@@ -485,24 +460,24 @@ class _LoginViewState extends State<LoginView> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 90, vertical: 8.0),
-                    // Ajustează valorile padding-ului după cum dorești
                     child: RichText(
                       textAlign: TextAlign.center,
                       text: TextSpan(
                         text: 'Nu ai un cont?',
                         style: kHaveAnAccountStyle(size).copyWith(
-                          fontSize: 14.0, // Ajustează dimensiunea textului
+                          fontSize: 14.0,
                         ),
                         children: [
                           TextSpan(
                             text: " Creeaza cont nou",
                             style: kLoginOrSignUpTextStyle(size).copyWith(
-                              fontSize: 14.0, // Ajustează dimensiunea textului
-                              color: Colors.blue, // Poți adăuga o culoare pentru a indica faptul că este un link
+                              fontSize: 14.0,
+                              color: Colors.blue,
                             ),
-                            recognizer: TapGestureRecognizer()..onTap = () {
-                              context.go('/register'); // Folosește context.go pentru a naviga la ruta de înregistrare
-                            },
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                context.go('/register');
+                              },
                           ),
                         ],
                       ),
@@ -517,16 +492,276 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
-  Widget googleButton() {
+  Widget _buildMainBodySmall(Size size, SimpleUIController simpleUIController) {
+    double horizontalPadding = size.width * 0.04;
+    double fontSizeTitle = 24;
+    double fontSizeSubtitle = 14;
+    double buttonFontSize = 14;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Lottie.asset(
+          'assets/images/wave.json',
+          height: size.height * 0.2,
+          width: size.width,
+          fit: BoxFit.fill,
+        ),
+        SizedBox(height: size.height * 0.03),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 0),
+          child: Text(
+            'Intra in cont',
+            style: TextStyle(
+              fontSize: fontSizeTitle,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        const SizedBox(height: 10),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 0),
+          child: Text(
+            'Bine ai venit! Alege o metoda de log in:',
+            style: TextStyle(
+              fontSize: fontSizeSubtitle,
+              color: Colors.grey,
+            ),
+          ),
+        ),
+        SizedBox(height: 30),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              googleButton(size),
+              SizedBox(width: 10),
+              facebookButton(size),
+            ],
+          ),
+        ),
+        SizedBox(height: 40),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+          child: Row(
+            children: [
+              SizedBox(
+                width: 90,
+                child: Divider(thickness: 1),
+              ),
+              SizedBox(width: 8),
+              Text(
+                'sau foloseste email-ul',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Color(0xFF616161),
+                ),
+              ),
+              SizedBox(width: 8),
+              SizedBox(
+                width: 90,
+                child: Divider(thickness: 1),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: 20),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+          child: Form(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: size.height * 0.02),
+                Container(
+                  width: size.width * 0.8,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: Color(0xFFECF4FF),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: TextFormField(
+                    controller: _usernameController,
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.email_outlined),
+                      hintText: 'E-mail',
+                      fillColor: Color(0xFFECF4FF),
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.grey,
+                          width: 1.0,
+                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.transparent),
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue),
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter email';
+                      } else if (!value.endsWith('@gmail.com')) {
+                        return 'please enter valid email';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                SizedBox(height: size.height * 0.03),
+                Container(
+                  width: size.width * 0.8,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: Color(0xFFECF4FF),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: TextFormField(
+                    onFieldSubmitted: (value) {
+                      _login();
+                    },
+                    controller: _passwordController,
+                    obscureText: simpleUIController.isObscure.value,
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(Icons.lock_open),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          simpleUIController.isObscure.value
+                              ? Icons.visibility_off_outlined
+                              : Icons.visibility_outlined,
+                        ),
+                        onPressed: () {
+                          simpleUIController.isObscureActive();
+                        },
+                      ),
+                      hintText: 'Password',
+                      fillColor: Color(0xFFECF4FF),
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.transparent),
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue),
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter some text';
+                      } else if (value.length < 7) {
+                        return 'at least enter 6 characters';
+                      } else if (value.length > 13) {
+                        return 'maximum character is 13';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                SizedBox(height: size.height * 0.02),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Obx(() => Checkbox(
+                          value: simpleUIController.isRememberMe.value,
+                          onChanged: (value) {
+                            simpleUIController.isRememberMe.value = value!;
+                          },
+                          activeColor: Colors.blue,
+                        )),
+                        Text(
+                          'Ține minte',
+                          style: TextStyle(
+                            color: Color(0xFF616161),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Spacer(),
+                    TextButton(
+                      onPressed: () {
+                        print("Forgot Password");
+                      },
+                      child: Text(
+                        'Am uitat parola',
+                        style: TextStyle(
+                          color: Colors.blue,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: size.height * 0.02),
+                loginButton(size),
+                SizedBox(height: size.height * 0.03),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                    simpleUIController.isObscure.value = true;
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 90, vertical: 8.0),
+                    child: RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                        text: 'Nu ai un cont?',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.black,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: " Creeaza cont nou",
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.blue,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                context.go('/register');
+                              },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget googleButton(Size size) {
+    double buttonFontSize = size.width < 600 ? 14 : 16;
+    double buttonHeight = size.width < 600 ? 50 : 60;
+    double buttonWidth = size.width < 600 ? 150 : 200;
+
     return ElevatedButton.icon(
       icon: Image.asset(
         'assets/images/google.png',
-        height: 18, // Înlocuiește cu calea corectă a imaginii
+        height: 18,
       ),
       label: Text(
         'Google',
         style: TextStyle(
-          color: Colors.black, // Setează culoarea textului la negru
+          fontSize: buttonFontSize,
+          color: Colors.black,
         ),
       ),
       onPressed: () {
@@ -534,93 +769,84 @@ class _LoginViewState extends State<LoginView> {
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.white,
-        // Setează culoarea de fundal la alb
         foregroundColor: Colors.black,
-        // Setează culoarea textului/iconițelor la negru
-        minimumSize: Size(200, 60),
+        minimumSize: Size(buttonWidth, buttonHeight),
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
           side: BorderSide(
-              color: Color(0xFFCDCDCD),
-              width: 2), // Grosimea bordurii ajustată la 2
+            color: Color(0xFFCDCDCD),
+            width: 2,
+          ),
         ),
-        elevation: 0, // Elimină orice umbrire sub buton
+        elevation: 0,
       ).copyWith(
         backgroundColor: MaterialStateProperty.resolveWith<Color>(
-          (Set<MaterialState> states) {
+              (Set<MaterialState> states) {
             if (states.contains(MaterialState.pressed)) {
-              return Colors.grey[200]!; // Culoarea pentru starea 'pressed'
+              return Colors.grey[200]!;
             }
-            return Colors.white; // Culoarea implicită
+            return Colors.white;
           },
         ),
       ),
     );
   }
 
-  Widget facebookButton() {
+  Widget facebookButton(Size size) {
+    double buttonFontSize = size.width < 600 ? 14 : 16;
+    double buttonHeight = size.width < 600 ? 50 : 60;
+    double buttonWidth = size.width < 600 ? 150 : 200;
+
     return ElevatedButton.icon(
-      icon: Image.asset('assets/images/facebook.png',
-          height: 18), // Asigură-te că ai acces la această imagine
+      icon: Image.asset(
+        'assets/images/facebook.png',
+        height: 18,
+      ),
       label: Text(
         'Facebook',
         style: TextStyle(
-            color: Colors.black), // Setează culoarea textului la negru
+          fontSize: buttonFontSize,
+          color: Colors.black,
+        ),
       ),
       onPressed: () {
         // Logica pentru Facebook login
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.white,
-        // Setează culoarea de fundal la alb
         foregroundColor: Colors.black,
-        // Setează culoarea textului/iconițelor la negru
-        minimumSize: Size(200, 60),
+        minimumSize: Size(buttonWidth, buttonHeight),
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
-          side: BorderSide(color: Color(0xFFCDCDCD), width: 2),
+          side: BorderSide(
+            color: Color(0xFFCDCDCD),
+            width: 2,
+          ),
         ),
-        elevation: 0, // Elimină orice umbrire sub buton
+        elevation: 0,
       ).copyWith(
         backgroundColor: MaterialStateProperty.resolveWith<Color>(
-          (Set<MaterialState> states) {
+              (Set<MaterialState> states) {
             if (states.contains(MaterialState.pressed)) {
-              return Colors.grey[200]!; // Culoarea pentru starea 'pressed'
+              return Colors.grey[200]!;
             }
-            return Colors.white; // Culoarea implicită
+            return Colors.white;
           },
         ),
       ),
     );
   }
 
-  Widget _buildImage(Size size) {
-    return Flexible(
-      flex: size.width > 1409 ? 5 : 3,
-      // Ajustează proporția flexibilă în funcție de dimensiunea ecranului
-      child: Padding(
-        padding: EdgeInsets.only(left: size.width * 0.01),
-        child: RotatedBox(
-          quarterTurns: 4,
-          child: Image.asset(
-            'assets/images/people.png',
-            height: size.height *
-                (size.width > 1409 ? 0.4 : 0.3), // Ajustează înălțimea imaginii
-            width: double.infinity,
-            fit: BoxFit.cover,
-          ),
-        ),
-      ),
-    );
-  }
+  Widget loginButton(Size size) {
+    double buttonFontSize = size.width < 600 ? 14 : 16;
+    double buttonHeight = 45;
+    double buttonWidth = size.width < 600 ? size.width * 0.8 : 390;
 
-  // Login Button
-  Widget loginButton() {
     return SizedBox(
-      width: 390,
-      height: 45,
+      width: buttonWidth,
+      height: buttonHeight,
       child: ElevatedButton(
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all(Color(0xFF275DAD)),
@@ -634,8 +860,29 @@ class _LoginViewState extends State<LoginView> {
         child: Text(
           'Login',
           style: TextStyle(
-              color: Color(
-                  0xFFE3E9F1)), // Aici setezi culoarea textului ca fiind albă
+            fontSize: buttonFontSize,
+            color: Color(0xFFE3E9F1),
+          ),
+        ),
+      ),
+    );
+  }
+
+
+
+  Widget _buildImage(Size size) {
+    return Flexible(
+      flex: size.width > 1409 ? 5 : 3,
+      child: Padding(
+        padding: EdgeInsets.only(left: size.width * 0.01),
+        child: RotatedBox(
+          quarterTurns: 4,
+          child: Image.asset(
+            'assets/images/people.png',
+            height: size.height * (size.width > 1409 ? 0.4 : 0.3),
+            width: double.infinity,
+            fit: BoxFit.cover,
+          ),
         ),
       ),
     );
