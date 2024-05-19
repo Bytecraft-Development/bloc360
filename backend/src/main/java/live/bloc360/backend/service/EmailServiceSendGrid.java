@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 @Service
 public class EmailServiceSendGrid {
-    @Value("${spring.mail.SENDGRID_API_KEY}")
+    @Value("${spring.mail.sendgrid.api.key}")
     private String SendGridApiKey;
 
     public void sendMail(String subject, Content content) throws IOException {
