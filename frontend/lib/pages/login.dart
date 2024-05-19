@@ -1,20 +1,19 @@
+import 'dart:convert';
+import 'dart:html' as html;
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/config/environment.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'dart:convert';
-import 'dart:html' as html;
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'hello_world.dart';
-import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
+import 'package:openid_client/openid_client_browser.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../config/constants.dart';
-import 'package:frontend/controller/simple_ui_controller.dart';
-import 'package:openid_client/openid_client_io.dart';
-import 'package:openid_client/openid_client.dart';
+
+import '../constants/constants.dart';
+import '../controllers/simple_ui_controller.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -34,13 +33,13 @@ class _LoginViewState extends State<LoginView> {
     _loadTokenFromStorage();
   }
 
-  Future<void> _launchURL(String url) async {
-    if (await canLaunchUrl(Uri.parse(url))) {
-      await launchUrl(Uri.parse(url));
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
+  // Future<void> _launchURL(String url) async {
+  //   if (await canLaunchUrl(Uri.parse(url))) {
+  //     await launchUrl(Uri.parse(url));
+  //   } else {
+  //     throw 'Could not launch $url';
+  //   }
+  // }
 
   Future<void> _loadTokenFromStorage() async {
     _accessToken = html.window.localStorage['access_token'];
@@ -56,28 +55,29 @@ class _LoginViewState extends State<LoginView> {
     }
   }
 
+
+
   Future<void> _googleLogin() async {
-    var uri = Uri.parse(EnvironmentConfig.KEYCLOAK_LOGIN_URL);
+
+
+    var uri = Uri.parse(EnvironmentConfig.KEYCLOAK_BASE_URL);
     var clientId = EnvironmentConfig.KEYCLOAK_CLIENT_ID;
 
     var issuer = await Issuer.discover(uri);
     var client = Client(issuer, clientId);
 
-    var authenticator = Authenticator(
-      client,
-      scopes: ['openid', 'profile', 'email'],
-      port: 4000,
-    );
+    var authenticator = await Authenticator(client, scopes: ['openid', 'profile', 'email']);
 
-    var c = await authenticator.authorize();
-    var token = c.idToken;
+    authenticator.authorize();
 
-    _accessToken = token.toString();
-    html.window.localStorage['access_token'] = _accessToken!;
+    var credential = await authenticator.credential;
+
+    print(credential.toString());
+    // _accessToken = credential?.idToken.toString();
+    // html.window.localStorage['access_token'] = _accessToken;
 
     _navigateToHelloWorldPage();
   }
-
 
   Future<void> _login() async {
     String username = _usernameController.text;
@@ -173,7 +173,8 @@ class _LoginViewState extends State<LoginView> {
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              context.go('/tos');
+                              context.go(
+                                  '/tos'); // Folosește context.go pentru a naviga la Terms of Services
                             },
                         ),
                         TextSpan(text: ' and our '),
@@ -502,7 +503,6 @@ class _LoginViewState extends State<LoginView> {
     double horizontalPadding = size.width * 0.04;
     double fontSizeTitle = 24;
     double fontSizeSubtitle = 14;
-    double buttonFontSize = 14;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

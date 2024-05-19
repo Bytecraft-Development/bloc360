@@ -9,8 +9,8 @@ import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 
-import '../config/constants.dart';
-import '../../controller/simple_ui_controller.dart';
+import '../constants/constants.dart';
+import '../../controllers/simple_ui_controller.dart';
 import 'login.dart';
 
 class SignUpView extends StatefulWidget {
@@ -39,13 +39,6 @@ class _SignUpViewState extends State<SignUpView> {
     super.dispose();
   }
 
-  Future<void> _launchURL(String url) async {
-    if (await canLaunchUrl(Uri.parse(url))) {
-      await launchUrl(Uri.parse(url));
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
 
   Future<void> _registerUser() async {
     String _message = '';

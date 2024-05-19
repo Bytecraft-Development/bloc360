@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
+import 'package:frontend/pages/dashboard/dash_board_screen.dart';
 import 'package:frontend/pages/hello_world.dart';
 import 'package:frontend/pages/privacy_policy.dart';
 import 'package:frontend/pages/tos.dart';
-import 'package:frontend/controller/simple_ui_controller.dart';
+import 'package:frontend/controllers/simple_ui_controller.dart';
 import 'package:go_router/go_router.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
+import 'controllers/controller.dart';
 import 'pages/registration.dart';
 import 'pages/login.dart';
 import 'pages/expenses.dart';
@@ -19,6 +22,13 @@ class MyApp extends StatelessWidget {
   final GoRouter _router = GoRouter(
     initialLocation: '/login-page',
     routes: [
+      GoRoute(
+        path: '/dashboard',
+        builder: (context, state) => ChangeNotifierProvider(
+          create: (context) => Controller(),
+          child: DashBoardScreen(),
+        ),
+      ),
       GoRoute(
         path: '/login-page',
         builder: (context, state) => LoginView(),

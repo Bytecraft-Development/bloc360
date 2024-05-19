@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../config/layout_constants.dart';
+import '../constants/layout_constants.dart';
 
 class TermsOfService extends StatelessWidget {
   @override
