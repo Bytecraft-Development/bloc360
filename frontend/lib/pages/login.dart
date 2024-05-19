@@ -279,7 +279,7 @@ class _LoginViewState extends State<LoginView> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               googleButton(size),
-              SizedBox(width: 10),
+              SizedBox(width: 5),
               facebookButton(size),
             ],
           ),
@@ -501,12 +501,6 @@ class _LoginViewState extends State<LoginView> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Lottie.asset(
-          'assets/images/wave.json',
-          height: size.height * 0.2,
-          width: size.width,
-          fit: BoxFit.fill,
-        ),
         SizedBox(height: size.height * 0.03),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 0),
@@ -533,10 +527,9 @@ class _LoginViewState extends State<LoginView> {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               googleButton(size),
-              SizedBox(width: 10),
               facebookButton(size),
             ],
           ),
@@ -546,8 +539,7 @@ class _LoginViewState extends State<LoginView> {
           padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
           child: Row(
             children: [
-              SizedBox(
-                width: 90,
+              Expanded(
                 child: Divider(thickness: 1),
               ),
               SizedBox(width: 8),
@@ -559,8 +551,7 @@ class _LoginViewState extends State<LoginView> {
                 ),
               ),
               SizedBox(width: 8),
-              SizedBox(
-                width: 90,
+              Expanded(
                 child: Divider(thickness: 1),
               ),
             ],
@@ -698,6 +689,7 @@ class _LoginViewState extends State<LoginView> {
                         'Am uitat parola',
                         style: TextStyle(
                           color: Colors.blue,
+                          fontSize: 13,
                         ),
                       ),
                     ),
@@ -712,8 +704,7 @@ class _LoginViewState extends State<LoginView> {
                     simpleUIController.isObscure.value = true;
                   },
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 90, vertical: 8.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8.0),
                     child: RichText(
                       textAlign: TextAlign.center,
                       text: TextSpan(
@@ -747,10 +738,11 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
+
   Widget googleButton(Size size) {
     double buttonFontSize = size.width < 600 ? 14 : 16;
     double buttonHeight = size.width < 600 ? 50 : 60;
-    double buttonWidth = size.width < 600 ? 150 : 200;
+    double buttonWidth = size.width < 600 ? 0 : 0;
 
     return ElevatedButton.icon(
       icon: Image.asset(
@@ -796,7 +788,7 @@ class _LoginViewState extends State<LoginView> {
   Widget facebookButton(Size size) {
     double buttonFontSize = size.width < 600 ? 14 : 16;
     double buttonHeight = size.width < 600 ? 50 : 60;
-    double buttonWidth = size.width < 600 ? 150 : 200;
+    double buttonWidth = size.width < 600 ? 0 : 0;
 
     return ElevatedButton.icon(
       icon: Image.asset(
@@ -817,7 +809,7 @@ class _LoginViewState extends State<LoginView> {
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
         minimumSize: Size(buttonWidth, buttonHeight),
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
           side: BorderSide(
