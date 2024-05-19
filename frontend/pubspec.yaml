@@ -78,7 +78,7 @@ flutter:
   assets:
     - assets/
     - assets/images/
-    - assets/images/wave.json
+    - assets/icons/
 
 
 

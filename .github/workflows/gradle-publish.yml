@@ -145,7 +145,7 @@ jobs:
             -e KEYCLOAK_CLIENTSECRET=${{ secrets.KEYCLOAK_CLIENTSECRET }} \
             -e KEYCLOAK_CLIENT=${{ secrets.KEYCLOAK_CLIENT }} \
             -e KEYCLOAK_AUTH=${{ secrets.KEYCLOAK_AUTH }} \
-            -e EMAIL_APP_PASSWORD=${{ secrets.EMAIL_APP_PASSWORD }} \
+            -e SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }} \
             --restart always \
             --name $(echo $IMAGE_NAME) \
             $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7) 
