@@ -741,8 +741,8 @@ class _LoginViewState extends State<LoginView> {
 
   Widget googleButton(Size size) {
     double buttonFontSize = size.width < 600 ? 14 : 16;
-    double buttonHeight = size.width < 600 ? 50 : 60;
-    double buttonWidth = size.width < 600 ? 0 : 0;
+    double buttonHeight = size.width < 600 ? 45 : 60;
+    double buttonWidth = size.width < 600 ? 50 : 200;
 
     return ElevatedButton.icon(
       icon: Image.asset(
@@ -787,8 +787,8 @@ class _LoginViewState extends State<LoginView> {
 
   Widget facebookButton(Size size) {
     double buttonFontSize = size.width < 600 ? 14 : 16;
-    double buttonHeight = size.width < 600 ? 50 : 60;
-    double buttonWidth = size.width < 600 ? 0 : 0;
+    double buttonHeight = size.width < 600 ? 45 : 60;
+    double buttonWidth = size.width < 600 ? 50 : 200;
 
     return ElevatedButton.icon(
       icon: Image.asset(
