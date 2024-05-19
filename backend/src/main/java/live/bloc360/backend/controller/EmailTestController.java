@@ -1,21 +1,28 @@
 package live.bloc360.backend.controller;
 
-import live.bloc360.backend.service.EmailServiceImpl;
+import com.sendgrid.helpers.mail.objects.Content;
+import live.bloc360.backend.service.EmailServiceSendGrid;
+import lombok.SneakyThrows;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.AbstractMap;
+
 @RestController
 public class EmailTestController {
-    private final EmailServiceImpl emailServiceImpl;
+    private final EmailServiceSendGrid emailServiceSendGrid;
 
-    public EmailTestController(EmailServiceImpl emailServiceImpl) {
-        this.emailServiceImpl = emailServiceImpl;
+    public EmailTestController(EmailServiceSendGrid emailServiceSendGrid) {
+        this.emailServiceSendGrid = emailServiceSendGrid;
     }
 
+
+    @SneakyThrows
     @PostMapping("/sendmail")
-    public void sendTestEmail(@RequestBody String mail) {
-        emailServiceImpl.sendSimpleMessage(mail, "Test email from SpringBoot", "This is a test mail");
+    public void sendTestEmail() {
+        emailServiceSendGrid.sendMail("Test email from SpringBoot", new Content("text/plain", "and easy to do anywhere, even with Java"));
     }
 
 }
