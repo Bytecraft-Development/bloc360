@@ -10,6 +10,7 @@ import java.util.Optional;
 public interface AssociationRepository extends JpaRepository<Association, Integer> {
 
     Optional<Association> findByName(String name);
+    Optional<Association> findByAdminUsername(String adminUsername);
 
 
 }

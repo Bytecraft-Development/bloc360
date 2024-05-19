@@ -22,8 +22,7 @@ public class Association {
 
     private String name;
 
-    @OneToMany
-    List<User> users ;
+    private String adminUsername;
 
     @OneToOne
     private CompanyInfo companyInfo;

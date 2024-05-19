@@ -38,12 +38,6 @@ public class User {
     @UpdateTimestamp
     private Date lastUpdate;
 
-    @ManyToOne
-    private Association association;
-
-    @ElementCollection
-    private List<String> roles;
-
 
 }
 

@@ -11,4 +11,5 @@ public class AssociationDTO {
 
     private Integer id;
     private String name;
+    private String adminUsername;
 }
