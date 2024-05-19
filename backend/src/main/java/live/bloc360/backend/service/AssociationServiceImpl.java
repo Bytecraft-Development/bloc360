@@ -1,6 +1,7 @@
 package live.bloc360.backend.service;
 
 import live.bloc360.backend.dto.createDTO.CreateAssociationDTO;
+import live.bloc360.backend.model.FeatureToggle;
 import live.bloc360.backend.repository.FeatureToggleRepository;
 import live.bloc360.backend.repository.AssociationRepository;
 import live.bloc360.backend.exceptions.BusinessException;
@@ -23,10 +24,10 @@ public class AssociationServiceImpl implements AssociationService {
 
     @Override
     public Association createAssociation(CreateAssociationDTO createAssociationDTO,String adminUsername) {
-//        FeatureToggle featureToggle = featureToggleRepository.findByName("Association Create");
-//        if (featureToggle == null || !featureToggle.isEnabled()) {
-//            throw new RuntimeException("Feature Toggle is not enable");
-//        }
+        FeatureToggle featureToggle = featureToggleRepository.findByName("Association Create");
+        if (featureToggle == null || !featureToggle.isEnabled()) {
+            throw new RuntimeException("Feature Toggle is not enable");
+        }
         if (userHasAssociation(adminUsername)) {
             throw new BusinessException(HttpStatus.BAD_REQUEST, "User already has an association");
         }
