@@ -65,6 +65,7 @@ jobs:
       - run: | 
               flutter build web \
               --dart-define=KEYCLOAK_LOGIN_URL=https://bloc360.live:8443/realms/bloc360/protocol/openid-connect/token \
+              --dart-define=KEYCLOAK_BASE_URL=https://bloc360.live:8443/realms/bloc360 \
               --dart-define=API_URL=https://bloc360.live:8080 \
               --dart-define=KEYCLOAK_CLIENT_ID=${{ secrets.KEYCLOAK_CLIENT_ID }}
               
