@@ -28,6 +28,9 @@ public class KeyCloakUserServiceImpl implements KeycloackUserService {
     @Value("${default.group.users}")
     private String defaultGroupUsers;
 
+    @Value("{default.group.administrators}")
+    private String defaultGroupAdministrators;
+
     @Override
     public UserRegistrationRecord createUser(UserRegistrationRecord userRegistrationRecord) {
         FeatureToggle featureToggle = featureToggleRepository.findByName("KeyCloak Create User");
@@ -58,7 +61,7 @@ public class KeyCloakUserServiceImpl implements KeycloackUserService {
 
     }
 
-    private UsersResource getUsersResource() {
+    public UsersResource getUsersResource() {
         RealmResource realm1 = keycloak.realm(realm);
         return realm1.users();
     }
