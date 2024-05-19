@@ -238,7 +238,13 @@ class _LoginViewState extends State<LoginView> {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(height: size.height * 0.03),
+            // SizedBox(height: size.height * 0.03),
+            Image.asset(
+              'assets/images/logo-bloc360.png',
+              height: size.height * 0.1,
+              width: size.width * 0.4,
+              fit: BoxFit.cover,
+            ),
             _buildMainBodySmall(size, simpleUIController),
           ],
         ),
@@ -809,7 +815,7 @@ class _LoginViewState extends State<LoginView> {
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
         minimumSize: Size(buttonWidth, buttonHeight),
-        padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+        padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
           side: BorderSide(
