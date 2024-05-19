@@ -16,10 +16,9 @@ spring:
     hibernate:
       ddl-auto: create
     show-sql: true
-  mail:
-    sendgrid:
-      api:
-        key: ${SENDGRID_API_KEY}
+sendgrid:
+  api:
+    key: ${SENDGRID_API_KEY}
 
 management:
   endpoints:
