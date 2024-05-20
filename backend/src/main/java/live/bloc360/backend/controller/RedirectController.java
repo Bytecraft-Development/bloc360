@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.core.Authentication;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin
@@ -18,11 +20,11 @@ public class RedirectController {
     @GetMapping("/redirectByRole")
     public ResponseEntity<String> redirectByRole(Authentication authentication) {
         Jwt jwt = (Jwt) authentication.getCredentials();
-        String role = (String) jwt.getClaims().get("groups");
-        if (role.contains("admin")) {
-            return ResponseEntity.ok("redirect:/adminDashboard");
+        List<String> roles = jwt.getClaimAsStringList("groups");
+        if (roles.contains("admin")) {
+            return ResponseEntity.ok("/adminDashboard");
         }
-        return ResponseEntity.ok("redirect:/userDashboard");
+        return ResponseEntity.ok("/userDashboard");
     }
 
 }
