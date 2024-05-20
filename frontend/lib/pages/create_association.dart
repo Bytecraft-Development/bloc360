@@ -4,6 +4,8 @@ import 'package:http/http.dart' as http;
 import 'dart:html' as html;
 import 'dart:convert';
 
+import '../config/environment.dart';
+
 class CreateAssociationPage extends StatefulWidget {
   @override
   _CreateAssociationPageState createState() => _CreateAssociationPageState();
@@ -24,7 +26,7 @@ class _CreateAssociationPageState extends State<CreateAssociationPage> {
       }
 
       final response = await http.post(
-        Uri.parse('$baseUrl/createAssociation'),
+        Uri.parse('${EnvironmentConfig.API_URL}/createAssociation'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $accessToken',
