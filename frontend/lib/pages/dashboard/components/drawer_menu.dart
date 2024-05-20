@@ -14,7 +14,7 @@ class DrawerMenu extends StatelessWidget {
         children: [
           Container(
             padding: EdgeInsets.all(appPadding),
-            child: Image.asset("assets/images/logo-bloc360.png", scale: 0.8,),
+            child: Image.asset("assets/images/logo_bloc360_transparent.png", scale: 0.7,),
           ),
           DrawerListTile(
               title: 'Dash Board',
