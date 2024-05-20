@@ -25,10 +25,10 @@ public class RedirectController {
     @GetMapping("/redirectByRole")
     public ResponseEntity<String> redirectByRole(Authentication authentication) {
         Jwt jwt = (Jwt) authentication.getPrincipal();
-        List<String> roles = jwt.getClaimAsStringList("groups"); // Sau "roles" în funcție de configurare
+        List<String> roles = jwt.getClaimAsStringList("groups");
 
         if (roles.contains("admin")) {
-            String adminUsername = jwt.getClaimAsString("preferred_username"); // Sau "sub" sau alt claim specific
+            String adminUsername = jwt.getClaimAsString("preferred_username");
             Optional<Association> association = associationService.findByAdminUsername(adminUsername);
             if (association.isPresent()) {
                 return ResponseEntity.ok("/dashboard");
