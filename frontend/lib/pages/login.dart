@@ -99,7 +99,7 @@ class _LoginViewState extends State<LoginView> {
       _accessToken = jsonResponse['access_token'];
       html.window.localStorage['access_token'] = _accessToken!;
 
-      context.go('/dashboard');
+      context.go('/redirect');
     } else {
       print('Failed to login: ${response.statusCode}');
     }

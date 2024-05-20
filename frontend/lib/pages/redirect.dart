@@ -3,13 +3,12 @@ import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'dart:html' as html;
 
-
-class AssociationView extends StatefulWidget {
+class RedirectView extends StatefulWidget {
   @override
-  _AssociationViewState createState() => _AssociationViewState();
+  _RedirectViewState createState() => _RedirectViewState();
 }
 
-class _AssociationViewState extends State<AssociationView> {
+class _RedirectViewState extends State<RedirectView> {
   @override
   void initState() {
     super.initState();
@@ -34,11 +33,7 @@ class _AssociationViewState extends State<AssociationView> {
 
     if (response.statusCode == 200) {
       final redirectUrl = response.body;
-      if (redirectUrl.contains("admin/dashboard")) {
-        context.go('/hello_world');
-      } else {
-        context.go('/cui_input');
-      }
+      context.go(redirectUrl);
     } else {
       throw Exception('Failed to redirect based on role');
     }
@@ -48,10 +43,10 @@ class _AssociationViewState extends State<AssociationView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Association View'),
+        title: Text('Redirect View'),
       ),
       body: Center(
-        child: CircularProgressIndicator(), // Afișează un indicator de încărcare până la redirecționare
+        child: CircularProgressIndicator(),
       ),
     );
   }

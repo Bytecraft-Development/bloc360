@@ -12,7 +12,7 @@ import 'controllers/controller.dart';
 import 'pages/registration.dart';
 import 'pages/login.dart';
 import 'pages/expenses.dart';
-import 'pages/association.dart';
+import 'pages/redirect.dart';
 
 void main() {
   usePathUrlStrategy();
@@ -55,8 +55,8 @@ class MyApp extends StatelessWidget {
         builder: (context, state) => SignUpView(),
       ),
       GoRoute(
-        path: '/association',
-        builder: (context, state) => AssociationView (),
+        path: '/redirect',
+        builder: (context, state) => RedirectView (),
       ),
     ],
   );
