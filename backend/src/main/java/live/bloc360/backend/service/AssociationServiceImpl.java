@@ -29,6 +29,7 @@ public class AssociationServiceImpl implements AssociationService {
 //        if (featureToggle == null || !featureToggle.isEnabled()) {
 //            throw new RuntimeException("Feature Toggle is not enable");
 //        }
+
         if (userHasAssociation(adminUsername)) {
             throw new BusinessException(HttpStatus.BAD_REQUEST, "User already has an association");
         }
