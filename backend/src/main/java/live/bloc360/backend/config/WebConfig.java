@@ -19,8 +19,7 @@ class WebConfig implements WebMvcConfigurer {
         registry.addMapping("*").allowedOrigins("https://bloc360.live");
         registry.addMapping("*").allowedOrigins("https://bloc360.live:8443");
         registry.addMapping("*").allowedOrigins("https://bloc360.live:8080");
-        registry.addMapping("*").allowedOrigins("https://bloc360.live:8443/realms/bloc360/protocol/openid-connect/token")
-                .allowedMethods("GET", "POST", "OPTIONS");
+        registry.addMapping("*").allowedOrigins("https://bloc360.live:8443/realms/bloc360/protocol/openid-connect/token");
     }
-};
+}
 
