@@ -1,8 +1,7 @@
 import 'dart:convert';
+import 'package:frontend/config/environment.dart';
 import 'package:http/http.dart' as http;
 import 'dart:html' as html;
-import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
-import 'package:jose/jose.dart';
 
 class TokenUtils {
   Future<String?> refreshToken(String refreshToken) async {
@@ -38,41 +37,21 @@ class TokenUtils {
   }
 
   Future<bool> isTokenValid(String token) async {
-    final jwksUri = Uri.parse(
-        'https://bloc360.live:8443/realms/bloc360/protocol/openid-connect/certs');
+    final url = Uri.parse('${EnvironmentConfig.API_URL}/validate');
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
 
     try {
-      // Fetch the JWKS (JSON Web Key Set)
-      final jwksResponse = await http.get(jwksUri);
-      if (jwksResponse.statusCode != 200) {
+      final response = await http.get(url, headers: headers);
+
+      if (response.statusCode == 200) {
+        // Parse the response body as a boolean
+        return jsonDecode(response.body) as bool;
+      } else {
         return false;
       }
-      final jwksData = jsonDecode(jwksResponse.body);
-
-      // Decode the token without verification to extract the header
-      final parts = token.split('.');
-      if (parts.length != 3) {
-        return false;
-      }
-      final header = jsonDecode(
-          utf8.decode(base64Url.decode(base64Url.normalize(parts[0]))));
-
-      // Find the key with the matching key ID (kid)
-      final keyId = header['kid'];
-      final key = jwksData['keys']
-          .firstWhere((k) => k['kid'] == keyId, orElse: () => null);
-      if (key == null) {
-        return false;
-      }
-
-      // Construct the public key from the JWK data
-      final publicKey = JsonWebKey.fromJson(key);
-
-      // Verify the token signature
-      final jwt = JWT.verify(token, publicKey as JWTKey);
-
-      // Optionally, you can add more checks here, e.g., checking the token expiration, issuer, audience, etc.
-      return true;
     } catch (e) {
       return false;
     }
