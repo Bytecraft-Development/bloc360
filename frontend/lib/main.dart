@@ -39,8 +39,7 @@ class MyApp extends StatelessWidget {
       ),
       GoRoute(
         path: '/login',
-        builder: (context, state) =>
-            _buildRouteWithTokenValidation(context, state, const LoginView()),
+        builder: (context, state) => LoginView(),
       ),
       GoRoute(
         path: '/hello',
