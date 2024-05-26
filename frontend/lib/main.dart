@@ -5,6 +5,7 @@ import 'package:frontend/pages/hello_world.dart';
 import 'package:frontend/pages/privacy_policy.dart';
 import 'package:frontend/pages/tos.dart';
 import 'package:frontend/controllers/simple_ui_controller.dart';
+import 'package:frontend/util/token_utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -14,6 +15,7 @@ import 'pages/login.dart';
 import 'pages/expenses.dart';
 import 'pages/redirect.dart';
 import 'pages/create_association.dart';
+import 'dart:html' as html;
 
 void main() {
   usePathUrlStrategy();
@@ -22,48 +24,71 @@ void main() {
 
 class MyApp extends StatelessWidget {
   final GoRouter _router = GoRouter(
-    initialLocation: '/login-page',
+    initialLocation: '/login',
     routes: [
       GoRoute(
         path: '/dashboard',
-        builder: (context, state) => ChangeNotifierProvider(
-          create: (context) => Controller(),
-          child: DashBoardScreen(),
+        builder: (context, state) => _buildRouteWithTokenValidation(
+          context,
+          state,
+          ChangeNotifierProvider(
+            create: (context) => Controller(),
+            child: const DashBoardScreen(),
+          ),
         ),
       ),
       GoRoute(
-        path: '/login-page',
-        builder: (context, state) => LoginView(),
+        path: '/login',
+        builder: (context, state) =>
+            _buildRouteWithTokenValidation(context, state, const LoginView()),
       ),
       GoRoute(
         path: '/hello',
-        builder: (context, state) => HelloWorldPage(),
+        builder: (context, state) => _buildRouteWithTokenValidation(
+            context, state, const HelloWorldPage()),
       ),
       GoRoute(
         path: '/tos',
-        builder: (context, state) => TermsOfService(),
+        builder: (context, state) =>
+            _buildRouteWithTokenValidation(context, state, TermsOfService()),
       ),
       GoRoute(
         path: '/privacy',
-        builder: (context, state) => PrivacyPolicy(),
+        builder: (context, state) => _buildRouteWithTokenValidation(
+            context, state, const PrivacyPolicy()),
       ),
       GoRoute(
         path: '/expenses',
-        builder: (context, state) => ExpensePage(),
+        builder: (context, state) =>
+            _buildRouteWithTokenValidation(context, state, ExpensePage()),
       ),
       GoRoute(
         path: '/register',
-        builder: (context, state) => SignUpView(),
+        builder: (context, state) =>
+            _buildRouteWithTokenValidation(context, state, const SignUpView()),
       ),
       GoRoute(
         path: '/redirect',
-        builder: (context, state) => RedirectView (),
+        builder: (context, state) =>
+            _buildRouteWithTokenValidation(context, state, RedirectView()),
       ),
       GoRoute(
         path: '/createAssociation',
-        builder: (context, state) => CreateAssociationPage (),
+        builder: (context, state) => _buildRouteWithTokenValidation(
+            context, state, CreateAssociationPage()),
       ),
     ],
+    redirect: (context, state) async {
+      final accessToken = html.window.localStorage['access_token'];
+      final isTokenValid = await TokenUtils().isTokenValid(accessToken ?? '');
+
+      if (state.path != '/dashboard' && isTokenValid) {
+        return '/dashboard?extra=$accessToken';
+      } else if (state.path != '/login' && !isTokenValid) {
+        return '/login';
+      }
+      return null;
+    },
   );
 
   @override
@@ -74,6 +99,35 @@ class MyApp extends StatelessWidget {
       routeInformationParser: _router.routeInformationParser,
       routeInformationProvider: _router.routeInformationProvider,
       title: 'Bloc360',
+    );
+  }
+
+  static Widget _buildRouteWithTokenValidation(
+      BuildContext context, GoRouterState state, Widget page) {
+    return FutureBuilder<bool>(
+      future: TokenUtils().isTokenValid(state.extra as String? ?? ''),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator();
+        } else if (snapshot.hasData && snapshot.data!) {
+          return page;
+        } else {
+          return FutureBuilder<String?>(
+            future: TokenUtils()
+                .refreshToken(html.window.localStorage['refresh_token'] ?? ''),
+            builder: (context, refreshSnapshot) {
+              if (refreshSnapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator();
+              } else if (refreshSnapshot.hasData &&
+                  refreshSnapshot.data != null) {
+                return page;
+              } else {
+                return const LoginView();
+              }
+            },
+          );
+        }
+      },
     );
   }
 }

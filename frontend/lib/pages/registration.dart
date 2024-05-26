@@ -459,7 +459,7 @@ class _SignUpViewState extends State<SignUpView> {
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
                                   context.go(
-                                      '/login-page'); // Folosește context.go pentru a naviga la ruta de login
+                                      '/login'); // Folosește context.go pentru a naviga la ruta de login
                                 },
                             ),
                           ],

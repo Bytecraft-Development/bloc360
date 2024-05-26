@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:html' as html;
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -105,10 +104,11 @@ class _LoginViewState extends State<LoginView> {
       final accessToken = tokenResponse['access_token'];
       final refreshToken = tokenResponse['refresh_token'];
       final idToken = tokenResponse['id_token'];
+      html.window.localStorage['access_token'] = accessToken;
+      html.window.localStorage['refresh_token'] = refreshToken;
 
       print('Access Token: $accessToken');
-      print('Refresh Token: $refreshToken');
-      print('ID Token: $idToken');
+
     } else {
       print('Failed to retrieve token: ${response.statusCode}');
       print(response.body);
