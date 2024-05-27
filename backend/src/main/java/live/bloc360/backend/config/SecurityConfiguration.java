@@ -3,7 +3,6 @@ package live.bloc360.backend.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -14,6 +13,13 @@ import org.springframework.security.oauth2.server.resource.authentication.Delega
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.CorsUtils;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -32,8 +38,9 @@ public class SecurityConfiguration {
 
         http
                 .csrf(AbstractHttpConfigurer::disable)
+                .cors(c -> c.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                         .requestMatchers("/sendmail").hasRole("realm_system")
                         .requestMatchers("/validate").hasRole("realm_user")
                         .requestMatchers("/**").permitAll()
@@ -48,6 +55,37 @@ public class SecurityConfiguration {
     @Bean
     public JwtDecoder jwtDecoder() {
         return JwtDecoders.fromIssuerLocation(issuerUrl);
+    }
+
+//    @Bean
+//    public WebMvcConfigurer corsConfigurer() {
+//        return new WebMvcConfigurer() {
+//            @Override
+//            public void addCorsMappings(CorsRegistry registry) {
+//                registry.addMapping("/**").allowedOrigins("http://localhost");
+//                registry.addMapping("/**").allowedOrigins("https://localhost");
+//                registry.addMapping("/**").allowedOrigins("http://bloc360.live");
+//                registry.addMapping("/**").allowedOrigins("https://bloc360.live/**");
+//                registry.addMapping("/**").allowedOrigins("http://bloc360.live/**");
+//                registry.addMapping("/**").allowedOrigins("https://bloc360.live");
+//                registry.addMapping("/**").allowedOrigins("https://bloc360.live:8443");
+//                registry.addMapping("/**").allowedOrigins("https://bloc360.live:8080");
+//                registry.addMapping("/**").allowedOrigins("https://bloc360.live:8443/realms/bloc360/protocol/openid-connect/token");
+//            }
+//        };
+//    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOriginPatterns(List.of("http://localhost/*", "http://localhost*", "https://bloc360.live", "https://bloc360.live/*"));
+        configuration.setAllowedMethods(Arrays.asList("GET","POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
+        configuration.setAllowCredentials(true);
+        configuration.applyPermitDefaultValues();
+        configuration.addAllowedHeader("Authorization");
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**",configuration);
+        return source;
     }
 
 }
