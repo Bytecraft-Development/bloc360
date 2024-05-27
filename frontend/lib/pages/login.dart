@@ -67,7 +67,7 @@ class _LoginViewState extends State<LoginView> {
     final token = Uri.parse(result).queryParameters['token'];
 
     // Exchange the authorization code for tokens
-    const tokenUrl =EnvironmentConfig.KEYCLOAK_LOGIN_URL;
+    const tokenUrl =EnvironmentConfig.KEYCLOAK_TOKEN_URL;
     final response = await http.post(
       Uri.parse(tokenUrl),
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
@@ -98,7 +98,7 @@ class _LoginViewState extends State<LoginView> {
     String password = _passwordController.text;
 
     final response = await http.post(
-      Uri.parse(EnvironmentConfig.KEYCLOAK_LOGIN_URL),
+      Uri.parse(EnvironmentConfig.KEYCLOAK_TOKEN_URL),
       headers: <String, String>{
         'Content-Type': 'application/x-www-form-urlencoded',
       },

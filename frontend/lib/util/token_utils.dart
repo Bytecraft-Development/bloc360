@@ -5,7 +5,7 @@ import 'dart:html' as html;
 
 class TokenUtils {
   Future<String?> refreshToken(String refreshToken) async {
-    final url = Uri.parse(EnvironmentConfig.KEYCLOAK_LOGIN_URL);
+    final url = Uri.parse(EnvironmentConfig.KEYCLOAK_TOKEN_URL);
     final headers = {
       'Content-Type': 'application/x-www-form-urlencoded',
     };
