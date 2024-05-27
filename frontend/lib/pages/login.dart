@@ -51,22 +51,14 @@ class _LoginViewState extends State<LoginView> {
     Map<String, dynamic> decodedToken = JwtDecoder.decode(_accessToken!);
     int _expiry = decodedToken['exp'];
     if (DateTime.now().millisecondsSinceEpoch < _expiry * 1000) {
-      _navigateToHelloWorldPage();
+      context.go('/dashboard');
     } else {
       html.window.localStorage.remove('access_token');
     }
   }
 
-  Future<void> _launchURL(String url) async {
-    if (await canLaunchUrl(Uri.parse(url))) {
-      await launchUrl(Uri.parse(url));
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
 
   Future<void> _googleLogin() async {
-    // _launchURL(EnvironmentConfig.GOOGLE_LOGIN_URL);
     String clientId = 'bloc360google';
     String redirectUri = 'https://bloc360.live/auth.html';
 
@@ -145,9 +137,6 @@ class _LoginViewState extends State<LoginView> {
     }
   }
 
-  Future<void> _navigateToHelloWorldPage() async {
-    context.go('/hello', extra: _accessToken);
-  }
 
   @override
   Widget build(BuildContext context) {
