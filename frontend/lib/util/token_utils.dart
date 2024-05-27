@@ -5,8 +5,7 @@ import 'dart:html' as html;
 
 class TokenUtils {
   Future<String?> refreshToken(String refreshToken) async {
-    final url = Uri.parse(
-        'https://bloc360.live:8443/realms/bloc360/protocol/openid-connect/token');
+    final url = Uri.parse(EnvironmentConfig.KEYCLOAK_LOGIN_URL);
     final headers = {
       'Content-Type': 'application/x-www-form-urlencoded',
     };

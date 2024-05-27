@@ -3,7 +3,6 @@ import 'dart:html' as html;
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
 import 'package:frontend/config/environment.dart';
 import 'package:get/get.dart';
@@ -11,9 +10,6 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:openid_client/openid_client_browser.dart';
-import 'package:url_launcher/url_launcher.dart';
-
 import '../constants/constants.dart';
 import '../controllers/simple_ui_controller.dart';
 
@@ -35,14 +31,6 @@ class _LoginViewState extends State<LoginView> {
     _loadTokenFromStorage();
   }
 
-  // Future<void> _launchURL(String url) async {
-  //   if (await canLaunchUrl(Uri.parse(url))) {
-  //     await launchUrl(Uri.parse(url));
-  //   } else {
-  //     throw 'Could not launch $url';
-  //   }
-  // }
-
   Future<void> _loadTokenFromStorage() async {
     _accessToken = html.window.localStorage['access_token'];
     if (_accessToken == null) {
@@ -59,10 +47,10 @@ class _LoginViewState extends State<LoginView> {
 
   Future<void> _googleLogin() async {
     String clientId = 'bloc360google';
-    String redirectUri = 'https://bloc360.live/auth.html';
+    String redirectUri = '${EnvironmentConfig.BASE_URL}/auth.html';
 
     final authUrl =
-        'https://bloc360.live:8443/realms/bloc360/protocol/openid-connect/auth'
+        '${EnvironmentConfig.KEYCLOAK_BASE_URL}/protocol/openid-connect/auth'
         '?client_id=$clientId'
         '&response_type=code'
         '&scope=openid%20profile%20email'
@@ -79,8 +67,7 @@ class _LoginViewState extends State<LoginView> {
     final token = Uri.parse(result).queryParameters['token'];
 
     // Exchange the authorization code for tokens
-    const tokenUrl =
-        'https://bloc360.live:8443/realms/bloc360/protocol/openid-connect/token';
+    const tokenUrl =EnvironmentConfig.KEYCLOAK_LOGIN_URL;
     final response = await http.post(
       Uri.parse(tokenUrl),
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
