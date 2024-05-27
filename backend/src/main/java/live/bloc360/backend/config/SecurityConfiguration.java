@@ -42,7 +42,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                         .requestMatchers("/sendmail").hasRole("realm_system")
-                        .requestMatchers("/validate").hasRole("realm_user")
+                        .requestMatchers("/validate").hasAnyRole("realm_user", "realm_admin")
                         .requestMatchers("/**").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
