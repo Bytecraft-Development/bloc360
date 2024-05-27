@@ -48,13 +48,11 @@ class MyApp extends StatelessWidget {
       ),
       GoRoute(
         path: '/tos',
-        builder: (context, state) =>
-            _buildRouteWithTokenValidation(context, state, TermsOfService()),
+        builder: (context, state) => TermsOfService(),
       ),
       GoRoute(
         path: '/privacy',
-        builder: (context, state) => _buildRouteWithTokenValidation(
-            context, state, const PrivacyPolicy()),
+        builder: (context, state) => const PrivacyPolicy(),
       ),
       GoRoute(
         path: '/expenses',
