@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/pages/login.dart';
+import 'package:frontend/pages/logout.dart';
 
 import '../../../constants/layout_constants.dart';
 import 'drawer_list_tile.dart';
-
 
 class DrawerMenu extends StatelessWidget {
   const DrawerMenu({Key? key}) : super(key: key);
@@ -14,7 +15,10 @@ class DrawerMenu extends StatelessWidget {
         children: [
           Container(
             padding: EdgeInsets.all(appPadding),
-            child: Image.asset("assets/images/logo_bloc360_transparent.png", scale: 0.7,),
+            child: Image.asset(
+              "assets/images/logo_bloc360_transparent.png",
+              scale: 0.7,
+            ),
           ),
           DrawerListTile(
               title: 'Dash Board',
@@ -44,7 +48,11 @@ class DrawerMenu extends StatelessWidget {
               svgSrc: 'assets/icons/Setting.svg',
               tap: () {}),
           DrawerListTile(
-              title: 'Logout', svgSrc: 'assets/icons/Logout.svg', tap: () {}),
+              tap: () {
+                Logout().logout();
+              },
+              title: 'Logout',
+              svgSrc: 'assets/icons/Logout.svg'),
         ],
       ),
     );
