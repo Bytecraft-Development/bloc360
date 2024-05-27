@@ -80,7 +80,7 @@ class MyApp extends StatelessWidget {
     redirect: (context, state) async {
       final accessToken = html.window.localStorage['access_token'];
       final isTokenValid = await TokenUtils().isTokenValid(accessToken ?? '');
-         if (!isTokenValid && state.path != '/login') {
+      if (!isTokenValid && state.path != '/login') {
         return '/login';
       }
       return null;
@@ -101,7 +101,7 @@ class MyApp extends StatelessWidget {
   static Widget _buildRouteWithTokenValidation(
       BuildContext context, GoRouterState state, Widget page) {
     return FutureBuilder<bool>(
-      future: TokenUtils().isTokenValid(state.extra as String? ?? ''),
+      future: TokenUtils().isTokenValid(html.window.localStorage['access_token']!),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator();
