@@ -57,12 +57,12 @@ class _LoginViewState extends State<LoginView> {
     }
   }
 
-
   Future<void> _googleLogin() async {
     String clientId = 'bloc360google';
     String redirectUri = 'https://bloc360.live/auth.html';
 
-    final authUrl = 'https://bloc360.live:8443/realms/bloc360/protocol/openid-connect/auth'
+    final authUrl =
+        'https://bloc360.live:8443/realms/bloc360/protocol/openid-connect/auth'
         '?client_id=$clientId'
         '&response_type=code'
         '&scope=openid%20profile%20email'
@@ -79,7 +79,8 @@ class _LoginViewState extends State<LoginView> {
     final token = Uri.parse(result).queryParameters['token'];
 
     // Exchange the authorization code for tokens
-    const tokenUrl = 'https://bloc360.live:8443/realms/bloc360/protocol/openid-connect/token';
+    const tokenUrl =
+        'https://bloc360.live:8443/realms/bloc360/protocol/openid-connect/token';
     final response = await http.post(
       Uri.parse(tokenUrl),
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
@@ -95,18 +96,14 @@ class _LoginViewState extends State<LoginView> {
       final tokenResponse = json.decode(response.body);
       final accessToken = tokenResponse['access_token'];
       final refreshToken = tokenResponse['refresh_token'];
-      final idToken = tokenResponse['id_token'];
+      // final idToken = tokenResponse['id_token'];
       html.window.localStorage['access_token'] = accessToken;
       html.window.localStorage['refresh_token'] = refreshToken;
-
-      print('Access Token: $accessToken');
-
+      context.go('/dashboard');
     } else {
       print('Failed to retrieve token: ${response.statusCode}');
       print(response.body);
     }
-
-
   }
 
   Future<void> _login() async {
@@ -136,7 +133,6 @@ class _LoginViewState extends State<LoginView> {
       print('Failed to login: ${response.statusCode}');
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -188,7 +184,8 @@ class _LoginViewState extends State<LoginView> {
                     style: kLoginTermsAndPrivacyStyle(size),
                     children: <TextSpan>[
                       TextSpan(
-                        text: 'Creating an account means you\'re okay with our ',
+                        text:
+                            'Creating an account means you\'re okay with our ',
                       ),
                       TextSpan(
                         text: 'Terms of Services',
@@ -287,7 +284,8 @@ class _LoginViewState extends State<LoginView> {
       children: [
         SizedBox(height: size.height * 0.03),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 0),
+          padding:
+              EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 0),
           child: Text(
             'Intra in cont',
             style: kLoginTitleStyle(size),
@@ -295,7 +293,8 @@ class _LoginViewState extends State<LoginView> {
         ),
         const SizedBox(height: 10),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 0),
+          padding:
+              EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 0),
           child: Text(
             'Bine ai venit! Alege o metoda de log in:',
             style: kLoginSubtitleStyle(size).copyWith(
@@ -451,12 +450,12 @@ class _LoginViewState extends State<LoginView> {
                     Row(
                       children: [
                         Obx(() => Checkbox(
-                          value: simpleUIController.isRememberMe.value,
-                          onChanged: (value) {
-                            simpleUIController.isRememberMe.value = value!;
-                          },
-                          activeColor: Colors.blue,
-                        )),
+                              value: simpleUIController.isRememberMe.value,
+                              onChanged: (value) {
+                                simpleUIController.isRememberMe.value = value!;
+                              },
+                              activeColor: Colors.blue,
+                            )),
                         Text(
                           'Ține minte',
                           style: TextStyle(
@@ -535,7 +534,8 @@ class _LoginViewState extends State<LoginView> {
       children: [
         SizedBox(height: size.height * 0.03),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 0),
+          padding:
+              EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 0),
           child: Text(
             'Intra in cont',
             style: TextStyle(
@@ -546,7 +546,8 @@ class _LoginViewState extends State<LoginView> {
         ),
         const SizedBox(height: 10),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 0),
+          padding:
+              EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: 0),
           child: Text(
             'Bine ai venit! Alege o metoda de log in:',
             style: TextStyle(
@@ -699,12 +700,12 @@ class _LoginViewState extends State<LoginView> {
                     Row(
                       children: [
                         Obx(() => Checkbox(
-                          value: simpleUIController.isRememberMe.value,
-                          onChanged: (value) {
-                            simpleUIController.isRememberMe.value = value!;
-                          },
-                          activeColor: Colors.blue,
-                        )),
+                              value: simpleUIController.isRememberMe.value,
+                              onChanged: (value) {
+                                simpleUIController.isRememberMe.value = value!;
+                              },
+                              activeColor: Colors.blue,
+                            )),
                         Text(
                           'Ține minte',
                           style: TextStyle(
@@ -737,7 +738,8 @@ class _LoginViewState extends State<LoginView> {
                     simpleUIController.isObscure.value = true;
                   },
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 8.0),
                     child: RichText(
                       textAlign: TextAlign.center,
                       text: TextSpan(
@@ -770,7 +772,6 @@ class _LoginViewState extends State<LoginView> {
       ],
     );
   }
-
 
   Widget googleButton(Size size) {
     double buttonFontSize = size.width < 600 ? 14 : 16;
@@ -807,7 +808,7 @@ class _LoginViewState extends State<LoginView> {
         elevation: 0,
       ).copyWith(
         backgroundColor: MaterialStateProperty.resolveWith<Color>(
-              (Set<MaterialState> states) {
+          (Set<MaterialState> states) {
             if (states.contains(MaterialState.pressed)) {
               return Colors.grey[200]!;
             }
@@ -853,7 +854,7 @@ class _LoginViewState extends State<LoginView> {
         elevation: 0,
       ).copyWith(
         backgroundColor: MaterialStateProperty.resolveWith<Color>(
-              (Set<MaterialState> states) {
+          (Set<MaterialState> states) {
             if (states.contains(MaterialState.pressed)) {
               return Colors.grey[200]!;
             }
@@ -893,8 +894,6 @@ class _LoginViewState extends State<LoginView> {
       ),
     );
   }
-
-
 
   Widget _buildImage(Size size) {
     return Flexible(
