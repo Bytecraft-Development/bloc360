@@ -80,10 +80,7 @@ class MyApp extends StatelessWidget {
     redirect: (context, state) async {
       final accessToken = html.window.localStorage['access_token'];
       final isTokenValid = await TokenUtils().isTokenValid(accessToken ?? '');
-
-      if (state.path != '/dashboard' && isTokenValid) {
-        return '/dashboard?extra=$accessToken';
-      } else if (state.path != '/login' && !isTokenValid) {
+         if (!isTokenValid && state.path != '/login') {
         return '/login';
       }
       return null;

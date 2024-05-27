@@ -57,24 +57,6 @@ public class SecurityConfiguration {
         return JwtDecoders.fromIssuerLocation(issuerUrl);
     }
 
-//    @Bean
-//    public WebMvcConfigurer corsConfigurer() {
-//        return new WebMvcConfigurer() {
-//            @Override
-//            public void addCorsMappings(CorsRegistry registry) {
-//                registry.addMapping("/**").allowedOrigins("http://localhost");
-//                registry.addMapping("/**").allowedOrigins("https://localhost");
-//                registry.addMapping("/**").allowedOrigins("http://bloc360.live");
-//                registry.addMapping("/**").allowedOrigins("https://bloc360.live/**");
-//                registry.addMapping("/**").allowedOrigins("http://bloc360.live/**");
-//                registry.addMapping("/**").allowedOrigins("https://bloc360.live");
-//                registry.addMapping("/**").allowedOrigins("https://bloc360.live:8443");
-//                registry.addMapping("/**").allowedOrigins("https://bloc360.live:8080");
-//                registry.addMapping("/**").allowedOrigins("https://bloc360.live:8443/realms/bloc360/protocol/openid-connect/token");
-//            }
-//        };
-//    }
-
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
