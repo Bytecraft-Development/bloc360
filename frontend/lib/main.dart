@@ -14,6 +14,7 @@ import 'pages/registration.dart';
 import 'pages/login.dart';
 import 'pages/expenses.dart';
 import 'pages/redirect.dart';
+import 'pages/association_support.dart';
 import 'pages/create_association.dart';
 import 'dart:html' as html;
 
@@ -74,6 +75,11 @@ class MyApp extends StatelessWidget {
         builder: (context, state) => _buildRouteWithTokenValidation(
             context, state, CreateAssociationPage()),
       ),
+      GoRoute(
+        path:'/association_support',
+        builder: (context, state) => _buildRouteWithTokenValidation(
+            context, state, AssociationSupport()),
+      )
     ],
     redirect: (context, state) async {
       final accessToken = html.window.localStorage['access_token'];
