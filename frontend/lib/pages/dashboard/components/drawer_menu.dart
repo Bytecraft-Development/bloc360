@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/pages/login.dart';
 import 'package:frontend/pages/logout.dart';
 
 import '../../../constants/layout_constants.dart';
@@ -12,28 +11,25 @@ class DrawerMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
+
         children: [
-          Container(
-            padding: EdgeInsets.all(appPadding),
-            child: Image.asset(
-              "assets/images/logo_bloc360_transparent.png",
-              scale: 0.7,
-            ),
+          Image.asset(width: 170, height: 155,
+            "assets/images/logo_bloc360_transparent.png",
           ),
           DrawerListTile(
-              title: 'Dash Board',
+              title: 'Dashboard',
               svgSrc: 'assets/icons/Dashboard.svg',
               tap: () {
                 print('You Click Dash Board');
               }),
           DrawerListTile(
-              title: 'Blog Post',
+              title: 'Cheltuieli',
               svgSrc: 'assets/icons/BlogPost.svg',
               tap: () {}),
           DrawerListTile(
-              title: 'Message', svgSrc: 'assets/icons/Message.svg', tap: () {}),
+              title: 'Rapoarte', svgSrc: 'assets/icons/Message.svg', tap: () {}),
           DrawerListTile(
-              title: 'Statistics',
+              title: 'Membri',
               svgSrc: 'assets/icons/Statistics.svg',
               tap: () {}),
           Padding(
@@ -44,7 +40,7 @@ class DrawerMenu extends StatelessWidget {
             ),
           ),
           DrawerListTile(
-              title: 'Settings',
+              title: 'Setari',
               svgSrc: 'assets/icons/Setting.svg',
               tap: () {}),
           DrawerListTile(

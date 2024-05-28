@@ -22,7 +22,7 @@ class DashBoardScreen extends StatelessWidget {
           children: [
             if (Responsive.isDesktop(context)) Expanded(child: DrawerMenu(),),
             Expanded(
-              flex: 5,
+              flex: 6,
               child: DashboardContent(),
             )
           ],
