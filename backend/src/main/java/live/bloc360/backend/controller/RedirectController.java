@@ -27,7 +27,7 @@ public class RedirectController {
         Jwt jwt = (Jwt) authentication.getPrincipal();
         List<String> roles = jwt.getClaimAsStringList("groups");
 
-        if (roles.contains("bloc")) {
+        if (roles.contains("administrator")) {
             String adminUsername = jwt.getClaimAsString("preferred_username");
             Optional<Association> association = associationService.findByAdminUsername(adminUsername);
             if (association.isPresent()) {
