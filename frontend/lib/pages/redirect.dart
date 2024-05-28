@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
-import 'dart:html' as html;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RedirectView extends StatefulWidget {
   @override
   _RedirectViewState createState() => _RedirectViewState();
+
 }
 
 class _RedirectViewState extends State<RedirectView> {
@@ -16,7 +17,9 @@ class _RedirectViewState extends State<RedirectView> {
   }
 
   Future<void> _checkRoleAndRedirect() async {
-    String? accessToken = html.window.localStorage['access_token'];
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? accessToken = prefs.getString('access_token');
+
     const API_URL = String.fromEnvironment('API_URL');
     final String baseUrl = API_URL;
 

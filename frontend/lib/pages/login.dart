@@ -1,15 +1,14 @@
 import 'dart:convert';
-import 'dart:html' as html;
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
 import 'package:frontend/config/environment.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../constants/constants.dart';
 import '../controllers/simple_ui_controller.dart';
 
@@ -23,6 +22,7 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
   String? _accessToken;
 
   @override
@@ -32,7 +32,8 @@ class _LoginViewState extends State<LoginView> {
   }
 
   Future<void> _loadTokenFromStorage() async {
-    _accessToken = html.window.localStorage['access_token'];
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    _accessToken = prefs.getString('access_token');
     if (_accessToken == null) {
       return;
     }
@@ -41,11 +42,13 @@ class _LoginViewState extends State<LoginView> {
     if (DateTime.now().millisecondsSinceEpoch < _expiry * 1000) {
       context.go('/dashboard');
     } else {
-      html.window.localStorage.remove('access_token');
+      prefs.remove('access_token');
     }
   }
 
   Future<void> _googleLogin() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
     String clientId = 'bloc360google';
     String redirectUri = '${EnvironmentConfig.BASE_URL}/auth.html';
 
@@ -56,24 +59,25 @@ class _LoginViewState extends State<LoginView> {
         '&scope=openid%20profile%20email'
         '&redirect_uri=$redirectUri';
 
-    // Start the authentication flow
-    final result = await FlutterWebAuth2.authenticate(
-      url: authUrl,
-      callbackUrlScheme: Uri.parse(redirectUri).scheme,
-    );
+    // // Start the authentication flow
+    // final result = await FlutterWebAuth2.authenticate(
+    //   url: authUrl,
+    //   callbackUrlScheme: Uri.parse(redirectUri).scheme,
+    // );
 
     // Extract the authorization code from the result
-    final code = Uri.parse(result).queryParameters['code'];
-    final token = Uri.parse(result).queryParameters['token'];
+    // final code = Uri.parse(result).queryParameters['code'];
+    final code = '1234d';
+    // final token = Uri.parse(result).queryParameters['token'];
 
     // Exchange the authorization code for tokens
-    const tokenUrl =EnvironmentConfig.KEYCLOAK_TOKEN_URL;
+    const tokenUrl = EnvironmentConfig.KEYCLOAK_TOKEN_URL;
     final response = await http.post(
       Uri.parse(tokenUrl),
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
       body: {
         'grant_type': 'authorization_code',
-        'code': code ?? '',
+        'code': code,
         'client_id': 'bloc360google',
         'redirect_uri': redirectUri,
       },
@@ -84,8 +88,8 @@ class _LoginViewState extends State<LoginView> {
       final accessToken = tokenResponse['access_token'];
       final refreshToken = tokenResponse['refresh_token'];
       // final idToken = tokenResponse['id_token'];
-      html.window.localStorage['access_token'] = accessToken;
-      html.window.localStorage['refresh_token'] = refreshToken;
+      prefs.setString('access_token', accessToken);
+      prefs.setString('refresh_token', refreshToken);
       context.go('/dashboard');
     } else {
       print('Failed to retrieve token: ${response.statusCode}');
@@ -94,6 +98,7 @@ class _LoginViewState extends State<LoginView> {
   }
 
   Future<void> _login() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     String username = _usernameController.text;
     String password = _passwordController.text;
 
@@ -113,8 +118,7 @@ class _LoginViewState extends State<LoginView> {
     if (response.statusCode == 200) {
       Map<String, dynamic> jsonResponse = jsonDecode(response.body);
       _accessToken = jsonResponse['access_token'];
-      html.window.localStorage['access_token'] = _accessToken!;
-
+      prefs.setString('access_token', _accessToken!);
       context.go('/redirect');
     } else {
       print('Failed to login: ${response.statusCode}');
@@ -125,6 +129,7 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     double paddingValue = size.width * 0.04;
+    bool isWeb = size.width > 600;
 
     SimpleUIController simpleUIController = Get.find<SimpleUIController>();
 
@@ -132,79 +137,82 @@ class _LoginViewState extends State<LoginView> {
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
         backgroundColor: Colors.black12,
-        body: Center(
-          child: Column(
-            children: [
-              SizedBox(height: 40),
-              Container(
-                width: size.width * 0.8,
-                height: size.height * 0.9,
-                padding: EdgeInsets.all(paddingValue),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(50),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      spreadRadius: 5,
-                      blurRadius: 7,
-                      offset: Offset(0, 3),
-                    ),
-                  ],
-                ),
-                child: LayoutBuilder(
-                  builder: (context, constraints) {
-                    if (constraints.maxWidth > 600) {
-                      return _buildLargeScreen(size, simpleUIController);
-                    } else {
-                      return _buildSmallScreen(size, simpleUIController);
-                    }
-                  },
-                ),
-              ),
-              SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: RichText(
-                  textAlign: TextAlign.center,
-                  text: TextSpan(
-                    style: kLoginTermsAndPrivacyStyle(size),
-                    children: <TextSpan>[
-                      TextSpan(
-                        text:
-                            'Creating an account means you\'re okay with our ',
-                      ),
-                      TextSpan(
-                        text: 'Terms of Services',
-                        style: TextStyle(
-                          color: Colors.blue,
-                          decoration: TextDecoration.underline,
-                          fontSize: 10,
-                        ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            context.go(
-                                '/tos'); // Folosește context.go pentru a naviga la Terms of Services
-                          },
-                      ),
-                      TextSpan(text: ' and our '),
-                      TextSpan(
-                        text: 'Privacy Policy',
-                        style: TextStyle(
-                          color: Colors.blue,
-                          decoration: TextDecoration.underline,
-                          fontSize: 10,
-                        ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            context.go('/privacy');
-                          },
+        body: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Center(
+            child: Column(
+              children: [
+                SizedBox(height: 40),
+                Container(
+                  width: isWeb ? size.width * 0.8 : size.width,
+                  height: isWeb ? size.height * 0.9 : size.height,
+                  padding: EdgeInsets.all(paddingValue),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(50),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                        offset: Offset(0, 3),
                       ),
                     ],
                   ),
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      if (constraints.maxWidth > 600) {
+                        return _buildLargeScreen(size, simpleUIController);
+                      } else {
+                        return _buildSmallScreen(size, simpleUIController);
+                      }
+                    },
+                  ),
                 ),
-              ),
-            ],
+                SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      style: kLoginTermsAndPrivacyStyle(size),
+                      children: <TextSpan>[
+                        TextSpan(
+                          text:
+                              'Creating an account means you\'re okay with our ',
+                        ),
+                        TextSpan(
+                          text: 'Terms of Services',
+                          style: TextStyle(
+                            color: Colors.blue,
+                            decoration: TextDecoration.underline,
+                            fontSize: 10,
+                          ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              context.go(
+                                  '/tos'); // Folosește context.go pentru a naviga la Terms of Services
+                            },
+                        ),
+                        TextSpan(text: ' and our '),
+                        TextSpan(
+                          text: 'Privacy Policy',
+                          style: TextStyle(
+                            color: Colors.blue,
+                            decoration: TextDecoration.underline,
+                            fontSize: 10,
+                          ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              context.go('/privacy');
+                            },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

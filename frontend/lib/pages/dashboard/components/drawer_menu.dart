@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/pages/logout.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../constants/layout_constants.dart';
 import 'drawer_list_tile.dart';
@@ -45,7 +46,7 @@ class DrawerMenu extends StatelessWidget {
               tap: () {}),
           DrawerListTile(
               tap: () {
-                Logout().logout();
+                Logout().logout(() => context.go('/login'));
               },
               title: 'Logout',
               svgSrc: 'assets/icons/Logout.svg'),
