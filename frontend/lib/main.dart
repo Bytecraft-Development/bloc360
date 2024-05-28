@@ -14,7 +14,6 @@ import 'controllers/controller.dart';
 import 'pages/registration.dart';
 import 'pages/login.dart';
 import 'pages/expenses.dart';
-import 'pages/redirect.dart';
 import 'pages/association_support.dart';
 import 'pages/create_association.dart';
 
@@ -68,11 +67,6 @@ class _MyAppState extends State<MyApp> {
       GoRoute(
         path: '/register',
         builder: (context, state) => SignUpView(),
-      ),
-      GoRoute(
-        path: '/redirect',
-        builder: (context, state) =>
-            _buildRouteWithTokenValidation(context, state, RedirectView()),
       ),
       GoRoute(
         path: '/createAssociation',

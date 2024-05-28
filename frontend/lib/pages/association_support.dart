@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:frontend/pages/dashboard/components/custom_appbar.dart';
 
 class AssociationSupport extends StatefulWidget {
   @override
@@ -10,8 +11,10 @@ class _AssociationSupportState extends State<AssociationSupport> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Association Support'),
+      backgroundColor: Colors.white,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(60),
+        child: const CustomAppbar(),
       ),
       body: Center(
         child: Column(
@@ -34,4 +37,3 @@ class _AssociationSupportState extends State<AssociationSupport> {
     );
   }
 }
-

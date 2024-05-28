@@ -119,7 +119,7 @@ class _LoginViewState extends State<LoginView> {
       Map<String, dynamic> jsonResponse = jsonDecode(response.body);
       _accessToken = jsonResponse['access_token'];
       prefs.setString('access_token', _accessToken!);
-      context.go('/redirect');
+      context.go('/dashboard');
     } else {
       print('Failed to login: ${response.statusCode}');
     }
