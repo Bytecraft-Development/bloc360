@@ -351,7 +351,6 @@ class _LoginViewState extends State<LoginView> {
                     borderRadius: BorderRadius.circular(5),
                   ),
                   child: TextFormField(
-                    key: Key('email'),
                     controller: _usernameController,
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.email_outlined),
@@ -642,7 +641,6 @@ class _LoginViewState extends State<LoginView> {
                     borderRadius: BorderRadius.circular(5),
                   ),
                   child: TextFormField(
-                    key: Key('password'),
                     onFieldSubmitted: (value) {
                       _login();
                     },
@@ -869,7 +867,6 @@ class _LoginViewState extends State<LoginView> {
       width: buttonWidth,
       height: buttonHeight,
       child: ElevatedButton(
-        key: Key('loginButton'),
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all(Color(0xFF275DAD)),
           shape: MaterialStateProperty.all(
