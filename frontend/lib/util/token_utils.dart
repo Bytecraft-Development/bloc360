@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:frontend/config/environment.dart';
 import 'package:http/http.dart' as http;
-import 'dart:html' as html;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TokenUtils {
   Future<String?> refreshToken(String refreshToken) async {
@@ -22,9 +22,9 @@ class TokenUtils {
         final responseData = jsonDecode(response.body);
         final accessToken = responseData['access_token'];
         final refreshToken = responseData['refresh_token'];
-
-        html.window.localStorage['access_token'] = accessToken;
-        html.window.localStorage['refresh_token'] = refreshToken;
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString('access_token', accessToken);
+        prefs.setString('refresh_token', refreshToken);
 
         return accessToken;
       } else {

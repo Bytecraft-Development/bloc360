@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/config/environment.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'cui_input.dart';
 import 'expenses.dart';
-import 'dart:html' as html;
 
 class HelloWorldPage extends StatelessWidget {
-
-
   const HelloWorldPage({Key? key}) : super(key: key);
 
   @override
@@ -28,7 +26,7 @@ class HelloWorldPage extends StatelessWidget {
               } else if (snapshot.hasError) {
                 return Center(child: Text('Error: ${snapshot.error}'));
               } else {
-                // Afișează textul primit în răspunsul de la server
+                // Display the text received in the response from the server
                 return Center(child: Text(snapshot.data.toString()));
               }
             },
@@ -36,7 +34,7 @@ class HelloWorldPage extends StatelessWidget {
           SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
-              // Navighează către pagina CuiInputPage
+              // Navigate to CuiInputPage
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => CuiInputPage()),
@@ -46,7 +44,7 @@ class HelloWorldPage extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () {
-              // Navighează către pagina ExpensePage
+              // Navigate to ExpensePage
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => ExpensePage()),
@@ -59,24 +57,22 @@ class HelloWorldPage extends StatelessWidget {
     );
   }
 
-
-
   Future<String> _fetchHelloWorldData() async {
-    var _accessToken = html.window.localStorage['access_token'];
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? _accessToken = prefs.getString('access_token');
 
     final response = await http.get(
-
-        Uri.parse('${EnvironmentConfig.API_URL}/hello'),
+      Uri.parse('${EnvironmentConfig.API_URL}/hello'),
       headers: <String, String>{
         'Authorization': 'Bearer $_accessToken',
       },
     );
 
     if (response.statusCode == 200) {
-      // Returnează textul primit în răspunsul de la server
+      // Return the text received in the response from the server
       return response.body;
     } else {
-      // Returnează un mesaj de eroare în cazul eșuării cererii
+      // Return an error message in case the request failed
       throw Exception('Failed to fetch data: ${response.statusCode}');
     }
   }

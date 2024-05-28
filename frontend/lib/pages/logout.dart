@@ -1,14 +1,12 @@
-
-import 'dart:html' as html;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Logout {
+  Future<void> logout(Function onLogoutComplete) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('access_token');
+    await prefs.remove('refresh_token');
 
-  void logout() {
-    html.window.localStorage.remove('access_token');
-    html.window.localStorage.remove('refresh_token');
-    html.window.location.href = '/login';
+    // Call the provided callback function to handle navigation after logout
+    onLogoutComplete();
   }
 }
-
-
-

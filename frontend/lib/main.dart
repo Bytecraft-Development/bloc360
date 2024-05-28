@@ -9,6 +9,7 @@ import 'package:frontend/util/token_utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'controllers/controller.dart';
 import 'pages/registration.dart';
 import 'pages/login.dart';
@@ -16,14 +17,18 @@ import 'pages/expenses.dart';
 import 'pages/redirect.dart';
 import 'pages/association_support.dart';
 import 'pages/create_association.dart';
-import 'dart:html' as html;
 
 void main() {
   usePathUrlStrategy();
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   final GoRouter _router = GoRouter(
     initialLocation: '/login',
     routes: [
@@ -44,8 +49,8 @@ class MyApp extends StatelessWidget {
       ),
       GoRoute(
         path: '/hello',
-        builder: (context, state) => _buildRouteWithTokenValidation(
-            context, state, const HelloWorldPage()),
+        builder: (context, state) =>
+            _buildRouteWithTokenValidation(context, state, const HelloWorldPage()),
       ),
       GoRoute(
         path: '/tos',
@@ -62,23 +67,28 @@ class MyApp extends StatelessWidget {
       ),
       GoRoute(
         path: '/register',
-        builder: (context, state) => SignUpView(),
+        builder: (context, state) =>
+            _buildRouteWithTokenValidation(context, state, const SignUpView()),
       ),
       GoRoute(
         path: '/redirect',
-        builder: (context, state) => RedirectView(),
+        builder: (context, state) =>
+            _buildRouteWithTokenValidation(context, state, RedirectView()),
       ),
       GoRoute(
         path: '/createAssociation',
-        builder: (context, state) => CreateAssociationPage(),
+        builder: (context, state) =>
+            _buildRouteWithTokenValidation(context, state, CreateAssociationPage()),
       ),
       GoRoute(
-        path: '/association_support',
-        builder: (context, state) => AssociationSupport(),
+        path:'/association_support',
+        builder: (context, state) => _buildRouteWithTokenValidation(
+            context, state, AssociationSupport()),
       )
     ],
     redirect: (context, state) async {
-      final accessToken = html.window.localStorage['access_token'];
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final accessToken = prefs.getString('access_token');
       final isTokenValid = await TokenUtils().isTokenValid(accessToken ?? '');
       if (!isTokenValid && state.path != '/login') {
         return '/login';
@@ -100,30 +110,35 @@ class MyApp extends StatelessWidget {
 
   static Widget _buildRouteWithTokenValidation(
       BuildContext context, GoRouterState state, Widget page) {
-    return FutureBuilder<bool>(
-      future: TokenUtils().isTokenValid(html.window.localStorage['access_token']!),
+    return FutureBuilder<String?>(
+      future: _validateAndRefreshToken(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator();
-        } else if (snapshot.hasData && snapshot.data!) {
+        } else if (snapshot.hasData && snapshot.data != null) {
           return page;
         } else {
-          return FutureBuilder<String?>(
-            future: TokenUtils()
-                .refreshToken(html.window.localStorage['refresh_token'] ?? ''),
-            builder: (context, refreshSnapshot) {
-              if (refreshSnapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator();
-              } else if (refreshSnapshot.hasData &&
-                  refreshSnapshot.data != null) {
-                return page;
-              } else {
-                return const LoginView();
-              }
-            },
-          );
+          return const LoginView();
         }
       },
     );
+  }
+
+  static Future<String?> _validateAndRefreshToken() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final accessToken = prefs.getString('access_token');
+    final isTokenValid = await TokenUtils().isTokenValid(accessToken ?? '');
+
+    if (isTokenValid) {
+      return accessToken;
+    } else {
+      final refreshToken = prefs.getString('refresh_token');
+      if (refreshToken != null) {
+        final newAccessToken =
+        await TokenUtils().refreshToken(refreshToken);
+        return newAccessToken;
+      }
+    }
+    return null;
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
-import 'dart:html' as html;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 import '../config/environment.dart';
@@ -16,8 +16,10 @@ class _CreateAssociationPageState extends State<CreateAssociationPage> {
   final _nameController = TextEditingController();
 
   Future<void> _createAssociation() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
     if (_formKey.currentState?.validate() ?? false) {
-      String? accessToken = html.window.localStorage['access_token'];
+      String? accessToken = prefs.getString('access_token');
       const API_URL = String.fromEnvironment('API_URL');
       final String baseUrl = API_URL;
 
