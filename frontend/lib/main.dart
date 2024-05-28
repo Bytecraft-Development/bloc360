@@ -62,23 +62,19 @@ class MyApp extends StatelessWidget {
       ),
       GoRoute(
         path: '/register',
-        builder: (context, state) =>
-            _buildRouteWithTokenValidation(context, state, const SignUpView()),
+        builder: (context, state) => SignUpView(),
       ),
       GoRoute(
         path: '/redirect',
-        builder: (context, state) =>
-            _buildRouteWithTokenValidation(context, state, RedirectView()),
+        builder: (context, state) => RedirectView(),
       ),
       GoRoute(
         path: '/createAssociation',
-        builder: (context, state) => _buildRouteWithTokenValidation(
-            context, state, CreateAssociationPage()),
+        builder: (context, state) => CreateAssociationPage(),
       ),
       GoRoute(
-        path:'/association_support',
-        builder: (context, state) => _buildRouteWithTokenValidation(
-            context, state, AssociationSupport()),
+        path: '/association_support',
+        builder: (context, state) => AssociationSupport(),
       )
     ],
     redirect: (context, state) async {
