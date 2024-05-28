@@ -62,7 +62,8 @@ class _MyAppState extends State<MyApp> {
       ),
       GoRoute(
         path: '/expenses',
-        builder: (context, state) => ExpensePage(),
+        builder: (context, state) =>
+            _buildRouteWithTokenValidation(context, state, ExpensePage()),
       ),
       GoRoute(
         path: '/register',
@@ -70,15 +71,18 @@ class _MyAppState extends State<MyApp> {
       ),
       GoRoute(
         path: '/redirect',
-        builder: (context, state) => RedirectView(),
+        builder: (context, state) =>
+            _buildRouteWithTokenValidation(context, state, RedirectView()),
       ),
       GoRoute(
         path: '/createAssociation',
-        builder: (context, state) => CreateAssociationPage(),
+        builder: (context, state) =>
+            _buildRouteWithTokenValidation(context, state, CreateAssociationPage()),
       ),
       GoRoute(
         path:'/association_support',
-        builder: (context, state) => AssociationSupport(),
+        builder: (context, state) => _buildRouteWithTokenValidation(
+            context, state, AssociationSupport()),
       )
     ],
     redirect: (context, state) async {
