@@ -3,7 +3,6 @@ package live.bloc360.backend.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -36,5 +35,8 @@ public class Expense {
     private BigDecimal amount;
     private String description;
     private String reference;
+    @OneToOne
+    @JoinColumn(name = "payment_id")
+    private Payment payment;
 
 }

@@ -27,8 +27,8 @@ public class Association {
     @OneToOne
     private CompanyInfo companyInfo;
 
-    @ManyToOne
-    private Expense expense;
+   @OneToMany
+   private List<Expense> expenseList;
 
     public AssociationDTO convertToDTO() {
         return AssociationDTO.

@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
 import java.util.UUID;
@@ -37,6 +38,9 @@ public class User {
 
     @UpdateTimestamp
     private Date lastUpdate;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<HouseHold> houseHolds = new ArrayList<>();
 
 
 }
