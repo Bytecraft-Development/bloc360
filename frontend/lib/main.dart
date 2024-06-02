@@ -28,6 +28,9 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+
+  static const publicPaths = ['/login', '/register', '/reset-password', '/tos', '/privacy'];
+
   final GoRouter _router = GoRouter(
     initialLocation: '/login',
     routes: [
@@ -83,7 +86,7 @@ class _MyAppState extends State<MyApp> {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final accessToken = prefs.getString('access_token');
       final isTokenValid = await TokenUtils().isTokenValid(accessToken ?? '');
-      if (!isTokenValid && state.path != '/login') {
+      if (isTokenValid == false && !publicPaths.contains(state.fullPath))  {
         return '/login';
       }
       return null;
