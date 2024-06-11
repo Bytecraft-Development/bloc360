@@ -2,10 +2,12 @@ package live.bloc360.backend.service;
 
 import live.bloc360.backend.dto.createDTO.CreateAssociationDTO;
 import live.bloc360.backend.model.FeatureToggle;
+import live.bloc360.backend.model.StairAssociation;
 import live.bloc360.backend.repository.FeatureToggleRepository;
 import live.bloc360.backend.repository.AssociationRepository;
 import live.bloc360.backend.exceptions.BusinessException;
 import live.bloc360.backend.model.Association;
+import live.bloc360.backend.repository.StairAssociationRepository;
 import lombok.RequiredArgsConstructor;
 import org.keycloak.admin.client.resource.UsersResource;
 import org.springframework.http.HttpStatus;
@@ -22,26 +24,41 @@ public class AssociationServiceImpl implements AssociationService {
     private final AssociationRepository associationRepository;
     private final FeatureToggleRepository featureToggleRepository;
     private final KeyCloakUserServiceImpl keyCloakUserServiceImpl;
+    private final StairAssociationRepository stairAssociationRepository;
 
     @Override
-    public Association createAssociation(CreateAssociationDTO createAssociationDTO,String adminUsername) {
-        FeatureToggle featureToggle = featureToggleRepository.findByName("Association Create");
-//        if (featureToggle == null || !featureToggle.isEnabled()) {
-//            throw new RuntimeException("Feature Toggle is not enable");
-//        }
-
+    public Association createAssociation(Association createAssociation, String adminUsername) {
         if (userHasAssociation(adminUsername)) {
             throw new BusinessException(HttpStatus.BAD_REQUEST, "User already has an association");
         }
-        associationRepository.findByName(createAssociationDTO.getName()).ifPresent(association -> {
+        associationRepository.findByName(createAssociation.getName()).ifPresent(association -> {
             throw new BusinessException(HttpStatus.BAD_REQUEST, "Association already exists");
         });
-        Association association = Association
-                .builder()
-                .name(createAssociationDTO.getName())
+
+        // Initialize the association without stairs
+        Association association = Association.builder()
+                .name(createAssociation.getName())
+                .adress(createAssociation.getAdress())
+                .cui(createAssociation.getCui())
+                .registerComert(createAssociation.getRegisterComert())
+                .bankAccount(createAssociation.getBankAccount())
+                .bankName(createAssociation.getBankName())
+                .apaRece(createAssociation.isApaRece())
+                .apaCalda(createAssociation.isApaCalda())
+                .gaz(createAssociation.isGaz())
+                .incalzire(createAssociation.isIncalzire())
+                .indexDate(createAssociation.getIndexDate())
                 .adminUsername(adminUsername)
                 .build();
-        return associationRepository.save(association);
+
+          association = associationRepository.save(association);
+
+        for (StairAssociation stair : createAssociation.getScari()) {
+            stair.setAssociation(association);
+            stairAssociationRepository.save(stair);
+        }
+
+        return association;
     }
 
     public boolean userHasAssociation(String username) {

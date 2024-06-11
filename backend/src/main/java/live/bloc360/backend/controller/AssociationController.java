@@ -26,7 +26,7 @@ public class AssociationController {
 private final AssociationService associationService;
 
   @PostMapping("/createAssociation")
-    public ResponseEntity<String> createAssociation(@RequestBody CreateAssociationDTO createAssociationDTO, Authentication authentication) {
+    public ResponseEntity<String> createAssociation(@RequestBody Association createAssociationDTO, Authentication authentication) {
      try{
           Jwt tokenColect = (Jwt) authentication.getCredentials();
           String adminUsername = (String) tokenColect.getClaims().get("preferred_username");
