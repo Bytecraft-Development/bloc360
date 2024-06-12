@@ -43,17 +43,17 @@ public class AssociationServiceImpl implements AssociationService {
                 .registerComert(createAssociation.getRegisterComert())
                 .bankAccount(createAssociation.getBankAccount())
                 .bankName(createAssociation.getBankName())
-                .apaRece(createAssociation.isApaRece())
-                .apaCalda(createAssociation.isApaCalda())
-                .gaz(createAssociation.isGaz())
-                .incalzire(createAssociation.isIncalzire())
+                .coldWater(createAssociation.isColdWater())
+                .hotWater(createAssociation.isHotWater())
+                .gas(createAssociation.isGas())
+                .heating(createAssociation.isHeating())
                 .indexDate(createAssociation.getIndexDate())
                 .adminUsername(adminUsername)
                 .build();
 
           association = associationRepository.save(association);
 
-        for (StairAssociation stair : createAssociation.getScari()) {
+        for (StairAssociation stair : createAssociation.getStairs()) {
             stair.setAssociation(association);
             stairAssociationRepository.save(stair);
         }
