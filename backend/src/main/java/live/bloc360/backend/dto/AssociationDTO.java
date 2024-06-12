@@ -25,12 +25,12 @@ public class AssociationDTO {
 
     private String bankName;
 
-    private List<StairAssociationDTO> scari;
+    private List<StairAssociationDTO> stairs;
 
-    private boolean apaRece;
-    private boolean apaCalda;
-    private boolean gaz;
-    private boolean incalzire;
+    private boolean coldWater;
+    private boolean hotWater;
+    private boolean gas;
+    private boolean heating;
 
     private Date indexDate;
 

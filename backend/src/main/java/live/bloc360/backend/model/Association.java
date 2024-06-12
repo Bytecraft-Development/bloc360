@@ -36,14 +36,14 @@ public class Association {
     private String bankName;
     //Scari
     @OneToMany(mappedBy = "association", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    private List<StairAssociation> scari;
+    private List<StairAssociation> stairs;
 
     //Citire index
 
-    private boolean apaRece;
-    private boolean apaCalda;
-    private boolean gaz;
-    private boolean incalzire;
+    private boolean coldWater;
+    private boolean hotWater;
+    private boolean gas;
+    private boolean heating;
 
     //Zi emitere Facturi
     @Temporal(TemporalType.DATE)
@@ -53,7 +53,7 @@ public class Association {
     private String adminUsername;
 
     public AssociationDTO convertToDTO() {
-     List<StairAssociationDTO> stairDTOs = scari.stream()
+     List<StairAssociationDTO> stairDTOs = stairs.stream()
              .map(stair -> StairAssociationDTO.builder()
                      .id(stair.getId())
                      .name(stair.getName())
@@ -69,16 +69,13 @@ public class Association {
                 registerComert(getRegisterComert()).
                 bankAccount(getBankAccount()).
                 bankName(getBankName()).
-                scari(stairDTOs).
-                apaRece(isApaRece()).
-                apaCalda(isApaCalda()).
-                gaz(isGaz()).
-                incalzire(isIncalzire()).
+                stairs(stairDTOs).
+                coldWater(isColdWater()).
+                hotWater(isHotWater()).
+                gas(isGas()).
+                heating(isHeating()).
                 indexDate(getIndexDate()).
                 adminUsername(getAdminUsername()).
                 build();
     }
-
-
-
 }
