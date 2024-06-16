@@ -14,9 +14,26 @@ import java.util.List;
 @Builder
 @Table(name="household")
 public class HouseHold {
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    public enum Type {
+        HOUSE, APARTMENT, OTHER
+    }
+
+    @Enumerated(EnumType.STRING)
+    private Type type;
+
+    @ManyToOne
+    @JoinColumn(name = "association_id")
+    private Association association;
+
+    @ManyToOne
+    @JoinColumn(name = "stair_id")
+    private StairAssociation stair;
 
     private Integer numberOfHouseHoldMembers;
 

@@ -38,6 +38,9 @@ public class Association {
     @OneToMany(mappedBy = "association", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<StairAssociation> stairs;
 
+    @OneToMany(mappedBy = "association", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<HouseHold> households;
+
     //Citire index
 
     private boolean coldWater;
@@ -70,6 +73,7 @@ public class Association {
                 bankAccount(getBankAccount()).
                 bankName(getBankName()).
                 stairs(stairDTOs).
+                houseHolds(getHouseholds()).
                 coldWater(isColdWater()).
                 hotWater(isHotWater()).
                 gas(isGas()).

@@ -2,11 +2,13 @@ package live.bloc360.backend.service;
 
 import live.bloc360.backend.dto.createDTO.CreateAssociationDTO;
 import live.bloc360.backend.model.FeatureToggle;
+import live.bloc360.backend.model.HouseHold;
 import live.bloc360.backend.model.StairAssociation;
 import live.bloc360.backend.repository.FeatureToggleRepository;
 import live.bloc360.backend.repository.AssociationRepository;
 import live.bloc360.backend.exceptions.BusinessException;
 import live.bloc360.backend.model.Association;
+import live.bloc360.backend.repository.HouseHoldRepository;
 import live.bloc360.backend.repository.StairAssociationRepository;
 import lombok.RequiredArgsConstructor;
 import org.keycloak.admin.client.resource.UsersResource;
@@ -25,6 +27,7 @@ public class AssociationServiceImpl implements AssociationService {
     private final FeatureToggleRepository featureToggleRepository;
     private final KeyCloakUserServiceImpl keyCloakUserServiceImpl;
     private final StairAssociationRepository stairAssociationRepository;
+    private final HouseHoldRepository houseHoldRepository;
 
     @Override
     public Association createAssociation(Association createAssociation, String adminUsername) {
@@ -35,7 +38,6 @@ public class AssociationServiceImpl implements AssociationService {
             throw new BusinessException(HttpStatus.BAD_REQUEST, "Association already exists");
         });
 
-        // Initialize the association without stairs
         Association association = Association.builder()
                 .name(createAssociation.getName())
                 .adress(createAssociation.getAdress())
@@ -51,15 +53,39 @@ public class AssociationServiceImpl implements AssociationService {
                 .adminUsername(adminUsername)
                 .build();
 
-          association = associationRepository.save(association);
+        // Save the association first
+        association = associationRepository.save(association);
 
-        for (StairAssociation stair : createAssociation.getStairs()) {
-            stair.setAssociation(association);
-            stairAssociationRepository.save(stair);
+        // Save standalone households
+        List<HouseHold> households = createAssociation.getHouseholds();
+        if (households != null) {
+            for (HouseHold houseHold : households) {
+                houseHold.setAssociation(association);
+                houseHoldRepository.save(houseHold);
+            }
+        }
+
+        // Save stairs and their households
+        List<StairAssociation> stairs = createAssociation.getStairs();
+        if (stairs != null) {
+            for (StairAssociation stair : stairs) {
+                stair.setAssociation(association);
+                stair = stairAssociationRepository.save(stair);
+
+                List<HouseHold> stairHouseholds = stair.getHouseholds();
+                if (stairHouseholds != null) {
+                    for (HouseHold houseHold : stairHouseholds) {
+                        houseHold.setAssociation(association);
+                        houseHold.setStair(stair);
+                        houseHoldRepository.save(houseHold);
+                    }
+                }
+            }
         }
 
         return association;
     }
+
 
     public boolean userHasAssociation(String username) {
         UsersResource usersResource = keyCloakUserServiceImpl.getUsersResource();

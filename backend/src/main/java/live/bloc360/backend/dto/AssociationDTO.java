@@ -1,5 +1,6 @@
 package live.bloc360.backend.dto;
 
+import live.bloc360.backend.model.HouseHold;
 import live.bloc360.backend.model.StairAssociation;
 import lombok.*;
 
@@ -27,6 +28,8 @@ public class AssociationDTO {
 
     private List<StairAssociationDTO> stairs;
 
+    private List<HouseHold> houseHolds;
+
     private boolean coldWater;
     private boolean hotWater;
     private boolean gas;
@@ -35,6 +38,5 @@ public class AssociationDTO {
     private Date indexDate;
 
     private String adminUsername;
-
 
 }
