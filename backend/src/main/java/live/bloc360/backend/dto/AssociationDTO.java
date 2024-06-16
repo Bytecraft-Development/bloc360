@@ -28,7 +28,7 @@ public class AssociationDTO {
 
     private List<StairAssociationDTO> stairs;
 
-    private List<HouseHold> houseHolds;
+    private List<HouseHoldDTO> households;
 
     private boolean coldWater;
     private boolean hotWater;

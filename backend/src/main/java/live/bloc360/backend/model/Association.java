@@ -2,6 +2,7 @@ package live.bloc360.backend.model;
 
 import jakarta.persistence.*;
 import live.bloc360.backend.dto.AssociationDTO;
+import live.bloc360.backend.dto.HouseHoldDTO;
 import live.bloc360.backend.dto.StairAssociationDTO;
 import lombok.*;
 
@@ -55,31 +56,38 @@ public class Association {
 
     private String adminUsername;
 
-    public AssociationDTO convertToDTO() {
-     List<StairAssociationDTO> stairDTOs = stairs.stream()
-             .map(stair -> StairAssociationDTO.builder()
-                     .id(stair.getId())
-                     .name(stair.getName())
-                     .build())
-             .collect(Collectors.toList());
+ public AssociationDTO convertToDTO() {
+  List<StairAssociationDTO> stairDTOs = stairs.stream()
+          .map(stair -> {
+           List<HouseHoldDTO> stairHouseholdDTOs = stair.getHouseholds().stream()
+                   .map(houseHold -> HouseHoldDTO.builder()
+                           .id(houseHold.getId())
+                           .type(houseHold.getType().name())
+                           .build())
+                   .collect(Collectors.toList());
 
+           return StairAssociationDTO.builder()
+                   .id(stair.getId())
+                   .name(stair.getName())
+                   .households(stairHouseholdDTOs)
+                   .build();
+          })
+          .collect(Collectors.toList());
 
-     return AssociationDTO.
-                builder().
-                name(getName()).
-                adress(getAdress()).
-                cui(getCui()).
-                registerComert(getRegisterComert()).
-                bankAccount(getBankAccount()).
-                bankName(getBankName()).
-                stairs(stairDTOs).
-                houseHolds(getHouseholds()).
-                coldWater(isColdWater()).
-                hotWater(isHotWater()).
-                gas(isGas()).
-                heating(isHeating()).
-                indexDate(getIndexDate()).
-                adminUsername(getAdminUsername()).
-                build();
-    }
+  return AssociationDTO.builder()
+          .name(getName())
+          .adress(getAdress())
+          .cui(getCui())
+          .registerComert(getRegisterComert())
+          .bankAccount(getBankAccount())
+          .bankName(getBankName())
+          .stairs(stairDTOs)
+          .coldWater(isColdWater())
+          .hotWater(isHotWater())
+          .gas(isGas())
+          .heating(isHeating())
+          .indexDate(getIndexDate())
+          .adminUsername(getAdminUsername())
+          .build();
+ }
 }
