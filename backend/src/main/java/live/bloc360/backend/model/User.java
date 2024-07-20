@@ -1,9 +1,6 @@
 package live.bloc360.backend.model;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -16,11 +13,11 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Table(name = "users")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID uuid;
 
     @CreatedDate
@@ -31,6 +28,7 @@ public class User {
     private boolean isVerified;
     private boolean isDeleted;
 
+    private String userName;
     private String firstName;
     private String lastName;
     private String middleName;
@@ -41,9 +39,4 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<HouseHold> houseHolds = new ArrayList<>();
-
-
 }
-
-
-

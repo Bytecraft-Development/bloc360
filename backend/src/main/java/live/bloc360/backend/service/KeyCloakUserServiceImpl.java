@@ -70,6 +70,13 @@ public class KeyCloakUserServiceImpl implements KeycloackUserService {
     public UserRepresentation getUserById(String userId) {
         return getUsersResource().get(userId).toRepresentation();
     }
+
+    public List<UserRepresentation> getAllUsers() {
+        RealmResource realmResource = keycloak.realm(realm);
+        UsersResource usersResource = realmResource.users();
+        return usersResource.list();
+    }
+
 }
 
 

@@ -43,7 +43,7 @@ public class HouseHold {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "houseHold", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "houseHold", cascade = CascadeType.ALL)
     private List<Payment> paymentList = new ArrayList<>();
 
 }
