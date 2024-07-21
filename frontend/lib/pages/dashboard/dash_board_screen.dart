@@ -84,7 +84,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   Future<int?> fetchNumberOfHouseholds(String token) async {
     const API_URL = String.fromEnvironment('API_URL');
     final String baseUrl = API_URL;
-    var url = Uri.parse('$baseUrl/total-payment');
+    var url = Uri.parse('$baseUrl/number-of-households');
 
     try {
       var response = await http.get(url, headers: {
