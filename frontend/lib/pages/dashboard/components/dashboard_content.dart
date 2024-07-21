@@ -1,18 +1,20 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/pages/dashboard/components/top_referals.dart';
-import 'package:frontend/pages/dashboard/components/users.dart';
-import 'package:frontend/pages/dashboard/components/users_by_device.dart';
-import 'package:frontend/pages/dashboard/components/viewers.dart';
-
 import '../../../constants/layout_constants.dart';
 import '../../../constants/responsive.dart';
+import '../../../models/big_decimal.dart';
 import 'analytic_cards.dart';
 import 'custom_appbar.dart';
 import 'discussions.dart';
+import 'top_referals.dart';
+import 'users.dart';
+import 'users_by_device.dart';
+import 'viewers.dart';
 
 class DashboardContent extends StatelessWidget {
-  const DashboardContent({Key? key}) : super(key: key);
+  final BigDecimal? totalPaymentAmount;
+  final int? numberOfHouseholds;
+
+  const DashboardContent({Key? key, this.totalPaymentAmount, this.numberOfHouseholds}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +46,8 @@ class DashboardContent extends StatelessWidget {
                               height: appPadding,
                             ),
                           if (Responsive.isMobile(context)) Discussions(),
+                            Text('Total Payment Amount: $totalPaymentAmount'),
+                            Text('Number of Households: $numberOfHouseholds'),
                         ],
                       ),
                     ),
@@ -70,13 +74,13 @@ class DashboardContent extends StatelessWidget {
                           ),
                           Row(
                             children: [
-                              if(!Responsive.isMobile(context))
+                              if (!Responsive.isMobile(context))
                                 Expanded(
                                   child: TopReferals(),
                                   flex: 2,
                                 ),
-                              if(!Responsive.isMobile(context))
-                                SizedBox(width: appPadding,),
+                              if (!Responsive.isMobile(context))
+                                SizedBox(width: appPadding),
                               Expanded(
                                 flex: 3,
                                 child: Viewers(),
@@ -113,7 +117,6 @@ class DashboardContent extends StatelessWidget {
                 ),
               ],
             ),
-
           ],
         ),
       ),
