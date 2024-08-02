@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Service
+/*@Service
 public class UserDashboardService {
 
     @Autowired
@@ -41,8 +41,9 @@ public class UserDashboardService {
                 .map(Payment::getValue)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
+}*/
 
-    public int getNumberOfPeopleInHouseHold(UUID userId) {
+ /*   public int getNumberOfPeopleInHouseHold(UUID userId) {
         Optional<HouseHold> houseHoldOpt = houseHoldRepository.findByUser_Uuid(userId);
         if (!houseHoldOpt.isPresent()) {
             return 0;
@@ -50,7 +51,7 @@ public class UserDashboardService {
         HouseHold houseHold = houseHoldOpt.get();
         return houseHold.getNumberOfHouseHoldMembers();
     }
-}
+}*/
 
    /* public List<PaymentHistoryDTO> getPaymentHistory(String userId) {
         HouseHold houseHold = houseHoldRepository.findByUserId(userId);

@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 
+/*
 @AllArgsConstructor
 @Service
 public class ExpenseCalculatorService {
@@ -68,11 +69,14 @@ public class ExpenseCalculatorService {
                     payment.setValue(BigDecimal.valueOf(100));
                     houseHold.getPaymentList().add(payment);
                 }
-            /*default:
-                throw new RuntimeException("No CalcMethod available"); */
+            */
+/*default:
+                throw new RuntimeException("No CalcMethod available"); *//*
+
         }
     }
 }
 
 
 
+*/

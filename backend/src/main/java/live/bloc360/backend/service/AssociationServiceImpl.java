@@ -1,15 +1,9 @@
 package live.bloc360.backend.service;
 
-import live.bloc360.backend.dto.createDTO.CreateAssociationDTO;
-import live.bloc360.backend.model.FeatureToggle;
-import live.bloc360.backend.model.HouseHold;
-import live.bloc360.backend.model.StairAssociation;
-import live.bloc360.backend.repository.FeatureToggleRepository;
-import live.bloc360.backend.repository.AssociationRepository;
+import jakarta.transaction.Transactional;
+import live.bloc360.backend.model.*;
+import live.bloc360.backend.repository.*;
 import live.bloc360.backend.exceptions.BusinessException;
-import live.bloc360.backend.model.Association;
-import live.bloc360.backend.repository.HouseHoldRepository;
-import live.bloc360.backend.repository.StairAssociationRepository;
 import lombok.RequiredArgsConstructor;
 import org.keycloak.admin.client.resource.UsersResource;
 import org.springframework.http.HttpStatus;
@@ -18,29 +12,32 @@ import org.keycloak.representations.idm.UserRepresentation;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class AssociationServiceImpl implements AssociationService {
 
     private final AssociationRepository associationRepository;
-    private final FeatureToggleRepository featureToggleRepository;
-    private final KeyCloakUserServiceImpl keyCloakUserServiceImpl;
-    private final StairAssociationRepository stairAssociationRepository;
+    private final BlockRepository blockRepository;
+    private final HouseRepository houseRepository;
+    private final StairRepository stairRepository;
     private final HouseHoldRepository houseHoldRepository;
+    private final KeyCloakUserServiceImpl keyCloakUserServiceImpl;
 
-    @Override
+    @Transactional
     public Association createAssociation(Association createAssociation, String adminUsername) {
         if (userHasAssociation(adminUsername)) {
             throw new BusinessException(HttpStatus.BAD_REQUEST, "User already has an association");
         }
-        associationRepository.findByName(createAssociation.getName()).ifPresent(association -> {
+
+        if (associationRepository.findByName(createAssociation.getName()).isPresent()) {
             throw new BusinessException(HttpStatus.BAD_REQUEST, "Association already exists");
-        });
+        }
 
         Association association = Association.builder()
                 .name(createAssociation.getName())
-                .adress(createAssociation.getAdress())
+                .address(createAssociation.getAddress())
                 .cui(createAssociation.getCui())
                 .registerComert(createAssociation.getRegisterComert())
                 .bankAccount(createAssociation.getBankAccount())
@@ -50,41 +47,72 @@ public class AssociationServiceImpl implements AssociationService {
                 .gas(createAssociation.isGas())
                 .heating(createAssociation.isHeating())
                 .indexDate(createAssociation.getIndexDate())
+                .hasBlocks(createAssociation.isHasBlocks())
+                .hasHouses(createAssociation.isHasHouses())
                 .adminUsername(adminUsername)
                 .build();
 
-        // Save the association first
-        association = associationRepository.save(association);
+        Association savedAssociation = associationRepository.save(association);
 
-        // Save standalone households
-        List<HouseHold> households = createAssociation.getHouseholds();
-        if (households != null) {
-            for (HouseHold houseHold : households) {
-                houseHold.setAssociation(association);
-                houseHoldRepository.save(houseHold);
-            }
-        }
 
-        // Save stairs and their households
-        List<StairAssociation> stairs = createAssociation.getStairs();
-        if (stairs != null) {
-            for (StairAssociation stair : stairs) {
-                stair.setAssociation(association);
-                stair = stairAssociationRepository.save(stair);
-
-                List<HouseHold> stairHouseholds = stair.getHouseholds();
-                if (stairHouseholds != null) {
-                    for (HouseHold houseHold : stairHouseholds) {
-                        houseHold.setAssociation(association);
-                        houseHold.setStair(stair);
-                        houseHoldRepository.save(houseHold);
-                    }
-                }
-            }
-        }
-
-        return association;
+        return savedAssociation;
     }
+
+    @Transactional
+    public void addBlocksToAssociation(Integer associationId, List<Block> blocks) {
+        Association association = associationRepository.findById(associationId)
+                .orElseThrow(() -> new BusinessException(HttpStatus.NOT_FOUND, "Association not found"));
+
+        for (Block block : blocks) {
+            block.setAssociation(association);
+            blockRepository.save(block);
+        }
+    }
+
+    @Transactional
+    public void addHouseToAssociation(Integer associationId, House house) {
+        Association association = associationRepository.findById(associationId)
+                .orElseThrow(() -> new BusinessException(HttpStatus.NOT_FOUND, "Association not found"));
+
+        house.setAssociation(association);
+        houseRepository.save(house);
+    }
+
+    @Transactional
+    public void addStairToBlock(Integer blockId, List<Stair> stairs) {
+        Block block = blockRepository.findById(blockId)
+                .orElseThrow(() -> new BusinessException(HttpStatus.NOT_FOUND, "Block not found"));
+
+        for(Stair stair : stairs) {
+            stair.setBlock(block);
+            stairRepository.save(stair);
+        }
+    }
+
+    @Transactional
+    public void addHouseHoldToStair(Integer stairId, HouseHold houseHold) {
+        Stair stair = stairRepository.findById(stairId)
+                .orElseThrow(() -> new BusinessException(HttpStatus.NOT_FOUND, "Stair not found"));
+
+        houseHold.setStair(stair);
+        houseHoldRepository.save(houseHold);
+    }
+
+    @Transactional
+    public void addHouseHoldToHouse(Integer houseId, HouseHold houseHold) {
+        House house = houseRepository.findById(houseId)
+                .orElseThrow(() -> new BusinessException(HttpStatus.NOT_FOUND, "House not found"));
+
+        houseHold.setHouse(house);
+        houseHoldRepository.save(houseHold);
+    }
+    public List<Block> getBlocksForAssociation(Integer associationId) {
+        List<Block> blocks = blockRepository.findByAssociationId(associationId);
+        return blocks.stream()
+                .map(block -> new Block(block.getId(), block.getName()))
+                .collect(Collectors.toList());
+    }
+
 
 
     public boolean userHasAssociation(String username) {
@@ -100,7 +128,4 @@ public class AssociationServiceImpl implements AssociationService {
     public Optional<Association> findByAdminUsername(String adminUsername) {
         return associationRepository.findByAdminUsername(adminUsername);
     }
-
-
-
 }

@@ -11,9 +11,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "stairs")
-public class StairAssociation {
-
+@Table(name = "house")
+public class House {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -21,11 +20,9 @@ public class StairAssociation {
     private String name;
 
     @ManyToOne
+    @JoinColumn(name = "association_id")
     private Association association;
 
-    @OneToMany(mappedBy = "stair", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "house", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<HouseHold> households;
-
-
-
 }

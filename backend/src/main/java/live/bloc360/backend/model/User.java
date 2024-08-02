@@ -37,6 +37,6 @@ public class User {
     @UpdateTimestamp
     private Date lastUpdate;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<HouseHold> houseHolds = new ArrayList<>();
+  /*  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<HouseHold> houseHolds = new ArrayList<>();*/
 }

@@ -1,7 +1,5 @@
 package live.bloc360.backend.dto;
 
-import live.bloc360.backend.model.HouseHold;
-import live.bloc360.backend.model.StairAssociation;
 import lombok.*;
 
 import java.util.Date;
@@ -38,5 +36,7 @@ public class AssociationDTO {
     private Date indexDate;
 
     private String adminUsername;
+
+    private String type;
 
 }

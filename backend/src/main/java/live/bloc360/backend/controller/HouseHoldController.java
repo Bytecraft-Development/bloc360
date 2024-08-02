@@ -15,7 +15,7 @@ public class HouseHoldController {
     @Autowired
     private HouseHoldService houseHoldService;
 
-    @PostMapping("/create")
+    /*@PostMapping("/create")
     public ResponseEntity<HouseHold> createHouseHold(@RequestBody HouseHold houseHold) {
         try {
             HouseHold savedHouseHold = houseHoldService.saveHouseHold(houseHold);
@@ -23,6 +23,5 @@ public class HouseHoldController {
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        }*/
     }
-}

@@ -26,7 +26,7 @@ public class HouseHoldService {
     @Autowired
     private KeyCloakUserServiceImpl keyCloakUserServiceImpl;
 
-    @Transactional
+   /* @Transactional
     public HouseHold saveHouseHold(HouseHold houseHold) {
         List<UserRepresentation> users = keyCloakUserServiceImpl.getAllUsers();
         if (!users.isEmpty()) {
@@ -40,10 +40,8 @@ public class HouseHoldService {
             }
             houseHold.setUser(user);
         }
-
-        // Salvează HouseHold
         return houseHoldRepository.save(houseHold);
-    }
+    }*/
 
     private User mapToUserEntity(UserRepresentation keycloakUser) {
         User user = new User();

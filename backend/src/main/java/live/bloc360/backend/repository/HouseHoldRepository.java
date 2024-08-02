@@ -8,5 +8,5 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface HouseHoldRepository extends JpaRepository<HouseHold, Integer> {
-    Optional<HouseHold> findByUser_Uuid(UUID userId);
+    /*Optional<HouseHold> findByUser_Uuid(UUID userId);*/
 }

@@ -32,17 +32,19 @@ public class ExpenseCalcTestService {
         customHHList.add(houseHold2);
         customHHList.add(houseHold3);
 
-        houseHold1.setNumberOfHouseHoldMembers(2);
+      /*  houseHold1.setNumberOfHouseHoldMembers(2);
         houseHold1.setSurface(40.5);
         houseHold2.setNumberOfHouseHoldMembers(1);
         houseHold2.setSurface(60.25);
         houseHold3.setNumberOfHouseHoldMembers(4);
-        houseHold3.setSurface(90.4);
+        houseHold3.setSurface(90.4);*/
 
 
+/*
 
         ExpenseCalculatorService es = new ExpenseCalculatorService();
         es.distributeExpense(expense, customHHList, ExpenseDistributionType.EQUALLY);
+*/
 
         houseHoldRepository.save(houseHold1);
         houseHoldRepository.save(houseHold2);

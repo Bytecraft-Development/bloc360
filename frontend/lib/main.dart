@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
+import 'package:frontend/pages/add_block.dart';
+import 'package:frontend/pages/add_stairs.dart';
 import 'package:frontend/pages/dashboard/dash_board_screen.dart';
 import 'package:frontend/pages/hello_world.dart';
 import 'package:frontend/pages/privacy_policy.dart';
+import 'package:frontend/pages/select_block.dart';
 import 'package:frontend/pages/tos.dart';
 import 'package:frontend/controllers/simple_ui_controller.dart';
 import 'package:frontend/util/token_utils.dart';
@@ -16,6 +19,7 @@ import 'pages/login.dart';
 import 'pages/expenses.dart';
 import 'pages/association_support.dart';
 import 'pages/create_association.dart';
+import 'pages/add_block.dart';
 
 void main() {
   usePathUrlStrategy();
@@ -71,10 +75,28 @@ class _MyAppState extends State<MyApp> {
         path: '/register',
         builder: (context, state) => SignUpView(),
       ),
+      /*GoRoute(
+        path: '/add_block',
+        builder: (context, state) {
+          final associationId = state.extra as int;
+          return AddBlockPage(associationId: associationId);
+        },
+      ),*/
+      GoRoute(
+        path: '/add_stairs',
+        builder: (context, state) {
+          final blockId = state.extra as int;
+          return AddStairsPage(blockId: blockId);
+        },
+      ),
       GoRoute(
         path: '/createAssociation',
         builder: (context, state) =>
             _buildRouteWithTokenValidation(context, state, CreateAssociationPage()),
+      ),
+      GoRoute(
+        path: '/select_block',
+        builder: (context, state) => BlockListPage(),
       ),
       GoRoute(
         path:'/association_support',
@@ -136,5 +158,9 @@ class _MyAppState extends State<MyApp> {
       }
     }
     return null;
+  }
+  Future<int?> getAssociationId() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('association_id');
   }
 }

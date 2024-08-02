@@ -1,5 +1,6 @@
 package live.bloc360.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import live.bloc360.backend.dto.AssociationDTO;
 import live.bloc360.backend.dto.HouseHoldDTO;
@@ -17,77 +18,37 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name="association")
+@Table(name = "association")
 public class Association {
-   //Creaza asociatia
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+ @Id
+ @GeneratedValue(strategy = GenerationType.IDENTITY)
+ private Integer id;
 
-    private String name;
+ private String name;
+ private String address;
+ private String cui;
+ private String registerComert;
+ private String bankAccount;
+ private String bankName;
+ private boolean hasBlocks;
+ private boolean hasHouses;
+ private String adminUsername;
 
-    private String adress;
+ //Citire index
 
-    private String cui;
+ private boolean coldWater;
+ private boolean hotWater;
+ private boolean gas;
+ private boolean heating;
 
-    private String registerComert;
+ //Zi emitere Facturi
+ @Temporal(TemporalType.DATE)
+ @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+ private Date indexDate;
 
-    private String bankAccount;
+ @OneToMany(mappedBy = "association", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+ private List<Block> blocks;
 
-    private String bankName;
-    //Scari
-    @OneToMany(mappedBy = "association", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    private List<StairAssociation> stairs;
-
-    @OneToMany(mappedBy = "association", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<HouseHold> households;
-
-    //Citire index
-
-    private boolean coldWater;
-    private boolean hotWater;
-    private boolean gas;
-    private boolean heating;
-
-    //Zi emitere Facturi
-    @Temporal(TemporalType.DATE)
-    private Date indexDate;
-
-
-    private String adminUsername;
-
- public AssociationDTO convertToDTO() {
-  List<StairAssociationDTO> stairDTOs = stairs.stream()
-          .map(stair -> {
-           List<HouseHoldDTO> stairHouseholdDTOs = stair.getHouseholds().stream()
-                   .map(houseHold -> HouseHoldDTO.builder()
-                           .id(houseHold.getId())
-                           .type(houseHold.getType().name())
-                           .build())
-                   .collect(Collectors.toList());
-
-           return StairAssociationDTO.builder()
-                   .id(stair.getId())
-                   .name(stair.getName())
-                   .households(stairHouseholdDTOs)
-                   .build();
-          })
-          .collect(Collectors.toList());
-
-  return AssociationDTO.builder()
-          .name(getName())
-          .adress(getAdress())
-          .cui(getCui())
-          .registerComert(getRegisterComert())
-          .bankAccount(getBankAccount())
-          .bankName(getBankName())
-          .stairs(stairDTOs)
-          .coldWater(isColdWater())
-          .hotWater(isHotWater())
-          .gas(isGas())
-          .heating(isHeating())
-          .indexDate(getIndexDate())
-          .adminUsername(getAdminUsername())
-          .build();
- }
+ @OneToMany(mappedBy = "association", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+ private List<House> houses;
 }
