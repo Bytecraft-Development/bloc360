@@ -20,6 +20,7 @@ import 'pages/expenses.dart';
 import 'pages/association_support.dart';
 import 'pages/create_association.dart';
 import 'pages/add_block.dart';
+// just for update
 
 void main() {
   usePathUrlStrategy();
