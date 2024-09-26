@@ -6,7 +6,6 @@ keycloak:
   client: test
   urls:
     auth: https://bloc360.live:8443/
-
 spring:
   application:
     name: backend
