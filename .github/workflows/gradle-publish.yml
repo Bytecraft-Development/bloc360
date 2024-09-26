@@ -99,7 +99,7 @@ jobs:
         run: docker build -t $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7) .
       # Step 2: Log in to Docker registry using credentials from secrets
       - name: Allow insecure registry
-        run: echo DOCKER_OPTS="--insecure-registry=${{ secrets.DOCKER_REGISTRY_URL }} " >> /etc/default/docker
+        run: export DOCKER_OPTS="--insecure-registry=${{ secrets.DOCKER_REGISTRY_URL }}"
       - name: Log in to Docker Registry
         run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login ${{ secrets.DOCKER_REGISTRY_URL }} -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
 
