@@ -30,13 +30,13 @@ dependencies {
 	implementation 'com.sendgrid:sendgrid-java:4.10.1'
 	annotationProcessor 'org.projectlombok:lombok'
 	implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.3'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '3.2.5'
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-oauth2-resource-server', version: '3.2.5'
 	implementation group: 'org.keycloak', name: 'keycloak-admin-client', version: '24.0.3'
 	implementation group: 'org.keycloak', name: 'keycloak-core', version: '24.0.3'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation group: 'com.h2database', name: 'h2', version: '2.2.224'
 }
 

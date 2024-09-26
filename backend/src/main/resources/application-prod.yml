@@ -21,7 +21,7 @@ spring:
       pem:
         client:
           truststore:
-            certificate: "classpath:bloc360.cer"
+            certificate: "classpath:bloc360.live.pem"
 
 
 
