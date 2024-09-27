@@ -86,28 +86,35 @@ jobs:
     if: ${{ needs.changes.outputs.backend == 'true' }}
     runs-on: ubuntu-latest
     steps:
+      # Step 1: Checkout the repo
       - name: Checkout the repo
         uses: actions/checkout@v4
 
-      # Step 1: Build backend container image
+      # Step 2: Build backend container image
       - name: Build backend container image
         working-directory: ./backend
         env:
           DB_URL: ${{ secrets.DB_URL }}
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-        run: docker build -t $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7) .
-      # Step 2: Log in to Docker registry using credentials from secrets
-      - name: Allow insecure registry
-        run: export DOCKER_OPTS="--insecure-registry=${{ secrets.DOCKER_REGISTRY_URL }}"
-      - name: Log in to Docker Registry
-        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login ${{ secrets.DOCKER_REGISTRY_URL }} -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+        run: docker build -t $(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7) .
 
-      # Step 3: Push image to Docker registry
-      - name: Push image to Docker Registry
-        run: docker push ${{ secrets.DOCKER_REGISTRY_URL }}/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
+      # Step 3: Save Docker image to a file
+      - name: Save Docker image to file
+        run: docker save -o $(echo $IMAGE_NAME)_$(echo $GITHUB_SHA | head -c7).tar $(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
 
-      # Step 4: SSH into server and pull the new image, delete the old one, and start the new container
+      # Step 4: Upload Docker image to server using SSH
+      - name: Upload Docker image to server
+        uses: appleboy/scp-action@v0.1.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.USERNAME }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSHKEY }}
+          source: $(echo $IMAGE_NAME)_$(echo $GITHUB_SHA | head -c7).tar
+          target: ~/$(echo $IMAGE_NAME)_$(echo $GITHUB_SHA | head -c7).tar
+
+      # Step 5: SSH into server, remove old image, load new image, and run container
       - name: SSH and deploy
         uses: appleboy/ssh-action@master
         with:
@@ -116,10 +123,18 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSHKEY }}
           script: |
-            docker pull ${{ secrets.DOCKER_REGISTRY_URL }}/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
-            docker stop $(docker ps -q --filter ancestor=${{ secrets.DOCKER_REGISTRY_URL }}/$(echo $IMAGE_NAME))
-            docker rm $(docker ps -a -q --filter ancestor=${{ secrets.DOCKER_REGISTRY_URL }}/$(echo $IMAGE_NAME))
-              docker run -d --name $(echo $IMAGE_NAME) ${{ secrets.DOCKER_REGISTRY_URL }}/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7) \
+            # Stop and remove the old container
+            docker stop $(docker ps -q --filter ancestor=$(echo $IMAGE_NAME)) || true
+            docker rm $(docker ps -a -q --filter ancestor=$(echo $IMAGE_NAME)) || true
+
+            # Remove the old image
+            docker rmi $(echo $IMAGE_NAME) || true
+
+            # Load the new image from the tar file
+            docker load -i ~/$(echo $IMAGE_NAME)_$(echo $GITHUB_SHA | head -c7).tar
+
+            # Start the new container
+            docker run -d --name $(echo $IMAGE_NAME) \
             -p 8080:8080 \
             -e DB_URL=${{ secrets.DB_URL }} \
             -e DB_USERNAME=${{ secrets.DB_USERNAME }} \
@@ -134,6 +149,5 @@ jobs:
             -e KEYCLOAK_AUTH=${{ secrets.KEYCLOAK_AUTH }} \
             -e SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }} \
             --restart always \
-            --name $(echo $IMAGE_NAME) \
-            $(echo $REGISTRY)/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7) 
-            
+            $(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
+  
