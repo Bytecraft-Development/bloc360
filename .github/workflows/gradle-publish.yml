@@ -101,7 +101,7 @@ jobs:
 
       # Step 3: Save Docker image to a file
       - name: Save Docker image to file
-        run: docker save -o ./$(echo $IMAGE_NAME)_$(echo $GITHUB_SHA | head -c7).tar $(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
+        run: docker save -o ./tmp/$(echo $IMAGE_NAME)_$(echo $GITHUB_SHA | head -c7).tar $(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
 
       # Step 4: Upload Docker image to server using SSH
       - name: Upload Docker image to server
@@ -111,7 +111,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSHKEY }}
-          source: ./$(echo $IMAGE_NAME)_$(echo $GITHUB_SHA | head -c7).tar
+          source: /tmp/$(echo $IMAGE_NAME)_$(echo $GITHUB_SHA | head -c7).tar
           target: ~/$(echo $IMAGE_NAME)_$(echo $GITHUB_SHA | head -c7).tar
 
       # Step 5: SSH into server, remove old image, load new image, and run container
