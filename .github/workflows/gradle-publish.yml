@@ -97,24 +97,17 @@ jobs:
           DB_URL: ${{ secrets.DB_URL }}
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-        run: docker build -t $(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7) .
+        run: docker build -t ghcr.io/${{ github.repository_owner }}/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7) .
 
-      # Step 3: Save Docker image to a file
-      - name: Save Docker image to file
-        run: docker save -o $WORKDIR/$(echo $IMAGE_NAME)_$(echo $GITHUB_SHA | head -c7).tar $(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
+      # Step 3: Log in to GitHub Container Registry
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
 
-      # Step 4: Upload Docker image to server using SSH
-      - name: Upload Docker image to server
-        uses: appleboy/scp-action@v0.1.0
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.USERNAME }}
-          port: ${{ secrets.SSH_PORT }}
-          key: ${{ secrets.SSHKEY }}
-          source: $WORKDIR/$(echo $IMAGE_NAME)_$(echo $GITHUB_SHA | head -c7).tar
-          target: ~/$(echo $IMAGE_NAME)_$(echo $GITHUB_SHA | head -c7).tar
+      # Step 4: Push the Docker image to GitHub Container Registry
+      - name: Push Docker image to GitHub Container Registry
+        run: docker push ghcr.io/${{ github.repository_owner }}/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
 
-      # Step 5: SSH into server, remove old image, load new image, and run container
+      # Step 5: SSH into server, remove old image, pull new image from registry, and run container
       - name: SSH and deploy
         uses: appleboy/ssh-action@master
         with:
@@ -124,14 +117,14 @@ jobs:
           key: ${{ secrets.SSHKEY }}
           script: |
             # Stop and remove the old container
-            docker stop $(docker ps -q --filter ancestor=$(echo $IMAGE_NAME)) || true
-            docker rm $(docker ps -a -q --filter ancestor=$(echo $IMAGE_NAME)) || true
+            docker stop $(docker ps -q --filter ancestor=ghcr.io/${{ github.repository_owner }}/$(echo $IMAGE_NAME)) || true
+            docker rm $(docker ps -a -q --filter ancestor=ghcr.io/${{ github.repository_owner }}/$(echo $IMAGE_NAME)) || true
 
             # Remove the old image
-            docker rmi $(echo $IMAGE_NAME) || true
+            docker rmi ghcr.io/${{ github.repository_owner }}/$(echo $IMAGE_NAME) || true
 
-            # Load the new image from the tar file
-            docker load -i ~/$(echo $IMAGE_NAME)_$(echo $GITHUB_SHA | head -c7).tar
+            # Pull the new image from GitHub Container Registry
+            docker pull ghcr.io/${{ github.repository_owner }}/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
 
             # Start the new container
             docker run -d --name $(echo $IMAGE_NAME) \
@@ -149,5 +142,5 @@ jobs:
             -e KEYCLOAK_AUTH=${{ secrets.KEYCLOAK_AUTH }} \
             -e SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }} \
             --restart always \
-            $(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
-    
+            ghcr.io/${{ github.repository_owner }}/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
+  
