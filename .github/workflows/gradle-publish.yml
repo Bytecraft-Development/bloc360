@@ -116,6 +116,9 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSHKEY }}
           script: |
+            export PATH="/usr/local/bin:$PATH"
+            source ~/.bashrc
+            
             # Stop and remove the old container
             docker stop $(docker ps -q --filter ancestor=ghcr.io/bytecraft-development/$(echo $IMAGE_NAME)) || true
             docker rm $(docker ps -a -q --filter ancestor=ghcr.io/bytecraft-development/$(echo $IMAGE_NAME)) || true
