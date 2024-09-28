@@ -122,12 +122,12 @@ jobs:
             echo "${{ secrets.PERSONAL_ACT }}" | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
             
             # Check if the container is running using the old image and then stop and remove it if found
-            if [ "$(docker ps -q --filter ancestor=ghcr.io/bytecraft-development/${{ env.IMAGE_NAME }})" ]; then
-            docker stop $(docker ps -q --filter ancestor=ghcr.io/bytecraft-development/${{ env.IMAGE_NAME }})
-            docker rm $(docker ps -a -q --filter ancestor=ghcr.io/bytecraft-development/${{ env.IMAGE_NAME }})
+            if [ "$(docker ps -q --filter ancestor=ghcr.io/bytecraft-development/bloc360)" ]; then
+            docker stop $(docker ps -q --filter ancestor=ghcr.io/bytecraft-development/bloc360)
+            docker rm $(docker ps -a -q --filter ancestor=ghcr.io/bytecraft-development/bloc360)
             
             # Remove the old image
-            docker rmi ghcr.io/bytecraft-development/${{ env.IMAGE_NAME }}  
+            docker rmi ghcr.io/bytecraft-development/bloc360
             fi
 
             # Pull the new image from GitHub Container Registry
@@ -147,7 +147,5 @@ jobs:
             -e KEYCLOAK_CLIENT=${{ secrets.KEYCLOAK_CLIENT }} \
             -e KEYCLOAK_AUTH=${{ secrets.KEYCLOAK_AUTH }} \
             -e SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }} \
-            --name ${{ env.IMAGE_NAME }} \
-            --restart always --platform linux/amd64 \  
-            ghcr.io/bytecraft-development/${{ env.IMAGE_NAME }}:latest 
+            --name bloc360 --restart always --platform linux/amd64 ghcr.io/bytecraft-development/bloc360:latest 
 
