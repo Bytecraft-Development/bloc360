@@ -135,18 +135,19 @@ jobs:
 
             # Start the new container
             docker run -d -p 8080:8080 \
-            -e DB_URL=${{ secrets.DB_URL }} \
-            -e DB_USERNAME=${{ secrets.DB_USERNAME }} \
-            -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
-            -e SSLCERTPASS=${{ secrets.SSLCERTPASS }} \
-            -e KEYCLOAK_URL=${{ secrets.KEYCLOAK_URL }} \
-            -e KEYCLOAK_REALM=${{ secrets.KEYCLOAK_REALM }} \
-            -e KEYCLOAK_DOMAIN=${{ secrets.KEYCLOAK_DOMAIN }} \
-            -e KEYCLOAK_ADMINCLIENTID=${{ secrets.KEYCLOAK_ADMINCLIENTID }} \
-            -e KEYCLOAK_CLIENTSECRET=${{ secrets.KEYCLOAK_CLIENTSECRET }} \
-            -e KEYCLOAK_CLIENT=${{ secrets.KEYCLOAK_CLIENT }} \
-            -e KEYCLOAK_AUTH=${{ secrets.KEYCLOAK_AUTH }} \
-            -e SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }} \
-            ghcr.io/bytecraft-development/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7) \
-            --name $(echo $IMAGE_NAME) \
-            --restart always --platform linux/amd64
+            -e "DB_URL=${{ secrets.DB_URL }}" \
+            -e "DB_USERNAME=${{ secrets.DB_USERNAME }}" \
+            -e "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" \
+            -e "SSLCERTPASS=${{ secrets.SSLCERTPASS }}" \
+            -e "KEYCLOAK_URL=${{ secrets.KEYCLOAK_URL }}" \
+            -e "KEYCLOAK_REALM=${{ secrets.KEYCLOAK_REALM }}" \
+            -e "KEYCLOAK_DOMAIN=${{ secrets.KEYCLOAK_DOMAIN }}" \
+            -e "KEYCLOAK_ADMINCLIENTID=${{ secrets.KEYCLOAK_ADMINCLIENTID }}" \
+            -e "KEYCLOAK_CLIENTSECRET=${{ secrets.KEYCLOAK_CLIENTSECRET }}" \
+            -e "KEYCLOAK_CLIENT=${{ secrets.KEYCLOAK_CLIENT }}" \
+            -e "KEYCLOAK_AUTH=${{ secrets.KEYCLOAK_AUTH }}" \
+            -e "SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }}" \
+            ghcr.io/bytecraft-development/"$(echo $IMAGE_NAME)":"$(echo $GITHUB_SHA | head -c7)" \
+            --name "$(echo $IMAGE_NAME)" \
+            --restart always \
+            --platform linux/amd64
