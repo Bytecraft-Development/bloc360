@@ -149,4 +149,4 @@ jobs:
             -e SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }} \
             ghcr.io/bytecraft-development/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7) \
             --name $(echo $IMAGE_NAME) \
-            --restart always
+            --restart always --platform linux/amd64
