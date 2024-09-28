@@ -113,7 +113,7 @@ jobs:
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.USERNAME }}
-          port: ${{ secrets.SSH_PORT }}
+          port: ${{ secrets.PORT }}
           key: ${{ secrets.SSHKEY }}
           script: |
             export PATH="/usr/local/bin:$PATH"
