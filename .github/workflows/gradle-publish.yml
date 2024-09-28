@@ -132,7 +132,7 @@ jobs:
             docker pull ghcr.io/$bytecraft-development/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
 
             # Start the new container
-            docker run -d --name $(echo $IMAGE_NAME) \
+            docker run -d
             -p 8080:8080 \
             -e DB_URL=${{ secrets.DB_URL }} \
             -e DB_USERNAME=${{ secrets.DB_USERNAME }} \
@@ -147,5 +147,6 @@ jobs:
             -e KEYCLOAK_AUTH=${{ secrets.KEYCLOAK_AUTH }} \
             -e SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }} \
             --restart always \
+            --name $(echo $IMAGE_NAME) \
             ghcr.io/bytecraft-development/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
   
