@@ -119,12 +119,14 @@ jobs:
             export PATH="/usr/local/bin:$PATH"
             source ~/.bashrc
             
-            # Stop and remove the old container
-            docker stop $(docker ps -q --filter ancestor=ghcr.io/bytecraft-development/$(echo $IMAGE_NAME)) || true
-            docker rm $(docker ps -a -q --filter ancestor=ghcr.io/bytecraft-development/$(echo $IMAGE_NAME)) || true
-
+            # Check if the container is running using the old image and then stop and remove it if found
+            if [ "$(docker ps -q --filter ancestor=ghcr.io/bytecraft-development/$(echo $IMAGE_NAME))" ]; then
+            docker stop $(docker ps -q --filter ancestor=ghcr.io/bytecraft-development/$(echo $IMAGE_NAME))
+            docker rm $(docker ps -a -q --filter ancestor=ghcr.io/bytecraft-development/$(echo $IMAGE_NAME))
+            
             # Remove the old image
-            docker rmi ghcr.io/bytecraft-development/$(echo $IMAGE_NAME) || true
+            docker rmi ghcr.io/bytecraft-development/$(echo $IMAGE_NAME)
+            fi
 
             # Pull the new image from GitHub Container Registry
             docker pull ghcr.io/$bytecraft-development/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
