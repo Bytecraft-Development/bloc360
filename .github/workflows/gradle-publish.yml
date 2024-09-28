@@ -118,7 +118,7 @@ jobs:
           script: |
             export PATH="/usr/local/bin:$PATH"
             source ~/.bashrc
-            security unlock-keychain
+            security unlock-keychain -p ${{ secrets.LOCAL_PASS }}
             echo "${{ secrets.PERSONAL_ACT }}" | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
             
             # Check if the container is running using the old image and then stop and remove it if found
