@@ -131,7 +131,7 @@ jobs:
             fi
 
             # Pull the new image from GitHub Container Registry
-            docker pull ghcr.io/$bytecraft-development/${{ env.IMAGE_NAME }}:latest
+            docker pull ghcr.io/$bytecraft-development/bloc360:latest
 
             # Start the new container
             docker run -d -p 8080:8080 \
