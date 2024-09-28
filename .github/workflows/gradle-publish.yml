@@ -133,7 +133,7 @@ jobs:
             # Pull the new image from GitHub Container Registry
             docker pull ghcr.io/bytecraft-development/bloc360:latest
 
-            # Start the new container - WORKS!
+            # Start the new container - bump #1
             docker run -d -p 8080:8080 \
             -e DB_URL=${{ secrets.DB_URL }} \
             -e DB_USERNAME=${{ secrets.DB_USERNAME }} \
