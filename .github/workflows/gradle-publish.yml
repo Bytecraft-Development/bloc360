@@ -101,11 +101,11 @@ jobs:
 
       # Step 3: Log in to GitHub Container Registry
       - name: Log in to GitHub Container Registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ bytecraft }} --password-stdin
+        run: echo "${{ secrets.PERSONAL_ACT }}" | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
 
       # Step 4: Push the Docker image to GitHub Container Registry
       - name: Push Docker image to GitHub Container Registry
-        run: docker push ghcr.io/${{ bytecraft }}/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
+        run: docker push ghcr.io/bytecraft/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
 
       # Step 5: SSH into server, remove old image, pull new image from registry, and run container
       - name: SSH and deploy
@@ -117,14 +117,14 @@ jobs:
           key: ${{ secrets.SSHKEY }}
           script: |
             # Stop and remove the old container
-            docker stop $(docker ps -q --filter ancestor=ghcr.io/${{ bytecraft }}/$(echo $IMAGE_NAME)) || true
-            docker rm $(docker ps -a -q --filter ancestor=ghcr.io/${{ bytecraft }}/$(echo $IMAGE_NAME)) || true
+            docker stop $(docker ps -q --filter ancestor=ghcr.io/bytecraft/$(echo $IMAGE_NAME)) || true
+            docker rm $(docker ps -a -q --filter ancestor=ghcr.io/bytecraft/$(echo $IMAGE_NAME)) || true
 
             # Remove the old image
-            docker rmi ghcr.io/${{ bytecraft }}/$(echo $IMAGE_NAME) || true
+            docker rmi ghcr.io/bytecraft/$(echo $IMAGE_NAME) || true
 
             # Pull the new image from GitHub Container Registry
-            docker pull ghcr.io/${{ bytecraft }}/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
+            docker pull ghcr.io/$bytecraft/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
 
             # Start the new container
             docker run -d --name $(echo $IMAGE_NAME) \
@@ -142,5 +142,5 @@ jobs:
             -e KEYCLOAK_AUTH=${{ secrets.KEYCLOAK_AUTH }} \
             -e SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }} \
             --restart always \
-            ghcr.io/${{ bytecraft }}/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
+            ghcr.io/bytecraft/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
   
