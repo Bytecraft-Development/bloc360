@@ -105,7 +105,7 @@ jobs:
 
       # Step 4: Push the Docker image to GitHub Container Registry
       - name: Push Docker image to GitHub Container Registry
-        run: docker push ghcr.io/bytecraft-development/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7)
+        run: docker push ghcr.io/bytecraft-development/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7) && docker tag ghcr.io/bytecraft-development/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7) ghcr.io/bytecraft-development/$(echo $IMAGE_NAME):latest && docker push ghcr.io/bytecraft-development/$(echo $IMAGE_NAME):latest
 
       # Step 5: SSH into server, remove old image, pull new image from registry, and run container
       - name: SSH and deploy
