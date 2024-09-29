@@ -1,3 +1,10 @@
+server:
+  ssl:
+    bundle: "server"
+    enabled-protocols: TLSv1.3, TLSv1.2
+    enabled: true
+    client-auth: WANT
+
 keycloak:
   realm: bloc360
   domain: bloc360.live:8443
@@ -11,14 +18,17 @@ spring:
     bundle:
       jks:
         server:
-          keystore:
-            location: "classpath:keystore.jks"
+          truststore:
+            location: "classpath:truststore.jks"
             password: ${SSLCERTPASS}
             type: "JKS"
       pem:
-        client:
-          truststore:
-            certificate: "classpath:domain.crt"
+        server:
+          keystore:
+            certificate: "classpath:keystore.p12"
+            private-key: "myalias"
+            private-key-password: ${SSLCERTPASS}
+
 
   application:
     name: backend

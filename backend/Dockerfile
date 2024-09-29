@@ -1,5 +1,5 @@
 # Use the official OpenJDK image with Java 17
-FROM gradle:8.7.0-jdk17
+FROM gradle:8-jdk17
 
 # Set the working directory in the container
 WORKDIR /app
@@ -12,7 +12,7 @@ COPY settings.gradle .
 COPY src ./src
 
 # Build the project using Gradle
-RUN gradle bootJar --scan
+RUN gradle bootJar --scan --warning-mode all
 
 # Expose the port your application listens on
 EXPOSE 8080
