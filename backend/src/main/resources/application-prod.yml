@@ -15,13 +15,13 @@ spring:
       jks:
         server:
           keystore:
-            location: "classpath:keystore.p12"
+            location: "classpath:keystore.jks"
             password: ${SSLCERTPASS}
-            type: "PKCS12"
+            type: "JKS"
       pem:
         client:
           truststore:
-            certificate: "classpath:bloc360.live.pem"
+            certificate: "classpath:domain.crt"
 
 
 
