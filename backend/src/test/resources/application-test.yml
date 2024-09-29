@@ -7,6 +7,19 @@ keycloak:
   urls:
     auth: https://bloc360.live:8443/
 spring:
+  ssl:
+    bundle:
+      jks:
+        server:
+          keystore:
+            location: "classpath:keystore.jks"
+            password: ${SSLCERTPASS}
+            type: "JKS"
+      pem:
+        client:
+          truststore:
+            certificate: "classpath:domain.crt"
+
   application:
     name: backend
   datasource:
