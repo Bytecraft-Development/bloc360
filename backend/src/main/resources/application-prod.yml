@@ -19,11 +19,10 @@ spring:
             location: "classpath:truststore.jks"
             password: ${SSLCERTPASS}
             type: "JKS"
-      pem:
-        server:
-          keystore:
-            certificate: "classpath:keystore.p12"
-            private-key: "myalias"
-            private-key-password: ${SSLCERTPASS}
+        client:
+          truststore:
+            location: "classpath:truststore.jks"
+            password: ${SSLCERTPASS}
+            type: "JKS"
 
 SSLCERTPASS: ASdcxds32dkjuur
