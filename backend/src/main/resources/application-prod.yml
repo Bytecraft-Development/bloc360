@@ -15,14 +15,13 @@ spring:
     bundle:
       jks:
         server:
-          truststore:
-            location: "classpath:truststore.jks"
+          key:
+            alias: "1"
+          keystore:
+            location: "classpath:abc.p12"
             password: ${SSLCERTPASS}
-            type: "JKS"
+            type: "PKCS12"
+      pem:
         client:
           truststore:
-            location: "classpath:truststore.jks"
-            password: ${SSLCERTPASS}
-            type: "JKS"
-
-SSLCERTPASS: ASdcxds32dkjuur
+            certificate: "classpath:domain.pem"
