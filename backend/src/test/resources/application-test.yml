@@ -18,16 +18,16 @@ spring:
     bundle:
       jks:
         server:
-          truststore:
-            location: "classpath:truststore.jks"
+          key:
+            alias: "1"
+          keystore:
+            location: "classpath:abc.p12"
             password: ${SSLCERTPASS}
-            type: "JKS"
+            type: "PKCS12"
+      pem:
         client:
           truststore:
-            location: "classpath:truststore.jks"
-            password: ${SSLCERTPASS}
-            type: "JKS"
-
+            certificate: "classpath:domain.pem"
 
   application:
     name: backend
@@ -39,9 +39,10 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: none
 sendgrid:
  api:
   key: sa
 
 baseUrl: http://localhost:8080
+SSLCERTPASS: ASdcxds32dkjuur
