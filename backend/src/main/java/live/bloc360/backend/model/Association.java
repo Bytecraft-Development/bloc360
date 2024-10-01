@@ -2,15 +2,10 @@ package live.bloc360.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import live.bloc360.backend.dto.AssociationDTO;
-import live.bloc360.backend.dto.HouseHoldDTO;
-import live.bloc360.backend.dto.StairAssociationDTO;
 import lombok.*;
-
 
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @Getter

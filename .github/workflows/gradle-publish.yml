@@ -144,7 +144,6 @@ jobs:
             -e KEYCLOAK_DOMAIN=${{ secrets.KEYCLOAK_DOMAIN }} \
             -e KEYCLOAK_ADMINCLIENTID=${{ secrets.KEYCLOAK_ADMINCLIENTID }} \
             -e KEYCLOAK_CLIENTSECRET=${{ secrets.KEYCLOAK_CLIENTSECRET }} \
-            -e KEYCLOAK_CLIENT=${{ secrets.KEYCLOAK_CLIENT }} \
             -e KEYCLOAK_AUTH=${{ secrets.KEYCLOAK_AUTH }} \
             -e SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }} \
             --name bloc360 --restart always --platform linux/amd64 ghcr.io/bytecraft-development/bloc360:latest 
