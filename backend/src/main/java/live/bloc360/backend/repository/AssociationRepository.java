@@ -12,5 +12,4 @@ public interface AssociationRepository extends JpaRepository<Association, Intege
     Optional<Association> findByName(String name);
     Optional<Association> findByAdminUsername(String adminUsername);
 
-
 }

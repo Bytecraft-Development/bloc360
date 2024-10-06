@@ -23,12 +23,14 @@ class _AssociationSupportState extends State<AssociationSupport> {
             Text('You don\'t have any association created. Do you want to create one?'),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () => context.go('/create_association'),
+              onPressed: () {
+                context.go('/createAssociation');
+              },
               child: Text('Create Association'),
             ),
             SizedBox(height: 10),
             ElevatedButton(
-              onPressed: () => context.go('/contact_support'),
+              onPressed: () => context.go('/association_support'),
               child: Text('Contact Support'),
             ),
           ],

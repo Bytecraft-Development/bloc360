@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:frontend/pages/add_block.dart'; // Asigură-te că ai importat corect pagina AddBlockPage
+import 'package:frontend/pages/add_block.dart';
+import 'package:frontend/pages/add_house.dart';
+import 'package:frontend/pages/add_blocks_and_houses.dart'; // Asigură-te că ai această pagină
 
 class CreateAssociationPage extends StatefulWidget {
   @override
@@ -17,12 +20,12 @@ class _CreateAssociationPageState extends State<CreateAssociationPage> {
   final _registerComertController = TextEditingController();
   final _bankAccountController = TextEditingController();
   final _bankNameController = TextEditingController();
-  final _coldWaterController = TextEditingController();
-  final _hotWaterController = TextEditingController();
-  final _gasController = TextEditingController();
-  final _heatingController = TextEditingController();
   final _indexDateController = TextEditingController();
 
+  bool _coldWater = false;
+  bool _hotWater = false;
+  bool _gas = false;
+  bool _heating = false;
   bool _hasBlocks = false;
   bool _hasHouses = false;
 
@@ -60,7 +63,7 @@ class _CreateAssociationPageState extends State<CreateAssociationPage> {
           : '';
 
       final response = await http.post(
-        Uri.parse('http://localhost:7080/createAssociation'),
+        Uri.parse('https://bloc360.live:8080/createAssociation'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $accessToken',
@@ -72,10 +75,10 @@ class _CreateAssociationPageState extends State<CreateAssociationPage> {
           'registerComert': _registerComertController.text,
           'bankAccount': _bankAccountController.text,
           'bankName': _bankNameController.text,
-          'coldWater': _coldWaterController.text == 'true',
-          'hotWater': _hotWaterController.text == 'true',
-          'gas': _gasController.text == 'true',
-          'heating': _heatingController.text == 'true',
+          'coldWater': _coldWater,
+          'hotWater': _hotWater,
+          'gas': _gas,
+          'heating': _heating,
           'indexDate': formattedIndexDate,
           'hasBlocks': _hasBlocks,
           'hasHouses': _hasHouses,
@@ -87,16 +90,36 @@ class _CreateAssociationPageState extends State<CreateAssociationPage> {
         final associationId = responseData['associationId'];
 
         if (associationId != null && associationId is int) {
-          // Salvează associationId în SharedPreferences
           await _saveAssociationId(associationId);
 
-          // Navighează la pagina AddBlockPage cu associationId
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => AddBlockPage(associationId: associationId),
-            ),
-          );
+          // Navighează la pagina corectă în funcție de hasBlocks și hasHouses
+          if (_hasBlocks && _hasHouses) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AddBlocksAndHousesPage(associationId: associationId),
+              ),
+            );
+          } else if (_hasBlocks) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AddBlockPage(associationId: associationId),
+              ),
+            );
+          } else if (_hasHouses) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AddHousePage(associationId: associationId),
+              ),
+            );
+          } else {
+            // Optional: Afișează un mesaj de eroare dacă niciunul nu este bifat
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Please select at least one option (Blocks or Houses)')),
+            );
+          }
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Failed to retrieve association ID')),
@@ -150,21 +173,41 @@ class _CreateAssociationPageState extends State<CreateAssociationPage> {
                 controller: _bankNameController,
                 decoration: InputDecoration(labelText: 'Bank Name'),
               ),
-              TextFormField(
-                controller: _coldWaterController,
-                decoration: InputDecoration(labelText: 'Cold Water (true/false)'),
+              SwitchListTile(
+                title: Text('Cold Water'),
+                value: _coldWater,
+                onChanged: (bool value) {
+                  setState(() {
+                    _coldWater = value;
+                  });
+                },
               ),
-              TextFormField(
-                controller: _hotWaterController,
-                decoration: InputDecoration(labelText: 'Hot Water (true/false)'),
+              SwitchListTile(
+                title: Text('Hot Water'),
+                value: _hotWater,
+                onChanged: (bool value) {
+                  setState(() {
+                    _hotWater = value;
+                  });
+                },
               ),
-              TextFormField(
-                controller: _gasController,
-                decoration: InputDecoration(labelText: 'Gas (true/false)'),
+              SwitchListTile(
+                title: Text('Gas'),
+                value: _gas,
+                onChanged: (bool value) {
+                  setState(() {
+                    _gas = value;
+                  });
+                },
               ),
-              TextFormField(
-                controller: _heatingController,
-                decoration: InputDecoration(labelText: 'Heating (true/false)'),
+              SwitchListTile(
+                title: Text('Heating'),
+                value: _heating,
+                onChanged: (bool value) {
+                  setState(() {
+                    _heating = value;
+                  });
+                },
               ),
               TextFormField(
                 controller: _indexDateController,
@@ -253,7 +296,7 @@ class _AddBlockPageState extends State<AddBlockPage> {
       print('JSON Body: $jsonBody');
 
       final response = await http.post(
-        Uri.parse('http://localhost:7080/addBlocks?associationId=${widget.associationId}'),
+        Uri.parse('https://bloc360.live:8080/addBlocks?associationId=${widget.associationId}'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $accessToken',
@@ -309,3 +352,143 @@ class _AddBlockPageState extends State<AddBlockPage> {
     super.dispose();
   }
 }
+class AddHousePage extends StatefulWidget {
+  final int associationId;
+
+  AddHousePage({required this.associationId});
+
+  @override
+  _AddHousePageState createState() => _AddHousePageState();
+}
+
+class _AddHousePageState extends State<AddHousePage> {
+  final _formKey = GlobalKey<FormState>();
+  final List<TextEditingController> _nameControllers = [];
+  final List<Widget> _houseFields = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _addHouseField(); // Adaugă un câmp de casă inițial
+  }
+
+  void _addHouseField() {
+    final controller = TextEditingController();
+    _nameControllers.add(controller);
+    setState(() {
+      _houseFields.add(
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: TextFormField(
+            controller: controller,
+            decoration: InputDecoration(labelText: 'House Name'),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter a name';
+              }
+              return null;
+            },
+          ),
+        ),
+      );
+    });
+  }
+
+  Future<void> _addHouses() async {
+    final prefs = await SharedPreferences.getInstance();
+    final accessToken = prefs.getString('access_token');
+
+    if (_formKey.currentState?.validate() ?? false) {
+      final houseNames = _nameControllers.map((controller) => {'name': controller.text}).toList();
+      final jsonBody = jsonEncode(houseNames);
+      print('JSON Body: $jsonBody');
+
+      final response = await http.post(
+        Uri.parse('https://bloc360.live:8080/addHouse?associationId=${widget.associationId}'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken',
+        },
+        body: jsonBody,
+      );
+
+      if (response.statusCode == 201) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Houses added successfully')),
+        );
+        Navigator.of(context).pop();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to add houses')),
+        );
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Add Houses')),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              ..._houseFields,
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _addHouseField,
+                child: Text('Add Another House'),
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _addHouses,
+                child: Text('Add Houses'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _nameControllers.forEach((controller) => controller.dispose());
+    super.dispose();
+  }
+}
+
+
+class AddBlocksAndHousesPage extends StatefulWidget {
+  final int associationId;
+
+  AddBlocksAndHousesPage({required this.associationId});
+
+  @override
+  _AddBlocksAndHousesPageState createState() => _AddBlocksAndHousesPageState();
+}
+
+class _AddBlocksAndHousesPageState extends State<AddBlocksAndHousesPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Add Blocks and Houses')),
+      body: Column(
+        children: [
+          Expanded(
+            child: AddBlockPage(associationId: widget.associationId),
+          ),
+          Divider(), // Separă cele două formulare
+          Expanded(
+            child: AddHousePage(associationId: widget.associationId),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+

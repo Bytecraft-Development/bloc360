@@ -27,9 +27,9 @@ public class AssociationServiceImpl implements AssociationService {
 
     @Transactional
     public Association createAssociation(Association createAssociation, String adminUsername) {
-        if (userHasAssociation(adminUsername)) {
-            throw new BusinessException(HttpStatus.BAD_REQUEST, "User already has an association");
-        }
+//        if (userHasAssociation(adminUsername)) {
+//            throw new BusinessException(HttpStatus.BAD_REQUEST, "User already has an association");
+//        }
 
         if (associationRepository.findByName(createAssociation.getName()).isPresent()) {
             throw new BusinessException(HttpStatus.BAD_REQUEST, "Association already exists");
@@ -70,12 +70,14 @@ public class AssociationServiceImpl implements AssociationService {
     }
 
     @Transactional
-    public void addHouseToAssociation(Integer associationId, House house) {
+    public void addHouseToAssociation(Integer associationId, List<House> houses) {
         Association association = associationRepository.findById(associationId)
                 .orElseThrow(() -> new BusinessException(HttpStatus.NOT_FOUND, "Association not found"));
 
-        house.setAssociation(association);
-        houseRepository.save(house);
+        for (House house : houses) {
+            house.setAssociation(association);
+            houseRepository.save(house);
+        }
     }
 
     @Transactional

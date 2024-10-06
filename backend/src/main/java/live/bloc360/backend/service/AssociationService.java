@@ -9,7 +9,7 @@ public interface AssociationService {
     Association createAssociation(Association createAssociation, String adminUsername);
     Optional<Association> findByAdminUsername(String adminUsername);
     void addBlocksToAssociation(Integer associationId, List<Block> blocks);
-    void addHouseToAssociation(Integer associationId, House house);
+    void addHouseToAssociation(Integer associationId, List<House> houses);
     void addStairToBlock(Integer blockId, List<Stair> stairs);
     void addHouseHoldToStair(Integer stairId, HouseHold houseHold);
     void addHouseHoldToHouse(Integer houseId, HouseHold houseHold);
