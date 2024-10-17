@@ -20,12 +20,38 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   bool _isLoading = true;
   BigDecimal? _totalPaymentAmount;
   int? _numberOfHouseholds;
+  Map<String, dynamic>? _associationData;
 
   @override
   void initState() {
     super.initState();
     _fetchAssociationStatus();
     _fetchDashboardData();
+    _fetchAssociationData();
+  }
+
+  Future<void> _fetchAssociationData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? _accessToken = prefs.getString('access_token');
+    const API_URL = String.fromEnvironment('API_URL');
+    final String baseUrl = API_URL;
+
+    try {
+      var url = Uri.parse('$baseUrl/association?associationId=1');
+      var response = await http.get(url, headers: {
+        'Authorization': 'Bearer $_accessToken',
+      });
+
+      if (response.statusCode == 200) {
+        setState(() {
+          _associationData = json.decode(response.body);
+        });
+      } else {
+        print('Failed to load association data');
+      }
+    } catch (e) {
+      print('Exception in fetchAssociationData: $e');
+    }
   }
 
   Future<void> _fetchAssociationStatus() async {
@@ -148,6 +174,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                   ? DashboardContent(
                 totalPaymentAmount: _totalPaymentAmount,
                 numberOfHouseholds: _numberOfHouseholds,
+                associationData: _associationData,
               )
                   : AssociationSupport(),
             ),

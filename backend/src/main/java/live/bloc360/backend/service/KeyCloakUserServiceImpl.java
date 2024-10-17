@@ -28,8 +28,8 @@ public class KeyCloakUserServiceImpl implements KeycloackUserService {
     @Value("${default.group.users}")
     private String defaultGroupUsers;
 
-    @Value("{default.group.administrators}")
-    private String defaultGroupAdministrators;
+    @Value("${default.group.admin}")
+    private String defaultGroupAdmins;
 
     @Override
     public UserRegistrationRecord createUser(UserRegistrationRecord userRegistrationRecord) {

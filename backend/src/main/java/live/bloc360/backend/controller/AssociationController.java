@@ -14,10 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.oauth2.jwt.Jwt;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -139,6 +136,19 @@ public class AssociationController {
         List<Block> blocks = associationService.getBlocksForAssociation(associationId);
         return ResponseEntity.ok(blocks);
     }
+
+    @GetMapping("/association")
+    public ResponseEntity<Association> getAssociation(Authentication authentication) {
+        Jwt token = (Jwt) authentication.getCredentials();
+        String adminUsername = (String) token.getClaims().get("preferred_username");
+        Optional<Association> association = associationService.findByAdminUsername(adminUsername);
+        if (!association.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        return ResponseEntity.ok(association.get());
+    }
+
+
 }
 
 

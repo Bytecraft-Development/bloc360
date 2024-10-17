@@ -5,10 +5,13 @@ import live.bloc360.backend.model.*;
 import live.bloc360.backend.repository.*;
 import live.bloc360.backend.exceptions.BusinessException;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.keycloak.admin.client.resource.UsersResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.keycloak.representations.idm.UserRepresentation;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -27,9 +30,9 @@ public class AssociationServiceImpl implements AssociationService {
 
     @Transactional
     public Association createAssociation(Association createAssociation, String adminUsername) {
-//        if (userHasAssociation(adminUsername)) {
-//            throw new BusinessException(HttpStatus.BAD_REQUEST, "User already has an association");
-//        }
+       if (userHasAssociation(adminUsername)) {
+           throw new BusinessException(HttpStatus.BAD_REQUEST, "User already has an association");
+        }
 
         if (associationRepository.findByName(createAssociation.getName()).isPresent()) {
             throw new BusinessException(HttpStatus.BAD_REQUEST, "Association already exists");
@@ -57,6 +60,14 @@ public class AssociationServiceImpl implements AssociationService {
 
         return savedAssociation;
     }
+
+    @Transactional
+    public Optional<Association> getAssociation(Integer associationId) {
+        Optional<Association> association = associationRepository.findById(associationId);
+        return association;
+    }
+
+
 
     @Transactional
     public void addBlocksToAssociation(Integer associationId, List<Block> blocks) {

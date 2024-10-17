@@ -1,83 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AddStairsPage extends StatefulWidget {
-  final int blockId;
+  final String blockId;
 
-  AddStairsPage({required this.blockId});
+  const AddStairsPage({Key? key, required this.blockId}) : super(key: key);
 
   @override
   _AddStairsPageState createState() => _AddStairsPageState();
 }
 
 class _AddStairsPageState extends State<AddStairsPage> {
-  final List<TextEditingController> _stairControllers = [];
-  final int _initialStairsCount = 1;
+  TextEditingController stairNameController = TextEditingController();
 
-  @override
-  void initState() {
-    super.initState();
-
-    for (int i = 0; i < _initialStairsCount; i++) {
-      _stairControllers.add(TextEditingController());
-    }
-  }
-
-  @override
-  void dispose() {
-
-    for (var controller in _stairControllers) {
-      controller.dispose();
-    }
-    super.dispose();
-  }
-
-  void _addStair() {
-    setState(() {
-      _stairControllers.add(TextEditingController());
-    });
-  }
-
-  void _removeStair(int index) {
-    setState(() {
-      _stairControllers.removeAt(index);
-    });
-  }
-
-  Future<void> _submitStairs() async {
-    final prefs = await SharedPreferences.getInstance();
-    final accessToken = prefs.getString('access_token');
-
-
-    final stairs = _stairControllers.map((controller) {
-      return {
-        'name': controller.text,
-      };
-    }).toList();
-
-
-    final jsonBody = jsonEncode(stairs);
-    print('JSON Body: $jsonBody');
-
-    final response = await http.post(
-      Uri.parse('http://localhost:7080/addStair?blockId=${widget.blockId}'),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $accessToken',
-      },
-      body: jsonBody,
+  // Funcție pentru a trimite datele către backend
+  Future<void> addStairToBlock(String stairName) async {
+    final String baseUrl = "http://localhost:7080"; // Modifică URL-ul conform API-ului tău
+    var url = Uri.parse('$baseUrl/addStair?blockId=${widget.blockId}');
+    var response = await http.post(
+      url,
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode([
+        {"name": stairName},
+      ]),
     );
 
     if (response.statusCode == 201) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Stairs added successfully')),
+        SnackBar(content: Text("Stair added successfully!")),
       );
-      Navigator.of(context).pop();
+      stairNameController.clear();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to add stairs')),
+        SnackBar(content: Text("Failed to add stair.")),
       );
     }
   }
@@ -85,39 +41,32 @@ class _AddStairsPageState extends State<AddStairsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Add Stairs')),
+      appBar: AppBar(
+        title: Text("Add Stairs to Block"),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              child: ListView.builder(
-                itemCount: _stairControllers.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: TextField(
-                      controller: _stairControllers[index],
-                      decoration: InputDecoration(
-                        labelText: 'Stair ${index + 1}',
-                      ),
-                    ),
-                    trailing: IconButton(
-                      icon: Icon(Icons.remove),
-                      onPressed: () => _removeStair(index),
-                    ),
+            Text('Block ID: ${widget.blockId}', style: TextStyle(fontWeight: FontWeight.bold)),
+            SizedBox(height: 16),
+            TextField(
+              controller: stairNameController,
+              decoration: InputDecoration(labelText: 'Stair Name'),
+            ),
+            SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                if (stairNameController.text.isNotEmpty) {
+                  addStairToBlock(stairNameController.text);
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Please enter a stair name")),
                   );
-                },
-              ),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _addStair,
-              child: Text('Add Another Stair'),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _submitStairs,
-              child: Text('Submit Stairs'),
+                }
+              },
+              child: Text("Add Stair"),
             ),
           ],
         ),

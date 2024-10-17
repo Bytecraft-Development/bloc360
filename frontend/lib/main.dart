@@ -5,7 +5,6 @@ import 'package:frontend/pages/add_stairs.dart';
 import 'package:frontend/pages/dashboard/dash_board_screen.dart';
 import 'package:frontend/pages/hello_world.dart';
 import 'package:frontend/pages/privacy_policy.dart';
-import 'package:frontend/pages/select_block.dart';
 import 'package:frontend/pages/tos.dart';
 import 'package:frontend/controllers/simple_ui_controller.dart';
 import 'package:frontend/util/token_utils.dart';
@@ -20,6 +19,7 @@ import 'pages/expenses.dart';
 import 'pages/association_support.dart';
 import 'pages/create_association.dart';
 import 'pages/add_block.dart';
+import 'pages/add_blocks_and_houses.dart';
 // just for update
 
 void main() {
@@ -86,18 +86,13 @@ class _MyAppState extends State<MyApp> {
       GoRoute(
         path: '/add_stairs',
         builder: (context, state) {
-          final blockId = state.extra as int;
-          return AddStairsPage(blockId: blockId);
+          return AddStairsPage(blockId: '',);
         },
       ),
       GoRoute(
         path: '/createAssociation',
         builder: (context, state) =>
             _buildRouteWithTokenValidation(context, state, CreateAssociationPage()),
-      ),
-      GoRoute(
-        path: '/select_block',
-        builder: (context, state) => BlockListPage(),
       ),
       GoRoute(
         path:'/association_support',

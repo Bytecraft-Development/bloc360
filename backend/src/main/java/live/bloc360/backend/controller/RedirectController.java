@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.core.Authentication;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -25,9 +26,10 @@ public class RedirectController {
     @GetMapping("/redirectByRole")
     public ResponseEntity<String> redirectByRole(Authentication authentication) {
         Jwt jwt = (Jwt) authentication.getPrincipal();
-        List<String> roles = jwt.getClaimAsStringList("groups");
+        Map<String, Object> realmAccess = jwt.getClaimAsMap("realm_access");
+        List<String> roles = (List<String>) realmAccess.get("roles");
 
-        if (roles.contains("administrator")) {
+        if (roles != null && roles.contains("user")) {
             String adminUsername = jwt.getClaimAsString("preferred_username");
             Optional<Association> association = associationService.findByAdminUsername(adminUsername);
             if (association.isPresent()) {

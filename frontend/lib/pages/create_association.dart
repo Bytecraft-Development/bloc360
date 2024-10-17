@@ -62,8 +62,10 @@ class _CreateAssociationPageState extends State<CreateAssociationPage> {
           ? '${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}'
           : '';
 
+      const API_URL = String.fromEnvironment('API_URL');
+      final String baseUrl = API_URL;
       final response = await http.post(
-        Uri.parse('https://bloc360.live:8080/createAssociation'),
+        Uri.parse('$baseUrl/createAssociation'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $accessToken',
@@ -92,7 +94,7 @@ class _CreateAssociationPageState extends State<CreateAssociationPage> {
         if (associationId != null && associationId is int) {
           await _saveAssociationId(associationId);
 
-          // Navighează la pagina corectă în funcție de hasBlocks și hasHouses
+
           if (_hasBlocks && _hasHouses) {
             Navigator.push(
               context,
@@ -115,7 +117,6 @@ class _CreateAssociationPageState extends State<CreateAssociationPage> {
               ),
             );
           } else {
-            // Optional: Afișează un mesaj de eroare dacă niciunul nu este bifat
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text('Please select at least one option (Blocks or Houses)')),
             );
@@ -294,9 +295,10 @@ class _AddBlockPageState extends State<AddBlockPage> {
       final blockNames = _nameControllers.map((controller) => {'name': controller.text}).toList();
       final jsonBody = jsonEncode(blockNames);
       print('JSON Body: $jsonBody');
-
+      const API_URL = String.fromEnvironment('API_URL');
+      final String baseUrl = API_URL;
       final response = await http.post(
-        Uri.parse('https://bloc360.live:8080/addBlocks?associationId=${widget.associationId}'),
+        Uri.parse('$baseUrl/addBlocks?associationId=${widget.associationId}'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $accessToken',

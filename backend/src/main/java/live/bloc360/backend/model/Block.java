@@ -1,5 +1,7 @@
 package live.bloc360.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,9 +23,11 @@ public class Block {
 
     @ManyToOne
     @JoinColumn(name = "association_id")
+    @JsonBackReference
     private Association association;
 
     @OneToMany(mappedBy = "block", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<Stair> stairs;
 
     public Block(Integer id, String name) {
