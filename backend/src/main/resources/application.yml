@@ -41,3 +41,4 @@ keycloak:
 default:
   group:
     users: app-users
+    admin: app-admin
