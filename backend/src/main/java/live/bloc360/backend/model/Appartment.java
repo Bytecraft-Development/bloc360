@@ -3,17 +3,14 @@ package live.bloc360.backend.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "household")
-public class HouseHold {
+@Table(name = "appartment")
+public class Appartment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -24,7 +21,9 @@ public class HouseHold {
     @JoinColumn(name = "stair_id")
     private Stair stair;
 
-    @ManyToOne
-    @JoinColumn(name = "house_id")
-    private House house;
+    @OneToOne
+    @JoinColumn(name = "household_id")
+    private HouseHold houseHold;
+
+
 }
