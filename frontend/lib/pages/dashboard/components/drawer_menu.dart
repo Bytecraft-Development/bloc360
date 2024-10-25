@@ -11,11 +11,12 @@ class DrawerMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      backgroundColor: primaryColor,
       child: ListView(
 
         children: [
           Image.asset(width: 170, height: 155,
-            "assets/images/logo_bloc360_transparent.png",
+            "assets/images/logo_bloc360_menu.png",
           ),
           DrawerListTile(
               title: 'Dashboard',

@@ -15,7 +15,7 @@ class DrawerListTile extends StatelessWidget {
       onTap: tap,
       horizontalTitleGap: 0.0,
       leading: SvgPicture.asset(svgSrc,color: orange,height: 22,),
-      title: Text('  ${title}',style: TextStyle(color: primaryColor, fontSize: 16),),
+      title: Text('  ${title}',style: const TextStyle(color: Colors.white, fontSize: 16),),
     );
   }
 }
