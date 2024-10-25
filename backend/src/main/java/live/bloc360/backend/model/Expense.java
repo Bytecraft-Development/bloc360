@@ -25,6 +25,7 @@ public class Expense {
     private boolean repeatable;
     private boolean distribute;
     private String serialNumber;
+    private ConsumptionType consumptionType;
 
     @Temporal(TemporalType.DATE)
     private Date documentDate;
