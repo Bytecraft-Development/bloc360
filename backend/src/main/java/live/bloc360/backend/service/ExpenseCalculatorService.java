@@ -1,13 +1,15 @@
 package live.bloc360.backend.service;
+
 import live.bloc360.backend.model.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.util.List;
 
-/*
+
 @AllArgsConstructor
 @Service
 public class ExpenseCalculatorService {
@@ -47,7 +49,7 @@ public class ExpenseCalculatorService {
                 for (HouseHold houseHold : customHouseHoldList) {
                     totalSurface += houseHold.getSurface();
                 }
-                expensePerSurfaceUnit = expense.getAmount().divide(BigDecimal.valueOf(totalSurface),3, RoundingMode.HALF_EVEN);
+                expensePerSurfaceUnit = expense.getAmount().divide(BigDecimal.valueOf(totalSurface), 3, RoundingMode.HALF_EVEN);
                 for (HouseHold houseHold : customHouseHoldList) {
                     Payment payment = new Payment();
                     payment.setExpense(expense);
@@ -57,9 +59,17 @@ public class ExpenseCalculatorService {
                 }
                 break;
             case BY_INDEX:
+                BigDecimal expensePerConsumptionUnit;
+                Double totalConsumption = 0.0;
+                for (HouseHold houseHold : customHouseHoldList) {
+                    totalConsumption += houseHold.getMonthlyConsumption(LocalDate.now(), expense.getConsumptionType());
+                }
+                expensePerConsumptionUnit = expense.getAmount().divide(BigDecimal.valueOf(totalConsumption),3, RoundingMode.HALF_EVEN);
                 for (HouseHold houseHold : customHouseHoldList) {
                     Payment payment = new Payment();
-                    payment.setValue(BigDecimal.valueOf(10));
+                    payment.setExpense(expense);
+                    payment.setHouseHold(houseHold);
+                    payment.setValue(expensePerConsumptionUnit.multiply(BigDecimal.valueOf(houseHold.getMonthlyConsumption(LocalDate.now(), expense.getConsumptionType()))));
                     houseHold.getPaymentList().add(payment);
                 }
                 break;
@@ -69,14 +79,10 @@ public class ExpenseCalculatorService {
                     payment.setValue(BigDecimal.valueOf(100));
                     houseHold.getPaymentList().add(payment);
                 }
-            */
-/*default:
-                throw new RuntimeException("No CalcMethod available"); *//*
+
+            default:
+                throw new RuntimeException("No CalcMethod available");
 
         }
     }
 }
-
-
-
-*/
