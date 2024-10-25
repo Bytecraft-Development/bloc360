@@ -67,25 +67,6 @@ public class AssociationController {
         }
     }
 
-    @PostMapping("/addHouse")
-    public ResponseEntity<String> addHouseToAssociation(@RequestParam Integer associationId, @RequestBody List<Map<String, String>> houseData) {
-       List<House> houses = houseData.stream().map(data-> {
-           House house = new House();
-           house.setName(data.get("name"));
-           return house;
-       }).collect(Collectors.toList());
-
-        try {
-            associationService.addHouseToAssociation(associationId, houses);
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        } catch (BusinessException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
     @PostMapping("/addStair")
     public ResponseEntity<String> addStairToBlock(@RequestParam Integer blockId, @RequestBody List<Map<String, String>> stairData) {
         List<Stair> stairs = stairData.stream()
@@ -108,19 +89,6 @@ public class AssociationController {
     public ResponseEntity<Void> addHouseHoldToStair(@RequestParam Integer stairId, @RequestBody HouseHold houseHold) {
         try {
             associationService.addHouseHoldToStair(stairId, houseHold);
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        } catch (BusinessException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @PostMapping("/addHouseHoldToHouse")
-    public ResponseEntity<Void> addHouseHoldToHouse(@RequestParam Integer houseId, @RequestBody HouseHold houseHold) {
-        try {
-            associationService.addHouseHoldToHouse(houseId, houseHold);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (BusinessException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

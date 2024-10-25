@@ -1,17 +1,20 @@
 package live.bloc360.backend.service;
 
 import jakarta.transaction.Transactional;
-import live.bloc360.backend.model.*;
-import live.bloc360.backend.repository.*;
 import live.bloc360.backend.exceptions.BusinessException;
+import live.bloc360.backend.model.Association;
+import live.bloc360.backend.model.Block;
+import live.bloc360.backend.model.HouseHold;
+import live.bloc360.backend.model.Stair;
+import live.bloc360.backend.repository.AssociationRepository;
+import live.bloc360.backend.repository.BlockRepository;
+import live.bloc360.backend.repository.HouseHoldRepository;
+import live.bloc360.backend.repository.StairRepository;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.keycloak.admin.client.resource.UsersResource;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.stereotype.Service;
 import org.keycloak.representations.idm.UserRepresentation;
-
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +26,6 @@ public class AssociationServiceImpl implements AssociationService {
 
     private final AssociationRepository associationRepository;
     private final BlockRepository blockRepository;
-    private final HouseRepository houseRepository;
     private final StairRepository stairRepository;
     private final HouseHoldRepository houseHoldRepository;
     private final KeyCloakUserServiceImpl keyCloakUserServiceImpl;
@@ -81,17 +83,6 @@ public class AssociationServiceImpl implements AssociationService {
     }
 
     @Transactional
-    public void addHouseToAssociation(Integer associationId, List<House> houses) {
-        Association association = associationRepository.findById(associationId)
-                .orElseThrow(() -> new BusinessException(HttpStatus.NOT_FOUND, "Association not found"));
-
-        for (House house : houses) {
-            house.setAssociation(association);
-            houseRepository.save(house);
-        }
-    }
-
-    @Transactional
     public void addStairToBlock(Integer blockId, List<Stair> stairs) {
         Block block = blockRepository.findById(blockId)
                 .orElseThrow(() -> new BusinessException(HttpStatus.NOT_FOUND, "Block not found"));
@@ -111,14 +102,6 @@ public class AssociationServiceImpl implements AssociationService {
         houseHoldRepository.save(houseHold);
     }
 
-    @Transactional
-    public void addHouseHoldToHouse(Integer houseId, HouseHold houseHold) {
-        House house = houseRepository.findById(houseId)
-                .orElseThrow(() -> new BusinessException(HttpStatus.NOT_FOUND, "House not found"));
-
-        houseHold.setHouse(house);
-        houseHoldRepository.save(houseHold);
-    }
     public List<Block> getBlocksForAssociation(Integer associationId) {
         List<Block> blocks = blockRepository.findByAssociationId(associationId);
         return blocks.stream()

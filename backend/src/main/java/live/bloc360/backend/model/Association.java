@@ -1,7 +1,6 @@
 package live.bloc360.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -47,6 +46,4 @@ public class Association {
  @JsonManagedReference
  private List<Block> blocks;
 
- @OneToMany(mappedBy = "association", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
- private List<House> houses;
 }

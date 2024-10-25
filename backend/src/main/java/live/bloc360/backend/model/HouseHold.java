@@ -19,15 +19,14 @@ public class HouseHold {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String appartmentNumber;
+    private String type;
+
+    private String apartmentNumber;
 
     @ManyToOne
     @JoinColumn(name = "stair_id")
     private Stair stair;
 
-    @ManyToOne
-    @JoinColumn(name = "house_id")
-    private House house;
     private Integer numberOfHouseHoldMembers;
 
     private Double surface;
@@ -36,7 +35,6 @@ public class HouseHold {
 
     @OneToMany(mappedBy = "houseHold", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Meter> meterList = new ArrayList<>();
-
 
     public Long getMonthlyConsumption(LocalDate localDate, ConsumptionType consumptionType) {
         Long consumption = 0L;

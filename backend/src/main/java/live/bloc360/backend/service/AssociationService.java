@@ -10,9 +10,7 @@ public interface AssociationService {
     Optional<Association> findByAdminUsername(String adminUsername);
     Optional<Association> getAssociation(Integer associationId);
     void addBlocksToAssociation(Integer associationId, List<Block> blocks);
-    void addHouseToAssociation(Integer associationId, List<House> houses);
     void addStairToBlock(Integer blockId, List<Stair> stairs);
     void addHouseHoldToStair(Integer stairId, HouseHold houseHold);
-    void addHouseHoldToHouse(Integer houseId, HouseHold houseHold);
     List<Block> getBlocksForAssociation(Integer associationId);
 }
