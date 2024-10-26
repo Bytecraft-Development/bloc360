@@ -1,8 +1,10 @@
 package live.bloc360.backend.service;
 
-import live.bloc360.backend.model.FeatureToggle;
-import live.bloc360.backend.model.UserRegistrationRecord;
+import live.bloc360.backend.model.*;
+import live.bloc360.backend.repository.AppartmentRepository;
 import live.bloc360.backend.repository.FeatureToggleRepository;
+import live.bloc360.backend.repository.HouseHoldRepository;
+import live.bloc360.backend.repository.StairRepository;
 import lombok.RequiredArgsConstructor;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.RealmResource;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +24,9 @@ public class KeyCloakUserServiceImpl implements KeycloackUserService {
 
     private final FeatureToggleRepository featureToggleRepository;
     private final Keycloak keycloak;
+    private final StairRepository stairRepository;
+    private final AppartmentRepository appartmentRepository;
+    private final HouseHoldRepository houseHoldRepository;
 
     @Value("${keycloak.realm}")
     private String realm;
@@ -59,6 +65,49 @@ public class KeyCloakUserServiceImpl implements KeycloackUserService {
         usersResource.create(user);
         return userRegistrationRecord;
 
+    }
+
+    public UserRegistrationRecord createHouseHoldUser(UserRegistrationRecord userRegistrationRecord) {
+        UserRepresentation user = new UserRepresentation();
+        user.setEnabled(true);
+        user.setUsername(userRegistrationRecord.username());
+        user.setEmail(userRegistrationRecord.email());
+        user.setFirstName(userRegistrationRecord.firstName());
+        user.setLastName(userRegistrationRecord.lastName());
+        user.setGroups(List.of(defaultGroupUsers));
+        user.setEmailVerified(true);
+
+        CredentialRepresentation credentialRepresentation = new CredentialRepresentation();
+        credentialRepresentation.setValue(userRegistrationRecord.password());
+        credentialRepresentation.setTemporary(false);
+        credentialRepresentation.setType(CredentialRepresentation.PASSWORD);
+        user.setCredentials(List.of(credentialRepresentation));
+
+        UsersResource usersResource = getUsersResource();
+        usersResource.create(user);
+
+        Integer associationId = userRegistrationRecord.associationId();
+        String appartmentNumber = userRegistrationRecord.appartmentNumber();
+
+        List<Stair> stairs = stairRepository.findByBlock_Association_Id(associationId);
+
+        Appartment appartment = stairs.stream()
+                .flatMap(stair -> appartmentRepository.findByStairAndAppartmentNumber(stair, appartmentNumber).stream())
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Apartamentul nu a fost găsit."));
+
+        HouseHold household = HouseHold.builder()
+                .apartmentNumber(appartment.getAppartmentNumber())
+                .stair(appartment.getStair())
+                .appartment(appartment)
+                .userId(userRegistrationRecord.username())
+                .build();
+        houseHoldRepository.save(household);
+
+        appartment.setHouseHold(household);
+        appartmentRepository.save(appartment);
+
+        return userRegistrationRecord;
     }
 
     public UsersResource getUsersResource() {

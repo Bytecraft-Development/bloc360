@@ -24,6 +24,4 @@ public class Appartment {
     @OneToOne
     @JoinColumn(name = "household_id")
     private HouseHold houseHold;
-
-
 }

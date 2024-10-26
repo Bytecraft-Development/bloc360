@@ -20,6 +20,12 @@ public class CreateUserController {
         return keycloackUserService.createUser(user);
     }
 
+    @PostMapping("/createHouseHoldUser")
+    public UserRegistrationRecord createHouseHoldUser(@RequestBody UserRegistrationRecord user) {
+        return keycloackUserService.createHouseHoldUser(user);
+    }
+
+
     @GetMapping("/getUser")
     public UserRepresentation getUser(Principal principal) {
         return keycloackUserService.getUserById(principal.getName());

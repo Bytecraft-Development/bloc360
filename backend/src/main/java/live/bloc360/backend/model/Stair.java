@@ -1,6 +1,7 @@
 package live.bloc360.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,5 +27,6 @@ public class Stair {
     private Block block;
 
     @OneToMany(mappedBy = "stair", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<HouseHold> households;
 }

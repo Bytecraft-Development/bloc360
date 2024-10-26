@@ -6,5 +6,6 @@ import org.keycloak.representations.idm.UserRepresentation;
 public interface KeycloackUserService {
 
     UserRegistrationRecord createUser(UserRegistrationRecord record);
+    UserRegistrationRecord createHouseHoldUser(UserRegistrationRecord record);
     UserRepresentation getUserById(String userId);
 }

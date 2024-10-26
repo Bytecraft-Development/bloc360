@@ -1,5 +1,6 @@
 package live.bloc360.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,6 +11,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -27,6 +29,10 @@ public class HouseHold {
     @JoinColumn(name = "stair_id")
     private Stair stair;
 
+    @ManyToOne
+    @JoinColumn(name = "appartment_id")
+    private Appartment appartment;
+
     private Integer numberOfHouseHoldMembers;
 
     private Double surface;
@@ -35,6 +41,12 @@ public class HouseHold {
 
     @OneToMany(mappedBy = "houseHold", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Meter> meterList = new ArrayList<>();
+
+    private String userId;
+
+    public boolean isUserAssigned() {
+        return userId != null && !userId.isEmpty();
+    }
 
     public Long getMonthlyConsumption(LocalDate localDate, ConsumptionType consumptionType) {
         Long consumption = 0L;
