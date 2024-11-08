@@ -15,7 +15,7 @@ public class Appartment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String appartmentNumber;
+    private String number;
 
     @ManyToOne
     @JoinColumn(name = "stair_id")
@@ -23,5 +23,6 @@ public class Appartment {
 
     @OneToOne
     @JoinColumn(name = "household_id")
+    //List owner type chirias sau owner
     private HouseHold houseHold;
 }

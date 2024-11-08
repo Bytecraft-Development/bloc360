@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../config/environment.dart';
+import 'add_blocks_and_stairs.dart';
 
 class CreateAssociationPage extends StatefulWidget {
   @override
@@ -19,6 +25,8 @@ class _CreateAssociationPageState extends State<CreateAssociationPage> {
   bool _hotWater = false;
   bool _gas = false;
   bool _heating = false;
+  bool _hasBlocks = false;
+  bool _hasHouses = false;
 
   EdgeInsets getPadding(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -30,6 +38,61 @@ class _CreateAssociationPageState extends State<CreateAssociationPage> {
     }
   }
 
+  Future<String?> _getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('access_token');
+  }
+
+  Future<void> _createAssociation() async {
+    if (_formKey.currentState!.validate()) {
+      final token = await _getToken();
+      if (token == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Authentication token is missing.')),
+        );
+        return;
+      }
+
+      final response = await http.post(
+        Uri.parse('${EnvironmentConfig.API_URL}/createAssociation'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(<String, dynamic>{
+          'name': _nameController.text,
+          'address': _addressController.text,
+          'cui': _cuiController.text,
+          'registerComert': _registerComertController.text,
+          'bankAccount': _bankAccountController.text,
+          'bankName': _bankNameController.text,
+          'indexDate': _indexDateController.text,
+          'coldWater': _coldWater,
+          'hotWater': _hotWater,
+          'gas': _gas,
+          'heating': _heating,
+          'hasBlocks': _hasBlocks,
+          'hasHouses': _hasHouses,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final responseBody = jsonDecode(response.body);
+        final associationId = responseBody['associationId'];
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AddBlocksAndStairsPage(associationId: associationId),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Eroare la crearea asociației.')),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -38,21 +101,19 @@ class _CreateAssociationPageState extends State<CreateAssociationPage> {
       return LayoutBuilder(
         builder: (context, constraints) {
           if (constraints.maxWidth > 600) {
-            // Desktop Layout
             return Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 buildCheckboxTile('Apă rece', _coldWater, (value) => setState(() => _coldWater = value ?? false)),
-                SizedBox(width: 130), // Distanță orizontală de 2 pixeli
+                SizedBox(width: 130),
                 buildCheckboxTile('Apă caldă', _hotWater, (value) => setState(() => _hotWater = value ?? false)),
-                SizedBox(width: 130), // Distanță orizontală de 2 pixeli
+                SizedBox(width: 130),
                 buildCheckboxTile('Gaz', _gas, (value) => setState(() => _gas = value ?? false)),
-                SizedBox(width: 130), // Distanță orizontală de 2 pixeli
+                SizedBox(width: 130),
                 buildCheckboxTile('Încălzire', _heating, (value) => setState(() => _heating = value ?? false)),
               ],
             );
           } else {
-            // Mobile Layout - 2x2 grid
             return Column(
               children: [
                 Row(
@@ -60,19 +121,19 @@ class _CreateAssociationPageState extends State<CreateAssociationPage> {
                     Expanded(
                       child: buildCheckboxTile('Apă rece', _coldWater, (value) => setState(() => _coldWater = value ?? false)),
                     ),
-                    SizedBox(width: 2), // Distanță orizontală de 2 pixeli
+                    SizedBox(width: 2),
                     Expanded(
                       child: buildCheckboxTile('Apă caldă', _hotWater, (value) => setState(() => _hotWater = value ?? false)),
                     ),
                   ],
                 ),
-                SizedBox(height: 2), // Distanță verticală de 2 pixeli
+                SizedBox(height: 2),
                 Row(
                   children: [
                     Expanded(
                       child: buildCheckboxTile('Gaz', _gas, (value) => setState(() => _gas = value ?? false)),
                     ),
-                    SizedBox(width: 2), // Distanță orizontală de 2 pixeli
+                    SizedBox(width: 2),
                     Expanded(
                       child: buildCheckboxTile('Încălzire', _heating, (value) => setState(() => _heating = value ?? false)),
                     ),
@@ -106,50 +167,42 @@ class _CreateAssociationPageState extends State<CreateAssociationPage> {
                     ),
                   ),
                   SizedBox(height: 20),
-
-                  // Input Fields (Name and Register Number)
                   Row(
                     children: [
                       Expanded(
-                        child: buildTextField('Denumire legală', _nameController, width: 400), // Lățime ajustabilă
+                        child: buildTextField('Denumire legală', _nameController, width: 400),
                       ),
-                      SizedBox(width: 8), // Distanță orizontală de 2 pixeli
+                      SizedBox(width: 8),
                       Expanded(
-                        child: buildTextField('Nr. registru comerț', _registerComertController, width: 400), // Lățime ajustabilă
+                        child: buildTextField('Nr. registru comerț', _registerComertController, width: 400),
                       ),
                     ],
                   ),
-                  SizedBox(height: 32), // Distanță verticală
-
-                  // Input Fields (Address and Bank Name)
+                  SizedBox(height: 32),
                   Row(
                     children: [
                       Expanded(
-                        child: buildTextField('Adresă', _addressController, width: 400), // Lățime ajustabilă
+                        child: buildTextField('Adresă', _addressController, width: 400),
                       ),
-                      SizedBox(width: 8), // Distanță orizontală de 2 pixeli
+                      SizedBox(width: 8),
                       Expanded(
-                        child: buildTextField('Banca', _bankNameController, width: 400), // Lățime ajustabilă
+                        child: buildTextField('Banca', _bankNameController, width: 400),
                       ),
                     ],
                   ),
-                  SizedBox(height: 32), // Distanță verticală
-
-                  // Input Fields (CUI and IBAN)
+                  SizedBox(height: 32),
                   Row(
                     children: [
                       Expanded(
-                        child: buildTextField('CUI', _cuiController, width: 400), // Lățime ajustabilă
+                        child: buildTextField('CUI', _cuiController, width: 400),
                       ),
-                      SizedBox(width: 8), // Distanță orizontală de 2 pixeli
+                      SizedBox(width: 8),
                       Expanded(
-                        child: buildTextField('IBAN', _bankAccountController, width: 400), // Lățime ajustabilă
+                        child: buildTextField('IBAN', _bankAccountController, width: 400),
                       ),
                     ],
                   ),
-                  SizedBox(height: 32), // Distanță verticală
-
-                  // Title for Counters Section
+                  SizedBox(height: 32),
                   Text(
                     'Contoare',
                     style: TextStyle(
@@ -159,13 +212,8 @@ class _CreateAssociationPageState extends State<CreateAssociationPage> {
                     ),
                   ),
                   SizedBox(height: 16),
-
-                  // Counters Section with new implementation
                   buildCountersSection(),
-
-                  SizedBox(height: 32), // Distanță verticală
-
-                  // Invoice Date Section Title
+                  SizedBox(height: 32),
                   Text(
                     'Ziua Emiterii Facturilor',
                     style: TextStyle(
@@ -175,32 +223,26 @@ class _CreateAssociationPageState extends State<CreateAssociationPage> {
                     ),
                   ),
                   SizedBox(height: 16),
-
-                  // Invoice Date Input
-                  buildTextField('Introduceți ziua', _indexDateController, width: 350), // Lățime ajustabilă
-                  SizedBox(height: 32), // Distanță verticală
-
-                  // Next Step Button
+                  buildTextField('Introduceți ziua', _indexDateController, width: 350),
+                  SizedBox(height: 32),
                   Align(
                     alignment: MediaQuery.of(context).size.width > 600
-                        ? Alignment.centerRight // Aliniere la dreapta pe desktop
-                        : Alignment.center,      // Centrat pe mobil
+                        ? Alignment.centerRight
+                        : Alignment.center,
                     child: Padding(
                       padding: MediaQuery.of(context).size.width > 600
-                          ? const EdgeInsets.only(right: 370) // Padding aplicat doar pe desktop
-                          : EdgeInsets.zero, // Fără padding pe mobil // Optional: padding dreapta pe desktop
+                          ? const EdgeInsets.only(right: 370)
+                          : EdgeInsets.zero,
                       child: ElevatedButton(
-                        onPressed: () {
-                          // Call create association function
-                        },
+                        onPressed: _createAssociation,
                         style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 45), // Lățime buton
-                          backgroundColor: Colors.blue[900], // Fundal albastru închis
+                          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 45),
+                          backgroundColor: Colors.blue[900],
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(4), // Border radius mai mic
+                            borderRadius: BorderRadius.circular(4),
                           ),
                         ),
-                        child: Text('Pasul următor', style: TextStyle(color: Colors.white)), // Asigură-te că textul este vizibil
+                        child: Text('Pasul următor', style: TextStyle(color: Colors.white)),
                       ),
                     ),
                   ),
@@ -220,7 +262,7 @@ class _CreateAssociationPageState extends State<CreateAssociationPage> {
         Text(labelText, style: TextStyle(fontSize: 14, color: Colors.black)),
         SizedBox(height: 4),
         Container(
-          width: width, // Lățimea poate fi ajustată aici
+          width: width,
           decoration: BoxDecoration(
             color: Color(0xFFECF4FF),
             borderRadius: BorderRadius.circular(5),
@@ -251,7 +293,7 @@ class _CreateAssociationPageState extends State<CreateAssociationPage> {
 
   Widget buildCheckboxTile(String title, bool value, ValueChanged<bool?> onChanged) {
     return SizedBox(
-      width: 200, // Lățime fixă pentru checkbox-uri
+      width: 200,
       child: CheckboxListTile(
         title: Text(
           title,

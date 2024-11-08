@@ -33,7 +33,7 @@ public class AssociationDTO {
     private boolean gas;
     private boolean heating;
 
-    private Date indexDate;
+    private String indexDate;
 
     private String adminUsername;
 

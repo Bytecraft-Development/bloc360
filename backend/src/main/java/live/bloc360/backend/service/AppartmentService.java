@@ -26,9 +26,11 @@ public class AppartmentService {
             Stair stair = stairRepository.findById(request.getStairId())
                     .orElseThrow(() -> new RuntimeException("Stair not found"));
             Appartment appartment = Appartment.builder()
-                    .appartmentNumber(request.getAppartmentNumber())
+                    .number(request.getAppartmentNumber())
                     .stair(stair)
                     .build();
+            //busines exception extends runtime exception
+            //constructorul de message ca sa primesc exception-ul din runtime
             appartments.add(appartmentRepository.save(appartment));
         }
         return appartments;

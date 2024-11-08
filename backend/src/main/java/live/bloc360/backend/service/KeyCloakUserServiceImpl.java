@@ -92,12 +92,12 @@ public class KeyCloakUserServiceImpl implements KeycloackUserService {
         List<Stair> stairs = stairRepository.findByBlock_Association_Id(associationId);
 
         Appartment appartment = stairs.stream()
-                .flatMap(stair -> appartmentRepository.findByStairAndAppartmentNumber(stair, appartmentNumber).stream())
+                .flatMap(stair -> appartmentRepository.findByStairAndNumber(stair, appartmentNumber).stream())
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Apartamentul nu a fost găsit."));
 
         HouseHold household = HouseHold.builder()
-                .apartmentNumber(appartment.getAppartmentNumber())
+                .apartmentNumber(appartment.getNumber())
                 .stair(appartment.getStair())
                 .appartment(appartment)
                 .userId(userRegistrationRecord.username())

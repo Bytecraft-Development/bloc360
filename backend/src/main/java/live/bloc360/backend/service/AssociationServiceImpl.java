@@ -58,8 +58,6 @@ public class AssociationServiceImpl implements AssociationService {
                 .build();
 
         Association savedAssociation = associationRepository.save(association);
-
-
         return savedAssociation;
     }
 
@@ -68,7 +66,6 @@ public class AssociationServiceImpl implements AssociationService {
         Optional<Association> association = associationRepository.findById(associationId);
         return association;
     }
-
 
 
     @Transactional
@@ -105,7 +102,7 @@ public class AssociationServiceImpl implements AssociationService {
     public List<Block> getBlocksForAssociation(Integer associationId) {
         List<Block> blocks = blockRepository.findByAssociationId(associationId);
         return blocks.stream()
-                .map(block -> new Block(block.getId(), block.getName()))
+                .map(block -> new Block(block.getId(), block.getName(), block.getStairs()))
                 .collect(Collectors.toList());
     }
 

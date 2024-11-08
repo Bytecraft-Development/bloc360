@@ -13,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Data
 @Table(name = "block")
 public class Block {
     @Id
@@ -33,5 +34,11 @@ public class Block {
     public Block(Integer id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public Block(Integer id, String name, List<Stair> stairs) {
+        this.id = id;
+        this.name = name;
+        this.stairs = stairs;
     }
 }

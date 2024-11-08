@@ -38,9 +38,7 @@ public class Association {
  private boolean heating;
 
  //Zi emitere Facturi
- @Temporal(TemporalType.DATE)
- @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
- private Date indexDate;
+ private String indexDate;
 
  @OneToMany(mappedBy = "association", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
  @JsonManagedReference

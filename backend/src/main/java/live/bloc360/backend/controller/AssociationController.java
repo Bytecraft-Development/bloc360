@@ -98,7 +98,6 @@ public class AssociationController {
         }
     }
 
-
     @GetMapping("/blocks")
     public ResponseEntity<List<Block>> getBlocksForAssociation(@RequestParam Integer associationId) {
         List<Block> blocks = associationService.getBlocksForAssociation(associationId);
