@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
-import 'package:frontend/pages/add_block.dart';
 import 'package:frontend/pages/add_stairs.dart';
 import 'package:frontend/pages/dashboard/dash_board_screen.dart';
 import 'package:frontend/pages/hello_world.dart';
