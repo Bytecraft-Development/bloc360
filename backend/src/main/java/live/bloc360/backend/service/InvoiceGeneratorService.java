@@ -18,8 +18,6 @@ import java.time.LocalDate;
 public class InvoiceGeneratorService {
     private final HouseHoldRepository houseHoldRepository;
     private final TemplateEngine templateEngine;
-    //File outputPdf = new File("C:\\Users\\andi1\\IdeaProjects\\bloc360\\backend\\src\\main\\resources\\templates\\outputPdf360.pdf");
-    //File outputPdf = new File("..\\..\\..\\resources\\templates\\outputPdf360.pdf");
     File outputPdf = new File("outputPdf360.pdf");
 
     public InvoiceGeneratorService(HouseHoldRepository houseHoldRepository, TemplateEngine templateEngine) {
