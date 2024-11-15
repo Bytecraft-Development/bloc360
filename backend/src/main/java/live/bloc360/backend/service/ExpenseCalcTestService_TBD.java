@@ -26,8 +26,13 @@ public class ExpenseCalcTestService_TBD {
         HouseHold houseHold2 = new HouseHold();
         HouseHold houseHold3 = new HouseHold();
 
-        Expense expense = new Expense();
-        expense.setAmount(BigDecimal.valueOf(100));
+        Expense expense1 = new Expense();
+        expense1.setAmount(BigDecimal.valueOf(90));
+        expense1.setConsumptionType(ConsumptionType.COLD_WATER);
+
+        Expense expense2 = new Expense();
+        expense2.setAmount(BigDecimal.valueOf(60));
+        expense2.setConsumptionType(ConsumptionType.ELECTRICITY);
 
         List<HouseHold> customHHList = new ArrayList<>();
         customHHList.add(houseHold1);
@@ -36,14 +41,16 @@ public class ExpenseCalcTestService_TBD {
 
         houseHold1.setNumberOfHouseHoldMembers(2);
         houseHold1.setSurface(40.5);
+        houseHold1.setApartmentNumber("10");
         houseHold2.setNumberOfHouseHoldMembers(1);
         houseHold2.setSurface(60.25);
+        houseHold2.setApartmentNumber("20");
         houseHold3.setNumberOfHouseHoldMembers(4);
         houseHold3.setSurface(90.4);
-
+        houseHold3.setApartmentNumber("30");
         // Water meter test
 
-        Meter meter1 = new Meter();
+        /*Meter meter1 = new Meter();
 
         meter1.setConsumptionType(ConsumptionType.COLD_WATER);
 
@@ -96,12 +103,13 @@ public class ExpenseCalcTestService_TBD {
         houseHold3.getMeterList().add(meter3);
 
         System.out.println("JULY READING: " + houseHold1.getMeterList().get(0).getMonthlyReading(LocalDate.of(2024, 7, 1)));
-        System.out.println("JULY CONSUMPTION" + houseHold1.getMonthlyConsumption(LocalDate.of(2024, 7,1), ConsumptionType.COLD_WATER));
+        System.out.println("JULY CONSUMPTION" + houseHold1.getMonthlyConsumption(LocalDate.of(2024, 7,1), ConsumptionType.COLD_WATER)); */
         // Water meter test end
 
 
         ExpenseCalculatorService es = new ExpenseCalculatorService();
-        es.distributeExpense(expense, customHHList, ExpenseDistributionType.EQUALLY);
+        es.distributeExpense(expense1, customHHList, ExpenseDistributionType.EQUALLY);
+        es.distributeExpense(expense2, customHHList, ExpenseDistributionType.EQUALLY);
 
         houseHoldRepository.save(houseHold1);
         houseHoldRepository.save(houseHold2);

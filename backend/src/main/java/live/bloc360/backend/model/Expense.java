@@ -5,7 +5,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 @Entity
@@ -18,13 +20,14 @@ public class Expense {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     private String type;
     private boolean consumable;
     private boolean repeatable;
     private boolean distribute;
     private String serialNumber;
+    @Enumerated(EnumType.ORDINAL)
     private ConsumptionType consumptionType;
 
     @Temporal(TemporalType.DATE)
@@ -36,8 +39,7 @@ public class Expense {
     private BigDecimal amount;
     private String description;
     private String reference;
-    @OneToOne
-    @JoinColumn(name = "payment_id")
-    private Payment payment;
+    @OneToMany(mappedBy = "expense", cascade = CascadeType.ALL)
+    private List<Payment> paymentList = new ArrayList<>();
 
 }
