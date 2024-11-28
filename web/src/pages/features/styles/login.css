@@ -1,0 +1,372 @@
+body {
+    font-family: 'Inter', sans-serif;
+  }
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 95.5vh;
+    background-color: #f0f0f0; 
+    padding: 20px;
+  }
+  
+  .login-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    max-width: 1400px;
+    height: 700px;
+    border-radius: 15px; 
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .login-left h1 {
+    margin-top: 0px;
+    font-weight: bold; 
+  }
+
+  .login-left .subheading {
+    margin-top: -14px; 
+    margin-bottom: 35px;
+    color: rgb(131, 131, 131);
+  }
+
+  
+  .login-left {
+    flex: 2;
+    padding: 40px;  
+    margin-right: 50px;
+    margin-left: 30px; 
+  }
+
+  .login-right {
+    position: relative; 
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+  }
+  
+  .logo-container {
+    position: absolute; 
+    top: -230px; 
+    left: 70%; 
+    transform: translateX(-50%); 
+    z-index: 10;
+    width: 350px; 
+  }
+  
+  .login-logo {
+    width: 50px; 
+    height: auto; 
+  }
+  
+  .login-right img {
+    width: 80%;  
+    height: auto;  
+    margin-top: 60px; 
+  }
+  
+  .login-buttons {
+    display: flex;
+    gap: 1rem; 
+  }
+  
+  .login-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0rem; 
+    width: 160px;
+    padding: 12px 20px; 
+    background-color: white; 
+    border: 3px solid #d3d3d3; 
+    border-radius: 10px; 
+    font-family: 'Inter', sans-serif; 
+    font-size: 16px;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border 0.3s ease;
+  }
+  
+  
+  .btn-icon {
+    width: 20px; 
+    height: auto; 
+  }
+  
+ 
+  .login-btn:hover {
+    background-color: #f1f1f1; 
+    border-color: #a0a0a0; 
+  }
+  
+ 
+  .btn-text {
+    flex-grow: 1; 
+  }
+
+  .divider {
+    margin-top: 25px;
+    display: flex;
+    align-items: center;
+    justify-content:start; 
+    gap: 30px; 
+  }
+  
+  .divider-line {
+    margin: 0;
+    border: 0;
+    border-top: 1px solid rgb(131, 131, 131); 
+    width: 74px; 
+  }
+  
+  .divider p {
+    margin: 0px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: rgb(131, 131, 131);
+    padding: 0 0px; 
+  }
+
+  .input-container {
+    position: relative; 
+    width: 79%;
+  }
+  
+  input[type="email"] {
+    margin-top: 25px;
+    width: 100%;
+    padding: 10px 30px 10px 35px; 
+    font-size: 16px;
+    border: 1px solid #ECF4FF; 
+    border-radius: 5px; 
+    background-color: #F9FAFE; 
+    color: #333; 
+    outline: none; 
+  }
+  
+  .input-icon-email {
+    position: absolute;
+    top: 68%;
+    left: 8px;
+    transform: translateY(-50%); 
+    font-size: 18px; 
+    color: #999; 
+  }
+  
+  input[type="email"]:focus {
+    border-color: #B3D0FF; 
+  }
+  
+  input[type="email"]::placeholder {
+    color: #B3B3B3; 
+  }
+
+  .password-container {
+    position: relative;
+    margin-top: 25px; 
+    width: 99%; 
+  }
+  
+  .password-container input {
+    width: 100%; 
+    padding: 10px 40px 10px 35px; 
+    font-size: 16px; 
+    border: 1px solid #ECF4FF; 
+    border-radius: 5px; 
+    background-color: #F9FAFE; 
+    color: #333; 
+    outline: none; 
+    box-sizing: border-box; 
+  }
+
+
+  .input-icon {
+    position: absolute;
+    top:49%; 
+    left: 8px; 
+    transform: translateY(-50%); 
+    font-size: 20px; 
+    color: #999; 
+  }
+  
+  .password-container input::placeholder {
+    color: #b3b3b3; 
+  }
+
+  .toggle-visibility {
+    position: absolute;
+    top: 55%; 
+    right: 10px; 
+    transform: translateY(-50%); 
+    background: none; 
+    border: none; 
+    font-size: 20px; 
+    cursor: pointer;
+    color: #666; 
+    padding: 0; 
+  }
+  
+  .password-container input:focus {
+    border-color: #B3D0FF;  
+  }
+  
+  .password-container input:focus + .toggle-visibility {
+    color: #333; 
+  }
+
+
+
+.remember-me-container {
+    width: 340px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
+    margin-top: 20px;
+  }
+  
+  .remember-me {
+    display: flex;
+    align-items: center;
+  }
+  
+  .checkbox-label {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer; 
+  }
+  
+  .checkbox-input {
+    display: none; 
+  }
+  
+  .checkbox-icon {
+    font-size: 20px; 
+    margin-right: 8px; 
+    cursor: pointer;
+  }
+  
+  .checkbox-icon.checked {
+    color: #275DAD; 
+  }
+  
+  .forgot-password {
+    background: none;
+    border: none;
+    color: #275DAD; 
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  
+  .forgot-password:hover {
+    color: #1a4d92; 
+  }
+
+  .submit-btn {
+    margin-top: 25px;
+    background-color: #275DAD; 
+    color: white; 
+    font-size: 12px; 
+    font-weight: 300; 
+    padding: 10px 20px; 
+    border-radius: 5px; 
+    border: none; 
+    cursor: pointer; 
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 99%; 
+    height: 45px;
+  }
+  
+  .submit-btn:hover {
+    background-color: #1e4f8e;
+  }
+  
+  .submit-btn:active {
+    background-color: #163e6c; 
+  }
+  
+  .submit-btn:focus {
+    outline: none; 
+  }
+
+  .newAccount {
+    display: flex;
+    padding-left: 45px;
+    justify-content: left;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .newAccount p {
+    font-size: 13px; 
+    color: #333; 
+  }
+  
+  .createAccount {
+    color: #275DAD; 
+    font-weight: 500;
+    cursor: pointer; 
+    text-decoration: none; 
+  }
+  
+  .createAccount:hover {
+    text-decoration: none; 
+  }
+
+  
+  @media (max-width: 768px) {
+    .login-left {
+        margin-top: 80px;
+        margin-left: 50px;
+      }
+    
+      .login-container {
+        flex-direction: column;
+        padding: 10px;
+      }
+    
+      .login-content {
+        flex-direction: column;
+      }
+    
+      .login-left h1 {
+        margin-top: -40px; 
+      }
+    
+      .login-right img:nth-of-type(2) {  
+        display: none;  
+      }
+    
+
+      .logo-container {
+        position: absolute;
+        top: -600px;  
+        left: 80%;  
+        transform: translateX(-50%);
+        z-index: 10;
+        width: 180px;
+      }
+    
+      .login-logo {
+        width: 50px;  
+        height: auto;  
+      }
+    
+    
+      .login-right img {
+        margin-top: -30px;
+        width: 80%;
+        height: auto;
+        visibility: visible; 
+      }
+  }
+  

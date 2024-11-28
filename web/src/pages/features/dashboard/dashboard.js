@@ -1,15 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React from 'react';
+import Sidebar from '../components/sidemenu';
+
+const Dashboard = () => {
+  return (
+    <div>
+      <Sidebar />
+      <div className="content">
+        <h1>Dashboard</h1>
+        <p>Continutul dashboard-ului...</p>
+      </div>
+    </div>
+  );
+};
 
 
-const DashboardView = () => {
 
-   return(
-    <h1>Salutare sunt dashboard</h1>
-
-   ); 
-
-
-   
-}
-
-export default DashboardView;
+export default Dashboard;
