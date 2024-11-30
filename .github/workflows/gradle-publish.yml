@@ -95,7 +95,7 @@ jobs:
            cache-dependency-path: '**/package-lock.json'
       - run: npm ci
       - run: |
-          export REACT_APP_API_URL=${{ secrets.API_URL }}
+          export REACT_APP_TOKEN_URL=${{ secrets.TOKEN_URL }}
           export REACT_APP_KEYCLOAK_CLIENT_ID=${{ secrets.KEYCLOAK_CLIENT_ID }}
           npm run build
 
