@@ -32,11 +32,11 @@ public class AssociationController {
     private final BlockRepository blockRepository;
 
     @PostMapping("/createAssociation")
-    public ResponseEntity<Map<String, Object>> createAssociation(@RequestBody Association createAssociationDTO, Authentication authentication) {
+    public ResponseEntity<Map<String, Object>> createAssociation(@RequestBody Association createAssociation, Authentication authentication) {
         try {
             Jwt tokenColect = (Jwt) authentication.getCredentials();
             String adminUsername = (String) tokenColect.getClaims().get("preferred_username");
-            Association createdAssociation = associationService.createAssociation(createAssociationDTO, adminUsername);
+            Association createdAssociation = associationService.createAssociation(createAssociation, adminUsername);
 
             Map<String, Object> response = new HashMap<>();
             response.put("associationId", createdAssociation.getId());
@@ -44,6 +44,7 @@ public class AssociationController {
 
             return ResponseEntity.ok(response);
         } catch (Exception e) {
+
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap("message", "Association creation failed"));
         }
     }
