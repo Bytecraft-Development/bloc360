@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @CrossOrigin
 public class HelloWorldController {
+
     @GetMapping("/hello")
     public String helloWorld(Authentication authentication) {
 //        Jwt aaa = (Jwt) authentication.getCredentials();
