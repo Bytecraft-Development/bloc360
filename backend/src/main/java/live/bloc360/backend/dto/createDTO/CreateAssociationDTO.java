@@ -16,5 +16,6 @@ public class CreateAssociationDTO {
     @NotEmpty(message = "Name can not be null")
     private String name;
 
+
     private String adminUsername;
 }
