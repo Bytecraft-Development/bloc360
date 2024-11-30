@@ -1,48 +1,68 @@
-/* Sidebar.css */
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+
 .sidebar {
-    width: 250px;
-    height: 100vh;
-    background-color: #1E3A8A; 
-    color: white;
-    position: fixed;
-    top: 0;
-    left: 0;
-    padding-top: 20px;
-  }
-  
-  .logo {
-    text-align: center;
-    margin-bottom: 30px;
-  }
-  
-  .logo-img {
-    width: 100px; 
-  }
-  
-  .menu {
-    list-style: none;
-    padding-left: 0;
-  }
-  
-  .menu ul {
-    padding-left: 0;
-  }
-  
-  .menu li {
-    margin: 20px 0;
-  }
-  
-  .menu li a {
-    text-decoration: none;
-    color: white;
-    font-size: 18px;
-    display: block;
-    padding: 10px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .menu li a:hover {
-    background-color: #3B82F6; 
-    border-radius: 5px;
-  }
-  
+  width: 250px;
+  height: 100vh;
+  background-color: #275DAD; 
+  color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding-top: 20px;
+}
+
+.logo {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.logo-img {
+  width: 200px; 
+}
+
+.menu {
+  padding-left: 35px;
+  list-style: none;
+  padding-left: 0;
+}
+
+.menu ul {
+  padding-left: 25;
+}
+
+.menu li {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.menu li a {
+  text-decoration: none;
+  color: white;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.menu li a .menu-icon {
+  margin-right: 10px;
+  font-size: 20px;
+  color: orange; 
+}
+
+.menu li a:hover {
+  background-color: #3B82F6;
+  border-radius: 5px;
+}
+
+/* .divider-line {
+  width: 80%; 
+  margin: -15;
+  border: 1px solid white; 
+  opacity: 1; 
+} */
