@@ -106,7 +106,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           port: ${{ secrets.PORT }}
           key: ${{ secrets.SSHKEY }}
-          source: "./build/*"
+          source: "build/*"
           target: "/opt/persist/web"
           rm: true
 
