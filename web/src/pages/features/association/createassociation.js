@@ -37,7 +37,7 @@ const CreateAssociationPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const apiUrl = config.apiUrl;
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     const token = await getToken();
     if (!token) {

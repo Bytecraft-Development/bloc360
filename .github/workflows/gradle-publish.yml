@@ -97,6 +97,7 @@ jobs:
       - run: |
           export REACT_APP_TOKEN_URL=${{ secrets.TOKEN_URL }}
           export REACT_APP_KEYCLOAK_CLIENT_ID=${{ secrets.KEYCLOAK_CLIENT_ID }}
+          export REACT_APP_API_URL=${{ secrets.API_URL }}
           npm run build
 
       - name: scp web files
