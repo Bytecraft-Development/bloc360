@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import config from "../../../config";
 import "../../../pages/features/styles/login.css";
 import loginImage from "../../../assets/people.png";
 import googleLogo from "../../../assets/google.png";
@@ -41,9 +40,8 @@ const LoginView = () => {
   }, [navigate]);
 
   const handleLogin = async () => {
-    const tokenUrl = config.keycloakTokenUrl; 
-    const clientId = config.keycloakClientId;
-    console.log(tokenUrl, clientId); 
+    const tokenUrl = process.env.REACT_APP_API_URL;
+      const clientId = process.env.REACT_APP_KEYCLOAK_CLIENT_ID;
     try {
       const response = await axios.post(
         tokenUrl, 

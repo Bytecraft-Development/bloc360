@@ -42,43 +42,72 @@ jobs:
           backend:
             - 'backend/**'
             - '.github/workflows/**'
-          frontend:
-            - 'frontend/**'
+          web:
+            - 'web/**'
+          mobile:
+            - 'mobile/**'
             
-  build-frontend:
-      name: Build & Deploy frontend
-      needs: changes
-      if: ${{ needs.changes.outputs.frontend == 'true' }}
-      defaults:
-        run:
-          working-directory: ./frontend
-      runs-on: ubuntu-latest
-      steps:
-      - name: Flutter action
-        uses: subosito/flutter-action@v2.16.0
+#  build-mobile:
+#      name: Build & Deploy mobile
+#      needs: changes
+#      if: ${{ needs.changes.outputs.frontend == 'true' }}
+#      defaults:
+#        run:
+#          working-directory: ./mobile
+#      runs-on: ubuntu-latest
+#      steps:
+#      - name: Flutter action
+#        uses: subosito/flutter-action@v2.16.0
+#
+#      - name: Checkout the repo
+#        uses: actions/checkout@v4
+#        with:
+#          channel: stable
+#          flutter-version: 3.19.0
+#      - run: |
+#              flutter build ipa \
+#              --dart-define=KEYCLOAK_BASE_URL=https://bloc360.live:8443/realms/bloc360 \
+#              --dart-define=API_URL=https://bloc360.live:8080 \
+#              --dart-define=BASE_URL=https://bloc360.live \
+#              --dart-define=KEYCLOAK_CLIENT_ID=${{ secrets.KEYCLOAK_CLIENT_ID }}
 
-      - name: Checkout the repo 
+  build-web:
+    name: Build & Deploy React Web App
+    needs: changes
+    runs-on: ubuntu-latest
+    if: ${{ needs.changes.outputs.web == 'true' }}
+    defaults:
+      run:
+        working-directory: ./web
+
+    steps:
+      # Step 1: Checkout the repo
+      - name: Checkout the repo
         uses: actions/checkout@v4
-        with:
-          channel: stable
-          flutter-version: 3.19.0
-      - run: | 
-              flutter build web \
-              --dart-define=KEYCLOAK_BASE_URL=https://bloc360.live:8443/realms/bloc360 \
-              --dart-define=API_URL=https://bloc360.live:8080 \
-              --dart-define=BASE_URL=https://bloc360.live \
-              --dart-define=KEYCLOAK_CLIENT_ID=${{ secrets.KEYCLOAK_CLIENT_ID }}
 
-      - name: scp frontend files
+      # Step 2: build the project
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+           node-version: 23.3
+           cache: 'npm'
+           cache-dependency-path: '**/package-lock.json'
+      - run: npm ci
+      - run: |
+          export REACT_APP_API_URL=${{ secrets.API_URL }}
+          export REACT_APP_KEYCLOAK_CLIENT_ID=${{ secrets.KEYCLOAK_CLIENT_ID }}
+          npm run build
+
+      - name: scp web files
         uses: appleboy/scp-action@v0.1.7
         with:
-            host: ${{ secrets.SSH_HOST }}
-            username: ${{ secrets.USERNAME }}
-            port: ${{ secrets.PORT }}
-            key: ${{ secrets.SSHKEY }}
-            source: "./frontend/build/web/*"
-            target: "/opt/persist/web"
-            rm: true
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.USERNAME }}
+          port: ${{ secrets.PORT }}
+          key: ${{ secrets.SSHKEY }}
+          source: "./build/*"
+          target: "/opt/persist/web"
+          rm: true
 
   build_backend:
     name: Build backend
