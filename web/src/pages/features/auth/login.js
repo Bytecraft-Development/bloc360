@@ -42,7 +42,7 @@ const LoginView = () => {
   const handleLogin = async () => {
     const tokenUrl = process.env.REACT_APP_API_URL;
       const clientId = process.env.REACT_APP_KEYCLOAK_CLIENT_ID;
-      console.log('we made it! YEY! 8');
+      console.log('we made it! YEY! 9');
     try {
       const response = await axios.post(
         tokenUrl, 
