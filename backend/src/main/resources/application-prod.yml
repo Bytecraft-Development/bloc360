@@ -5,6 +5,13 @@ server:
     enabled-protocols: TLSv1.3, TLSv1.2
     enabled: true
 
+logging:
+  level:
+    root: DEBUG
+    org:
+      springframework:
+        security: DEBUG
+
 spring:
   security:
     oauth2:
