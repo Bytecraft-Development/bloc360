@@ -52,7 +52,7 @@ public class AssociationController {
     }
 
     @PostMapping("/addBlocks")
-    public ResponseEntity<String> addBlocks(@RequestParam Integer associationId, @RequestBody List<Map<String, String>> blockData) {
+    public ResponseEntity<String> addBlocks(@RequestParam("associationId") Integer associationId, @RequestBody List<Map<String, String>> blockData) {
 
         List<Block> blocks = blockData.stream()
                 .map(data -> {
@@ -71,7 +71,7 @@ public class AssociationController {
     }
 
     @PostMapping("/addStair")
-    public ResponseEntity<String> addStairToBlock(@RequestParam Integer blockId, @RequestBody List<Map<String, String>> stairData) {
+    public ResponseEntity<String> addStairToBlock(@RequestParam("blockId") Integer blockId, @RequestBody List<Map<String, String>> stairData) {
         List<Stair> stairs = stairData.stream()
                 .map(data -> {
                     Stair stair = new Stair();
@@ -102,7 +102,7 @@ public class AssociationController {
     }
 
     @GetMapping("/blocks")
-    public ResponseEntity<List<Block>> getBlocksForAssociation(@RequestParam Integer associationId) {
+    public ResponseEntity<List<Block>> getBlocksForAssociation(@RequestParam("associationId") Integer associationId) {
         List<Block> blocks = associationService.getBlocksForAssociation(associationId);
         return ResponseEntity.ok(blocks);
     }

@@ -17,8 +17,8 @@ const AddBlocksAndStairsPage = () => {
   const loadBlocks = async () => {
     setIsLoading(true);
     const token = localStorage.getItem("access_token");
-    const apiUrl = process.env.REACT_APP_API_URL;
     try {
+       const apiUrl = process.env.REACT_APP_API_URL;
       const response = await axios.get(
         `${apiUrl}/blocks?associationId=${associationId}`,
         {
@@ -49,6 +49,7 @@ const AddBlocksAndStairsPage = () => {
     if (blockName.trim() === "") return;
     const token = localStorage.getItem("access_token");
     try {
+     const apiUrl = process.env.REACT_APP_API_URL;
       const response = await axios.post(
         `${apiUrl}/addBlocks?associationId=${associationId}`,
         [{ name: blockName }],
@@ -72,6 +73,8 @@ const AddBlocksAndStairsPage = () => {
     if (!selectedBlockId || stairName.trim() === "") return;
     const token = localStorage.getItem("access_token");
     try {
+      const apiUrl = process.env.REACT_APP_API_URL;
+      
       const response = await axios.post(
         `${apiUrl}/addStair?blockId=${selectedBlockId}`,
         [{ name: stairName }],
