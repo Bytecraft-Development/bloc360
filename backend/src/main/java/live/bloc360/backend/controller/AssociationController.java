@@ -6,6 +6,7 @@ import live.bloc360.backend.repository.AssociationRepository;
 import live.bloc360.backend.repository.BlockRepository;
 import live.bloc360.backend.service.AssociationService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 @Controller
 @RequiredArgsConstructor
 @CrossOrigin
+@Slf4j
 public class AssociationController {
 
     @Autowired
@@ -44,7 +46,7 @@ public class AssociationController {
 
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-
+            log.error(e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap("message", "Association creation failed"));
         }
     }
