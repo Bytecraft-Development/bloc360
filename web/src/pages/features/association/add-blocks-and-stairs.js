@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import Sidebar from "../components/sidemenu";
@@ -12,7 +12,7 @@ const AddBlocksAndStairsPage = () => {
   const [selectedBlockId, setSelectedBlockId] = useState(null);
 
   // Funcția pentru a încărca blocurile
-  const loadBlocks = async () => {
+  const loadBlocks = useCallback(async () => {
     const token = localStorage.getItem("access_token");
     try {
       const apiUrl = process.env.REACT_APP_API_URL;
@@ -32,11 +32,11 @@ const AddBlocksAndStairsPage = () => {
     } catch (error) {
       console.error("Eroare la încărcarea blocurilor:", error);
     }
-  };
+  }, [associationId]);  // Adaugă `associationId` în dependențele `useCallback`
 
   useEffect(() => {
     loadBlocks();
-  }, [associationId]);
+  }, [associationId, loadBlocks]);  // Adaugă `loadBlocks` în dependențele `useEffect`
 
   // Funcția pentru a adăuga un bloc
   const addBlock = async () => {
