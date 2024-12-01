@@ -38,7 +38,6 @@ const CreateAssociationPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const apiUrl = process.env.REACT_APP_API_URL;
-
     const token = await getToken();
     if (!token) {
       alert("Authentication token is missing.");
@@ -71,7 +70,7 @@ const CreateAssociationPage = () => {
 
   return (
     <div className="create-association-container">
-      <Sidebar />
+      { <Sidebar />}
       <div className="create-association-content">
         <form onSubmit={handleSubmit} className="create-association-form">
           <h1 className="form-title">Crează Asociație</h1>
@@ -124,7 +123,6 @@ const CreateAssociationPage = () => {
           <h2 className="section-title">Contoare</h2>
           <div className="form-row checkboxes-row">
             <label className="checkbox-label">
-            <input type="checkbox"/>
               <input
                 type="checkbox"
                 name="coldWater"
@@ -135,7 +133,6 @@ const CreateAssociationPage = () => {
               Apă rece
             </label>
             <label className="checkbox-label">
-            <input type="checkbox"/>
               <input
                 type="checkbox"
                 name="hotWater"

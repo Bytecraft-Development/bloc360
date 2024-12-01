@@ -41,7 +41,7 @@ const LoginView = () => {
 
   const handleLogin = async () => {
     const tokenUrl = process.env.REACT_APP_TOKEN_URL;
-      const clientId = process.env.REACT_APP_KEYCLOAK_CLIENT_ID;
+   const clientId = process.env.REACT_APP_KEYCLOAK_CLIENT_ID;
     try {
       const response = await axios.post(
         tokenUrl, 

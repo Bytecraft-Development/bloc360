@@ -1,5 +1,8 @@
-/* Container layout */
+body {
+  font-family: 'Inter', sans-serif;
+}
 .create-association-container {
+    margin-left: 200px;
     display: flex;
     height: 100vh;
   }
@@ -17,9 +20,14 @@
   }
   
   .form-title {
+    position: relative;
+    top: -5px; /* Mută titlul mai sus */
+    left: -20px; /* Mută titlul spre stânga */
     color: #8E244D;
-    text-align: center;
-    margin-bottom: 20px;
+    text-align: left; /* Aliniază textul la stânga */
+    margin-bottom: 50px;
+    margin-top: 10px; /* Adaugă un spațiu de sus */
+    margin-left: 20px; /* Mută titlul spre stânga */
   }
   
   .section-title {
@@ -28,6 +36,7 @@
   }
   
   .form-row {
+    margin-top:15px;
     display: flex;
     gap: 20px;
     margin-bottom: 20px;
@@ -37,10 +46,14 @@
     display: flex;
     gap: 20px;
   }
+  .create-association-form .checkbox-input {
+    display: inline-block; 
+  }
   
   /* Text Input */
   .text-input {
     flex: 1;
+    width: 250px;
   }
   
   .input-label {
@@ -54,7 +67,23 @@
     padding: 8px;
     border-radius: 4px;
     border: 1px solid #ccc;
+    background-color: #f0f8ff;
   }
+
+ 
+.input-field:hover {
+  border-color: #1f4d91; 
+  background-color: #f0f8ff;
+  transition: border-color 0.3s, background-color 0.3s; 
+}
+
+
+.input-field:focus {
+  border-color: #275DAD; 
+  box-shadow: 0 0 5px rgba(39, 93, 173, 0.5); 
+  outline: none; 
+  transition: border-color 0.3s, box-shadow 0.3s; 
+}
   
   .checkbox-label {
     display: flex;
@@ -74,7 +103,7 @@
     display: flex;
     gap: 20px;
   }
-  /* Submit Button */
+  
   .form-submit {
     text-align: center;
     margin-top: 32px;
