@@ -1,22 +1,24 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import Sidebar from "../components/sidemenu";
 import "../../../pages/features/styles/addblocksandstairs.css";
 
 const AddBlocksAndStairsPage = () => {
-  const { associationId } = useParams();
+  const { associationId } = useParams(); 
   const [blockName, setBlockName] = useState("");
   const [stairName, setStairName] = useState("");
   const [blocks, setBlocks] = useState([]);
   const [selectedBlockId, setSelectedBlockId] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [blocksSubmitted, setBlocksSubmitted] = useState(false);
 
-  // Funcția pentru a încărca blocurile
-  const loadBlocks = useCallback(async () => {
+  const loadBlocks = async () => {
+    setIsLoading(true);
     const token = localStorage.getItem("access_token");
     try {
       const apiUrl = process.env.REACT_APP_API_URL;
-      const { data } = await axios.get(
+      const response = await axios.get(
         `${apiUrl}/blocks?associationId=${associationId}`,
         {
           headers: {
@@ -24,27 +26,28 @@ const AddBlocksAndStairsPage = () => {
           },
         }
       );
-      setBlocks(data.map(block => ({
+      setBlocks(response.data.map(block => ({
         id: block.id,
         name: block.name,
         stairs: block.stairs || [],
       })));
     } catch (error) {
       console.error("Eroare la încărcarea blocurilor:", error);
+    } finally {
+      setIsLoading(false);
     }
-  }, [associationId]);  // Adaugă `associationId` în dependențele `useCallback`
+  };
 
   useEffect(() => {
     loadBlocks();
-  }, [associationId, loadBlocks]);  // Adaugă `loadBlocks` în dependențele `useEffect`
+  }, [associationId]);
 
-  // Funcția pentru a adăuga un bloc
   const addBlock = async () => {
     if (blockName.trim() === "") return;
     const token = localStorage.getItem("access_token");
     try {
       const apiUrl = process.env.REACT_APP_API_URL;
-      await axios.post(
+      const response = await axios.post(
         `${apiUrl}/addBlocks?associationId=${associationId}`,
         [{ name: blockName }],
         {
@@ -54,20 +57,20 @@ const AddBlocksAndStairsPage = () => {
           },
         }
       );
-      setBlockName(""); // Resetează câmpul de nume bloc
-      loadBlocks(); // Încarcă din nou blocurile și scările
+      setBlockName(""); 
+      setBlocksSubmitted(true);
+      loadBlocks(); 
     } catch (error) {
       console.error("Eroare la adăugarea blocului:", error);
     }
   };
 
-  // Funcția pentru a adăuga o scară
   const addStair = async () => {
     if (!selectedBlockId || stairName.trim() === "") return;
     const token = localStorage.getItem("access_token");
     try {
       const apiUrl = process.env.REACT_APP_API_URL;
-      await axios.post(
+      const response = await axios.post(
         `${apiUrl}/addStair?blockId=${selectedBlockId}`,
         [{ name: stairName }],
         {
@@ -77,34 +80,38 @@ const AddBlocksAndStairsPage = () => {
           },
         }
       );
-      setStairName(""); // Resetează câmpul de nume scară
-      loadBlocks(); // Încarcă din nou blocurile și scările
+      setStairName("");
+      loadBlocks(); 
     } catch (error) {
       console.error("Eroare la adăugarea scării:", error);
     }
   };
 
   return (
-    <div className="add-blocks-container">
+    <div className="add-blocks-container-unique-all">
+    <div className="add-blocks-container-unique">
       <Sidebar />
-      <div className="add-blocks-left">
-        <h2>1. Adaugă Blocuri</h2>
-        <div className="form-row">
+      
+      <div className="add-blocks-left-unique">
+        <h2 className="add-blocks-title-unique">1. Adaugă Blocuri</h2>
+        <div className="form-row-unique">
           <input
             type="text"
             placeholder="Nume Bloc"
             value={blockName}
             onChange={(e) => setBlockName(e.target.value)}
+            className="block-name-input-unique"
           />
-          <button onClick={addBlock} className="add-button">Adaugă Bloc</button>
+          <button onClick={addBlock} className="add-block-button-unique">Adaugă Bloc</button>
         </div>
       </div>
-
-      <div className="add-blocks-right">
-        <h2>2. Adaugă Scări</h2>
+  
+      <div className="add-blocks-right-unique">
+        <h2 className="add-stairs-title-unique">2. Adaugă Scări</h2>
         <select
           value={selectedBlockId}
           onChange={(e) => setSelectedBlockId(e.target.value)}
+          className="block-select-unique"
         >
           <option value="">Selectează un bloc</option>
           {blocks.map((block) => (
@@ -113,14 +120,33 @@ const AddBlocksAndStairsPage = () => {
             </option>
           ))}
         </select>
-        <div className="form-row">
+        <div className="form-row-unique">
           <input
             type="text"
             placeholder="Nume Scară"
             value={stairName}
             onChange={(e) => setStairName(e.target.value)}
+            className="stair-name-input-unique"
           />
-          <button onClick={addStair} className="add-button">Adaugă Scară</button>
+          <button onClick={addStair} className="add-stair-button-unique">Adaugă Scară</button>
+        </div>
+      </div>
+    </div>
+    <div className="add-blocks-list-container">
+        <h3>Blocuri și Scări Adăugate:</h3>
+        <div className="add-blocks-list">
+          {blocks.length > 0 ? (
+            blocks.map((block) => (
+              <div key={block.id} className="block-details">
+                <p><strong>Bloc:</strong> {block.name}</p>
+                <p><strong>Scări:</strong> {block.stairs.map((stair, index) => (
+                  <span key={index}>{stair.name} </span>
+                ))}</p>
+              </div>
+            ))
+          ) : (
+            <p>Nu există blocuri sau scări adăugate.</p>
+          )}
         </div>
       </div>
     </div>

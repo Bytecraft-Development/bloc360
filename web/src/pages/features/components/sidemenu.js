@@ -1,15 +1,24 @@
-import React from 'react';
-import { Link } from 'react-router-dom'; 
-import { FaTachometerAlt, FaFileInvoiceDollar, FaChartBar, FaUsers, FaCogs, FaSignOutAlt } from "react-icons/fa";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { FaTachometerAlt, FaFileInvoiceDollar, FaChartBar, FaUsers, FaCogs, FaSignOutAlt, FaBars } from "react-icons/fa";
 import "../../../pages/features/styles/sidemenu.css";
 import logo from "../../../assets/logo_bloc360_menu.png";
 
 const Sidebar = () => {
+  const [isOpen, setIsOpen] = useState(false); // Pentru a controla deschiderea meniului pe mobil
+
+  const toggleSidebar = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
-    <div className="sidebar">
+    <div className={`sidebar ${isOpen ? "open" : ""}`}>
       <div className="logo">
         <img src={logo} alt="Logo" className="logo-img" />
       </div>
+      <button className="hamburger" onClick={toggleSidebar}>
+        <FaBars />
+      </button>
       <nav className="menu">
         <ul>
           <li>

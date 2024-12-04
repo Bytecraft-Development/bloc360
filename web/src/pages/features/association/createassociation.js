@@ -46,7 +46,7 @@ const CreateAssociationPage = () => {
 
     try {
       const response = await axios.post(
-        `${apiUrl}/createAssociation`,
+        `http://localhost:7080/createAssociation`,
         formData,
         {
           headers: {
@@ -70,12 +70,11 @@ const CreateAssociationPage = () => {
 
   return (
     <div className="create-association-container">
-      { <Sidebar />}
       <div className="create-association-content">
         <form onSubmit={handleSubmit} className="create-association-form">
-          <h1 className="form-title">Crează Asociație</h1>
+          <h1 className="create-association-form-title">Crează Asociație</h1>
 
-          <div className="form-row">
+          <div className="create-association-form-row">
             <TextInput
               label="Denumire legală"
               name="name"
@@ -90,7 +89,7 @@ const CreateAssociationPage = () => {
             />
           </div>
 
-          <div className="form-row">
+          <div className="create-association-form-row">
             <TextInput
               label="Adresă"
               name="address"
@@ -105,7 +104,7 @@ const CreateAssociationPage = () => {
             />
           </div>
 
-          <div className="form-row">
+          <div className="create-association-form-row">
             <TextInput
               label="CUI"
               name="cui"
@@ -120,78 +119,79 @@ const CreateAssociationPage = () => {
             />
           </div>
    
-          <h2 className="section-title">Contoare</h2>
-          <div className="form-row checkboxes-row">
-            <label className="checkbox-label">
+          <h2 className="create-association-section-title">Contoare</h2>
+          <div className="create-association-form-row create-association-checkboxes-row">
+            <label className="create-association-checkbox-label">
               <input
                 type="checkbox"
                 name="coldWater"
                 checked={formData.coldWater}
                 onChange={handleCheckboxChange}
-                className="checkbox-input"
+                className="create-association-checkbox-input"
               />
               Apă rece
             </label>
-            <label className="checkbox-label">
+            <label className="create-association-checkbox-label">
               <input
                 type="checkbox"
                 name="hotWater"
                 checked={formData.hotWater}
                 onChange={handleCheckboxChange}
-                className="checkbox-input"
+                className="create-association-checkbox-input"
               />
               Apă caldă
             </label>
-            <label className="checkbox-label">
+            <label className="create-association-checkbox-label">
               <input
                 type="checkbox"
                 name="gas"
                 checked={formData.gas}
                 onChange={handleCheckboxChange}
-                className="checkbox-input"
+                className="create-association-checkbox-input"
               />
               Gaz
             </label>
-            <label className="checkbox-label">
+            <label className="create-association-checkbox-label">
               <input
                 type="checkbox"
                 name="heating"
                 checked={formData.heating}
                 onChange={handleCheckboxChange}
-                className="checkbox-input"
+                className="create-association-checkbox-input"
               />
               Încălzire
             </label>
           </div>
+          <h2 className="create-association-section-title">Ziua Emiterii Facturilor</h2>
 
-          <h2 className="section-title">Ziua Emiterii Facturilor</h2>
-          <TextInput
-            label="Introduceți ziua"
-            name="indexDate"
-            value={formData.indexDate}
-            onChange={handleInputChange}
-          />
-
-          <div className="form-submit">
-            <button type="submit" className="submit-button">
+          <div className="create-association-form-row">
+  <TextInput
+    name="indexDate"
+    value={formData.indexDate}
+    onChange={handleInputChange}
+    className="create-association-input-field-index"  // Clasa personalizată pentru acest input
+  />
+</div>  <div className="create-association-form-submit">
+            <button type="submit" className="create-association-submit-button">
               Pasul următor
             </button>
           </div>
         </form>
       </div>
+      <Sidebar />
     </div>
   );
 };
 
 const TextInput = ({ label, name, value, onChange }) => (
-  <div className="text-input">
-    <label className="input-label">{label}</label>
+  <div className="create-association-text-input">
+    <label className="create-association-input-label">{label}</label>
     <input
       type="text"
       name={name}
       value={value}
       onChange={onChange}
-      className="input-field"
+      className="create-association-input-field"
     />
   </div>
 );
