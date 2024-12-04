@@ -46,7 +46,7 @@ const CreateAssociationPage = () => {
 
     try {
       const response = await axios.post(
-        `http://localhost:7080/createAssociation`,
+        `${apiUrl}/createAssociation`,
         formData,
         {
           headers: {

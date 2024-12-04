@@ -5,7 +5,7 @@ import "../../../pages/features/styles/sidemenu.css";
 import logo from "../../../assets/logo_bloc360_menu.png";
 
 const Sidebar = () => {
-  const [isOpen, setIsOpen] = useState(false); // Pentru a controla deschiderea meniului pe mobil
+  const [isOpen, setIsOpen] = useState(false); 
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
