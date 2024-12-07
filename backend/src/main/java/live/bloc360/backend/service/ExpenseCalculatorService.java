@@ -26,6 +26,7 @@ public class ExpenseCalculatorService {
                     payment.setHouseHold(houseHold);
                     payment.setValue(expensePerHouseHold);
                     houseHold.getPaymentList().add(payment);
+                    expense.getPaymentList().add(payment);
                 }
                 break;
             case BY_NUMBER_OF_PEOPLE:
