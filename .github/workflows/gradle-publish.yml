@@ -128,6 +128,8 @@ jobs:
           DB_URL: ${{ secrets.DB_URL }}
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          EMAIL_APP_USER: ${{ secrets.EMAIL_APP_USER }}
+          EMAIL_APP_PASSWORD: ${{ secrets.EMAIL_APP_PASSWORD }}
         run: docker build -t ghcr.io/bytecraft-development/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7) .
 
       # Step 3: Log in to GitHub Container Registry
