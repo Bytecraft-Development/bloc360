@@ -21,8 +21,6 @@ public class HouseHold {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String type;
-
     private String apartmentNumber;
 
     @ManyToOne
@@ -36,6 +34,7 @@ public class HouseHold {
     private Integer numberOfHouseHoldMembers;
 
     private Double surface;
+
     @OneToMany(mappedBy = "houseHold", cascade = CascadeType.ALL)
     private List<Payment> paymentList = new ArrayList<>();
 
