@@ -14,7 +14,7 @@ body {
   transition: left 0.3s ease;
 }
 
-/* Logo */
+
 .logo {
   text-align: center;
   margin-bottom: 30px;
@@ -24,7 +24,6 @@ body {
   width: 200px;
 }
 
-/* Hamburger button (only visible on mobile) */
 .hamburger {
   display: none;
   font-size: 30px;
@@ -76,29 +75,29 @@ body {
   border-radius: 5px;
 }
 
-/* Responsive design */
+
 @media screen and (max-width: 768px) {
-  /* Hamburger button */
+ 
   .hamburger {
     display: block;
   }
 
-  /* Sidebar - When the menu is closed on mobile */
+
   .sidebar {
     left: -250px;
   }
 
-  /* Show sidebar when it's open */
+ 
   .sidebar.open {
     left: 0;
   }
 
-  /* Adjust content when sidebar is open */
+  
   .main-content.shifted {
     margin-left: 250px;
   }
 
-  /* Menu items */
+  
   .menu ul {
     padding-left: 0;
   }
