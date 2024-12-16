@@ -26,8 +26,6 @@ public class Association {
  private String registerComert;
  private String bankAccount;
  private String bankName;
- private boolean hasBlocks;
- private boolean hasHouses;
  private String adminUsername;
 
  //Citire index

@@ -52,8 +52,6 @@ public class AssociationServiceImpl implements AssociationService {
                 .gas(createAssociation.isGas())
                 .heating(createAssociation.isHeating())
                 .indexDate(createAssociation.getIndexDate())
-                .hasBlocks(createAssociation.isHasBlocks())
-                .hasHouses(createAssociation.isHasHouses())
                 .adminUsername(adminUsername)
                 .build();
 
@@ -91,11 +89,13 @@ public class AssociationServiceImpl implements AssociationService {
     }
 
     @Transactional
-    public void addHouseHoldToStair(Integer stairId, HouseHold houseHold) {
+    public void addHouseHoldToStair(Integer stairId, List<HouseHold> houseHold) {
         Stair stair = stairRepository.findById(stairId)
                 .orElseThrow(() -> new BusinessException(HttpStatus.NOT_FOUND, "Stair not found"));
-        houseHold.setStair(stair);
-        houseHoldRepository.save(houseHold);
+        for (HouseHold hold : houseHold) {
+            hold.setStair(stair);
+            houseHoldRepository.save(hold);
+        }
     }
 
     public List<Block> getBlocksForAssociation(Integer associationId) {

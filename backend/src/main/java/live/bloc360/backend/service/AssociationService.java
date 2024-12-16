@@ -11,6 +11,6 @@ public interface AssociationService {
     Optional<Association> getAssociation(Integer associationId);
     void addBlocksToAssociation(Integer associationId, List<Block> blocks);
     void addStairToBlock(Integer blockId, List<Stair> stairs);
-    void addHouseHoldToStair(Integer stairId, HouseHold houseHold);
+    void addHouseHoldToStair(Integer stairId, List<HouseHold> houseHold);
     List<Block> getBlocksForAssociation(Integer associationId);
 }
