@@ -89,7 +89,7 @@ public class AssociationController {
     }
 
     @PostMapping("/addHouseHoldToStair")
-    public ResponseEntity<Void> addHouseHoldToStair(@RequestParam Integer stairId, @RequestBody HouseHold houseHold) {
+    public ResponseEntity<Void> addHouseHoldToStair(@RequestParam("stairId") Integer stairId, @RequestBody HouseHold houseHold) {
         try {
             associationService.addHouseHoldToStair(stairId, houseHold);
             return new ResponseEntity<>(HttpStatus.CREATED);

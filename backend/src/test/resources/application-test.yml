@@ -1,10 +1,3 @@
-server:
-  ssl:
-    bundle: "server"
-    enabled-protocols: TLSv1.3, TLSv1.2
-    enabled: true
-    client-auth: WANT
-
 keycloak:
   realm: bloc360
   domain: bloc360.live:8443
@@ -14,21 +7,6 @@ keycloak:
   urls:
     auth: https://bloc360.live:8443/
 spring:
-  ssl:
-    bundle:
-      jks:
-        server:
-          key:
-            alias: "1"
-          keystore:
-            location: "classpath:abc.p12"
-            password: ${SSLCERTPASS}
-            type: "PKCS12"
-      pem:
-        client:
-          truststore:
-            certificate: "classpath:domain.pem"
-
   application:
     name: backend
   datasource:

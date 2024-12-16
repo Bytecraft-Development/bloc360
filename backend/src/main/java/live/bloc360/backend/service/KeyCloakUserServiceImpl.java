@@ -39,11 +39,6 @@ public class KeyCloakUserServiceImpl implements KeycloackUserService {
 
     @Override
     public UserRegistrationRecord createUser(UserRegistrationRecord userRegistrationRecord) {
-        FeatureToggle featureToggle = featureToggleRepository.findByName("KeyCloak Create User");
-        if (featureToggle == null || !featureToggle.isEnabled()) {
-            throw new RuntimeException("feature toggle KeyCloak Create User is off");
-        }
-
         UserRepresentation user = new UserRepresentation();
         user.setEnabled(true);
         user.setUsername(userRegistrationRecord.username());
@@ -52,6 +47,7 @@ public class KeyCloakUserServiceImpl implements KeycloackUserService {
         user.setLastName(userRegistrationRecord.lastName());
         user.setGroups(List.of(defaultGroupUsers));
         user.setEmailVerified(true);
+
 
         CredentialRepresentation credentialRepresentation = new CredentialRepresentation();
         credentialRepresentation.setValue(userRegistrationRecord.password());
@@ -68,6 +64,7 @@ public class KeyCloakUserServiceImpl implements KeycloackUserService {
     }
 
     public UserRegistrationRecord createHouseHoldUser(UserRegistrationRecord userRegistrationRecord) {
+        // Create a new Keycloak user
         UserRepresentation user = new UserRepresentation();
         user.setEnabled(true);
         user.setUsername(userRegistrationRecord.username());
@@ -86,26 +83,26 @@ public class KeyCloakUserServiceImpl implements KeycloackUserService {
         UsersResource usersResource = getUsersResource();
         usersResource.create(user);
 
+        // Find the stair by association ID
         Integer associationId = userRegistrationRecord.associationId();
-        String appartmentNumber = userRegistrationRecord.appartmentNumber();
+        String apartmentNumber = userRegistrationRecord.appartmentNumber();
 
         List<Stair> stairs = stairRepository.findByBlock_Association_Id(associationId);
+        Stair targetStair = stairs.stream()
+                .filter(stair -> stair.getHouseholds().stream()
+                        .anyMatch(household -> household.getApartmentNumber().equals(apartmentNumber)))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Scara sau apartamentul nu au fost găsite."));
 
-        Appartment appartment = stairs.stream()
-                .flatMap(stair -> appartmentRepository.findByStairAndNumber(stair, appartmentNumber).stream())
+        // Find the household directly by apartment number and stair
+        HouseHold household = targetStair.getHouseholds().stream()
+                .filter(h -> h.getApartmentNumber().equals(apartmentNumber))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Apartamentul nu a fost găsit."));
 
-        HouseHold household = HouseHold.builder()
-                .apartmentNumber(appartment.getNumber())
-                .stair(appartment.getStair())
-                .appartment(appartment)
-                .userId(userRegistrationRecord.username())
-                .build();
+        // Assign the user ID to the household
+        household.setUserId(userRegistrationRecord.username());
         houseHoldRepository.save(household);
-
-        appartment.setHouseHold(household);
-        appartmentRepository.save(appartment);
 
         return userRegistrationRecord;
     }

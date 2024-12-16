@@ -94,7 +94,6 @@ public class AssociationServiceImpl implements AssociationService {
     public void addHouseHoldToStair(Integer stairId, HouseHold houseHold) {
         Stair stair = stairRepository.findById(stairId)
                 .orElseThrow(() -> new BusinessException(HttpStatus.NOT_FOUND, "Stair not found"));
-
         houseHold.setStair(stair);
         houseHoldRepository.save(houseHold);
     }
