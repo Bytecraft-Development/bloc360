@@ -169,7 +169,7 @@ const CreateAssociationPage = () => {
     name="indexDate"
     value={formData.indexDate}
     onChange={handleInputChange}
-    className="create-association-input-field-index"  // Clasa personalizată pentru acest input
+    className="create-association-input-field-index"  
   />
 </div>  <div className="create-association-form-submit">
             <button type="submit" className="create-association-submit-button">
