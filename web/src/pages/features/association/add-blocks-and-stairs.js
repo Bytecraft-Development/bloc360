@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/sidemenu";
 import "../../../pages/features/styles/addblocksandstairs.css";
 
 const AddBlocksAndStairsPage = () => {
+  const navigate = useNavigate();
   const { associationId } = useParams();
   const [blockName, setBlockName] = useState("");
   const [stairName, setStairName] = useState("");
@@ -155,6 +157,14 @@ const AddBlocksAndStairsPage = () => {
             <p>Nu există blocuri sau scări adăugate.</p>
           )}
         </div>
+      </div>
+    <div className="submit-section">
+        <button
+          className="create-association-submit-button"
+          onClick={() => navigate(`/add-household/${associationId}`)}
+        >
+          Pasul Următor
+        </button>
       </div>
     </div>
   );

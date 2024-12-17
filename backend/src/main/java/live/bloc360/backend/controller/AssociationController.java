@@ -89,9 +89,18 @@ public class AssociationController {
     }
 
     @PostMapping("/addHouseHoldToStair")
-    public ResponseEntity<Void> addHouseHoldToStair(@RequestParam("stairId") Integer stairId, @RequestBody HouseHold houseHold) {
+    public ResponseEntity<Void> addHouseHoldToStair(@RequestParam("stairId") Integer stairId, @RequestBody  List<Map<String, String>> houseHoldData) {
+       List<HouseHold> houseHolds = houseHoldData.stream()
+                .map(data -> {
+                    HouseHold houseHold = new HouseHold();
+                    houseHold.setApartmentNumber(data.get("apartmentNumber"));
+                    houseHold.setNumberOfHouseHoldMembers(Integer.parseInt(data.get("numberOfHouseHoldMembers")));
+                    houseHold.setSurface(Double.parseDouble(data.get("surface")));
+                    return houseHold;
+                })
+                .collect(Collectors.toList());
         try {
-            associationService.addHouseHoldToStair(stairId, houseHold);
+            associationService.addHouseHoldToStair(stairId, houseHolds);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (BusinessException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

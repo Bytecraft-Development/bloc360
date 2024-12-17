@@ -27,10 +27,6 @@ public class HouseHold {
     @JoinColumn(name = "stair_id")
     private Stair stair;
 
-    @ManyToOne
-    @JoinColumn(name = "appartment_id")
-    private Appartment appartment;
-
     private Integer numberOfHouseHoldMembers;
 
     private Double surface;
