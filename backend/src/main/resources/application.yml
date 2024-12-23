@@ -21,18 +21,26 @@ spring:
     port: 465
     username: ${EMAIL_APP_USER}
     password: ${EMAIL_APP_PASSWORD}
-
+    protocol: smtp
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.ssl.enable: true
+      mail.debug: true
 
 management:
   endpoints:
     web:
       exposure:
         include: info, logfile, health
+
 logging:
   file:
     name: backendLog
   level:
+    org.springframework.mail: DEBUG
+    org.springframework.mail.javamail: DEBUG
     org.springframework.security: DEBUG
+
 
 keycloak:
   realm: ${KEYCLOAK_REALM}
