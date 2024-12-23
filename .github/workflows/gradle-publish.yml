@@ -132,7 +132,7 @@ jobs:
           EMAIL_APP_PASSWORD: ${{ secrets.EMAIL_APP_PASSWORD }}
         run: docker build -t ghcr.io/bytecraft-development/$(echo $IMAGE_NAME):$(echo $GITHUB_SHA | head -c7) .
 
-      # Step 3: Log in to GitHub Container Registry
+      # Step 3: Log in to GitHub Container Registry !
       - name: Log in to GitHub Container Registry
         run: echo "${{ secrets.PERSONAL_ACT }}" | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
 

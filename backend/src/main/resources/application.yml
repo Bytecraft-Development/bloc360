@@ -17,7 +17,7 @@ spring:
       ddl-auto: create
     show-sql: true
   mail:
-    host: mail.bloc360.live
+    host: bloc360.live
     port: 465
     username: ${EMAIL_APP_USER}
     password: ${EMAIL_APP_PASSWORD}
