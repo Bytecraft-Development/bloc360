@@ -22,6 +22,7 @@ spring:
     username: ${EMAIL_APP_USER}
     password: ${EMAIL_APP_PASSWORD}
 
+
 management:
   endpoints:
     web:
