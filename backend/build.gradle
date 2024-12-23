@@ -39,6 +39,7 @@ dependencies {
 	implementation group: 'org.jsoup', name: 'jsoup', version: '1.18.1'
 	implementation group: 'org.xhtmlrenderer', name: 'flying-saucer-pdf', version: '9.9.0'
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '3.3.2'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '3.1.5'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation group: 'com.h2database', name: 'h2', version: '2.2.224'
 }
