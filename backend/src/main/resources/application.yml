@@ -21,11 +21,6 @@ spring:
     port: 465
     username: ${EMAIL_APP_USER}
     password: ${EMAIL_APP_PASSWORD}
-    properties.mail.smtp.auth: true
-    properties.mail.smtp.starttls.enable: true
-sendgrid:
-  api:
-    key: ${SENDGRID_API_KEY}
 
 management:
   endpoints:

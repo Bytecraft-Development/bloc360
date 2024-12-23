@@ -23,3 +23,6 @@ sendgrid:
   key: sa
 
 baseUrl: http://localhost:8080
+
+EMAIL_APP_USER: test
+EMAIL_APP_PASSWORD: test
