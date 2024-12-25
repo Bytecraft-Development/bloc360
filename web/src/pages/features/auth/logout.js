@@ -6,7 +6,6 @@ const Logout = () => {
 
     // Keycloak token revocation URL
     const keycloakRevokeUrl = "https://bloc360.live:8443/realms/bloc360/protocol/openid-connect/revoke";
-    const clientId = process.env.REACT_APP_KEYCLOAK_CLIENT_ID;
 
     useEffect(() => {
         // Clear local storage and cookies
@@ -17,6 +16,7 @@ const Logout = () => {
         });
 
         const accessToken = localStorage.getItem("access_token");
+        const clientId = process.env.REACT_APP_KEYCLOAK_CLIENT_ID;
 
         if (accessToken) {
             // AJAX request to Keycloak token revocation endpoint
