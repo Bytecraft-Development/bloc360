@@ -16,7 +16,6 @@ const Logout = () => {
                 .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
         });
 
-        // Extract the access token from localStorage
         const accessToken = localStorage.getItem("access_token");
 
         if (accessToken) {
