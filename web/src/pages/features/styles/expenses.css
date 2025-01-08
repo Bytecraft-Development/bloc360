@@ -1,0 +1,112 @@
+/* ExpensesPage.css */
+.expenses-page-container {
+    display: flex;
+    font-family: Arial, sans-serif;
+  }
+  
+  .expenses-page-content {
+    margin-left: 15%;
+    flex: 1;
+    background-color: #f8f9fa;
+    padding: 20px;
+  }
+  
+  .expenses-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .expenses-header h1 {
+    color: #004085;
+    margin: 0;
+  }
+  
+  .expenses-add-button {
+    background-color: #9b1c31;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+  
+  .expenses-add-button .add-button-icon {
+    font-size: 18px;
+    margin-right: 5px;
+  }
+  
+  .expenses-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .form-group {
+    flex: 1 1 48%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-group label {
+    font-size: 14px;
+    color: #004085;
+    margin-bottom: 5px;
+  }
+  
+  .form-input {
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+  
+  .form-submit-button {
+    background-color: #9b1c31;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  
+  .expenses-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .expense-item {
+    background-color: white;
+    padding: 15px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr) auto;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .expense-item > div {
+    font-size: 14px;
+    color: #004085;
+  }
+  
+  .expense-document a {
+    color: #0056b3;
+    text-decoration: none;
+  }
+  
+  .expense-settings .settings-icon {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    color: #004085;
+  }
+  

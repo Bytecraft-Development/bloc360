@@ -6,6 +6,7 @@ import CreateAssociationPage from "./pages/features/association/createassociatio
 import AddBlocksAndStairsPage from "./pages/features/association/add-blocks-and-stairs";
 import AddHouseHold from "./pages/features/association/add-household";
 import Logout from "./pages/features/auth/logout";
+import ExpensesPage from "./pages/features/expenses/expenses";
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
         <Route path="/createAssociation" element={<CreateAssociationPage/>} />
         <Route path="/add-blocks-and-stairs/:associationId" element={<AddBlocksAndStairsPage />} />
         <Route path="/add-household/:associationId" element={<AddHouseHold/>} />
+        <Route path="/expenses" element={<ExpensesPage/>} />
         <Route path="/logout" element={<Logout/>} />
         </Routes>
     </Router>
