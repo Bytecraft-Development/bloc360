@@ -28,27 +28,27 @@ public class ExpenseController {
         return ResponseEntity.ok(expenses);
     }
 
-    @PutMapping("/expenses/{id}")
-    public ResponseEntity<Expense> updateExpense(@PathVariable int id, @RequestBody Expense updatedExpense) {
-        Optional<Expense> expenseOptional = expenseService.getExpenseById(id);
-        if (expenseOptional.isPresent()) {
-            Expense expense = expenseOptional.get();
-            expense.setType(updatedExpense.getType());
-            expense.setConsumable(updatedExpense.isConsumable());
-            expense.setRepeatable(updatedExpense.isRepeatable());
-            expense.setDistribute(updatedExpense.isDistribute());
-            expense.setSerialNumber(updatedExpense.getSerialNumber());
-            expense.setDocumentDate(updatedExpense.getDocumentDate());
-            expense.setDueDate(updatedExpense.getDueDate());
-            expense.setAmount(updatedExpense.getAmount());
-            expense.setDescription(updatedExpense.getDescription());
-            expense.setReference(updatedExpense.getReference());
-            Expense updatedExpenseEntity = expenseService.createExpense(expense);
-            return ResponseEntity.ok(updatedExpenseEntity);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+//    @PutMapping("/expenses/{id}")
+//    public ResponseEntity<Expense> updateExpense(@PathVariable int id, @RequestBody Expense updatedExpense) {
+//        Optional<Expense> expenseOptional = expenseService.getExpenseById(id);
+//        if (expenseOptional.isPresent()) {
+//            Expense expense = expenseOptional.get();
+//            expense.setType(updatedExpense.getType());
+//            expense.setConsumable(updatedExpense.isConsumable());
+//            expense.setRepeatable(updatedExpense.isRepeatable());
+//            expense.setDistribute(updatedExpense.isDistribute());
+//            expense.setSerialNumber(updatedExpense.getSerialNumber());
+//            expense.setDocumentDate(updatedExpense.getDocumentDate());
+//            expense.setDueDate(updatedExpense.getDueDate());
+//            expense.setAmount(updatedExpense.getAmount());
+//            expense.setDescription(updatedExpense.getDescription());
+//            expense.setReference(updatedExpense.getReference());
+//            Expense updatedExpenseEntity = expenseService.createExpense(expense);
+//            return ResponseEntity.ok(updatedExpenseEntity);
+//        } else {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
 
     @DeleteMapping("/expenses/{id}")
     public ResponseEntity<Void> deleteExpense(@PathVariable int id) {
