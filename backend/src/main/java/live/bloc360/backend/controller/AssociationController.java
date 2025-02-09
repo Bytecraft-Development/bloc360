@@ -116,6 +116,13 @@ public class AssociationController {
         return ResponseEntity.ok(blocks);
     }
 
+    @GetMapping("/stair")
+    public ResponseEntity<List<HouseHold>> getHouseholdsByStair(@RequestParam("stairId") Integer stairId) {
+        List<HouseHold> households = associationService.getHouseholdsByStairId(stairId);
+        return ResponseEntity.ok(households);
+    }
+
+
     @GetMapping("/association")
     public ResponseEntity<Association> getAssociation(Authentication authentication) {
         Jwt token = (Jwt) authentication.getCredentials();

@@ -21,12 +21,10 @@ public class Expense {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    private String type;
-    private boolean consumable;
-    private boolean repeatable;
-    private boolean distribute;
+    private String provider;
     private String serialNumber;
+    private BigDecimal amount;
+
     @Enumerated(EnumType.ORDINAL)
     private ConsumptionType consumptionType;
 
@@ -36,9 +34,10 @@ public class Expense {
     @Temporal(TemporalType.TIMESTAMP)
     private Date dueDate;
 
-    private BigDecimal amount;
     private String description;
     private String reference;
+    private boolean repeatable;
+
     @OneToMany(mappedBy = "expense", cascade = CascadeType.ALL)
     private List<Payment> paymentList = new ArrayList<>();
 

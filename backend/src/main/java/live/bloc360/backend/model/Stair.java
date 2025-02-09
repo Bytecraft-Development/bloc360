@@ -13,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Data
 @Table(name = "stair")
 public class Stair {
     @Id
@@ -29,4 +30,10 @@ public class Stair {
     @OneToMany(mappedBy = "stair", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<HouseHold> households;
+
+    public Stair(Integer id, String name, List<HouseHold> households) {
+        this.id=id;
+        this.name=name;
+        this.households=households;
+    }
 }

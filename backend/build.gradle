@@ -1,5 +1,4 @@
 plugins {
-	//noinspection JavaPluginLanguageLevel
 	id 'java'
 	id 'org.springframework.boot' version '3.2.4'
 	id 'io.spring.dependency-management' version '1.1.4'
@@ -24,23 +23,25 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '3.4.1'
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '3.4.1'
-	implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.5.0'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
+	implementation 'org.postgresql:postgresql:42.7.3'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.apache.httpcomponents:httpclient'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+	implementation 'org.keycloak:keycloak-admin-client:26.0.3'
+	implementation 'org.keycloak:keycloak-core:26.0.3'
+	implementation 'org.jsoup:jsoup:1.18.1'
+	implementation 'org.xhtmlrenderer:flying-saucer-pdf:9.9.0'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
-	implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.3'
-	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	implementation group: 'org.apache.httpcomponents', name: 'httpclient'
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security'
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-oauth2-resource-server'
-	implementation group: 'org.keycloak', name: 'keycloak-admin-client', version: '26.0.3'
-	implementation group: 'org.keycloak', name: 'keycloak-core', version: '26.0.3'
-	implementation group: 'org.jsoup', name: 'jsoup', version: '1.18.1'
-	implementation group: 'org.xhtmlrenderer', name: 'flying-saucer-pdf', version: '9.9.0'
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation group: 'com.h2database', name: 'h2', version: '2.2.224'
+	testImplementation 'com.h2database:h2:2.2.224'
 }
 
 tasks.named('test') {
@@ -49,5 +50,5 @@ tasks.named('test') {
 
 jar {
 	enabled = true
-	archiveClassifier = '' //use empty string
+	archiveClassifier = ''
 }
