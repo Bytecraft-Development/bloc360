@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Sidebar from "../components/sidemenu";
 import "../../../pages/features/styles/expenses.css";
 
 const ExpensesPage = () => {
@@ -299,8 +298,10 @@ const ExpensesPage = () => {
               <div className="expense-category">{expense.category}</div>
               <div className="expense-details">{expense.details}</div>
               <div className="expense-document">
-                <a href="#">{expense.document}</a>
-              </div>
+  <button className="link-button" onClick={() => {}}>
+    {expense.document || "Niciun document"}
+  </button>
+</div>
               <div className="expense-recurring">
                 {expense.recurring === "Da" ? "Da" : "Nu"}
               </div>
