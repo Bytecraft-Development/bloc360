@@ -23,6 +23,6 @@ public class Appartment {
 
     @OneToOne
     @JoinColumn(name = "household_id")
-    //List owner type chirias sau owner
+
     private HouseHold houseHold;
 }
