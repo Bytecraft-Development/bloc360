@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Sidebar from "../components/sidemenu";
 import "../../../pages/features/styles/expenses.css";
 
@@ -12,9 +12,91 @@ const ExpensesPage = () => {
     category: "",
     details: "",
     document: "",
-    recurring: "Nu", // Valoare inițială setată pe "Nu"
+    recurring: "Nu", 
     series: "",
   });
+
+  const [blocks, setBlocks] = useState([]);
+  const [stairs, setStairs] = useState([]);
+  const [apartments, setApartments] = useState([]);
+  const [selectedType, setSelectedType] = useState("BLOC");
+  const [selectedBlock, setSelectedBlock] = useState(null);
+  const [selectedStair, setSelectedStair] = useState(null);
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [selectAll, setSelectAll] = useState(false);
+
+  useEffect(() => {
+    const fetchBlocks = async () => {
+      try {
+        const apiUrl = process.env.REACT_APP_API_URL;
+        const response = await fetch(`${apiUrl}/blocks?associationId=1`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        setBlocks(data);
+      } catch (error) {
+        console.error("Error fetching blocks:", error);
+      }
+    };
+    fetchBlocks();
+  }, []);
+
+  useEffect(() => {
+    if (selectedBlock) {
+      const block = blocks.find(b => b.id === parseInt(selectedBlock));
+      setStairs(block ? block.stairs : []);
+      setSelectedStair(null);
+      setApartments([]);
+    }
+  }, [selectedBlock, blocks]);
+
+  useEffect(() => {
+    if (selectedStair) {
+      const fetchApartments = async () => {
+        try {
+          const apiUrl = process.env.REACT_APP_API_URL;
+          const response = await fetch(`${apiUrl}/stair?stairId=${selectedStair}`);
+          if (!response.ok) {
+            throw new Error("HTTP error fetching apartments");
+          }
+          setApartments(await response.json());
+        } catch (error) {
+          console.error("Error fetching apartments:", error);
+        }
+      };
+      fetchApartments();
+    }
+  }, [selectedStair]);
+
+  const handleTypeChange = (e) => {
+    setSelectedType(e.target.value);
+    setSelectedItems([]);
+    setSelectAll(false);
+    setSelectedBlock(null); 
+    setSelectedStair(null); 
+  };
+
+  const handleCheckboxChange = (id) => {
+    setSelectedItems(prev =>
+      prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
+    );
+  };
+
+  const handleSelectAll = () => {
+    if (selectAll) {
+      setSelectedItems([]);
+    } else {
+      if (selectedType === "BLOC") {
+        setSelectedItems(blocks.map(block => block.id));
+      } else if (selectedType === "SCARA" && selectedBlock) {
+        setSelectedItems(stairs.map(stair => stair.id));
+      } else if (selectedType === "APARTAMENT" && selectedStair) {
+        setSelectedItems(apartments.map(apartment => apartment.id));
+      }
+    }
+    setSelectAll(!selectAll);
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -45,7 +127,7 @@ const ExpensesPage = () => {
 
   return (
     <div className="expenses-page-container">
-      <Sidebar />
+      {/* <Sidebar /> */}
       <div className="expenses-page-content">
         <header className="expenses-header">
           <h1>Cheltuieli asociate</h1>
@@ -55,6 +137,76 @@ const ExpensesPage = () => {
         </header>
 
         <div className="expenses-form">
+          <div className="form-group">
+            <label htmlFor="category">Repartizată către</label>
+            <select name="category" value={selectedType} onChange={handleTypeChange} className="form-input">
+              <option value="BLOC">Bloc</option>
+              <option value="SCARA">Scară</option>
+              <option value="APARTAMENT">Apartament</option>
+            </select>
+          </div>
+
+          {selectedType === "BLOC" && (
+            <div className="form-group">
+              <label>Selectează Blocuri</label>
+              <button onClick={handleSelectAll}>
+                {selectAll ? "Deselectează tot" : "Selectează tot"}
+              </button>
+              {blocks.map(block => (
+                <div key={block.id}>
+                  <input type="checkbox" checked={selectedItems.includes(block.id)} onChange={() => handleCheckboxChange(block.id)} /> {block.name}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {(selectedType === "SCARA" || selectedType === "APARTAMENT") && (
+            <div className="form-group">
+              <label>Selectează Bloc</label>
+              <select onChange={(e) => setSelectedBlock(e.target.value)} className="form-input">
+                <option value="">Selectează blocul</option>
+                {blocks.map(block => (
+                  <option key={block.id} value={block.id}>{block.name}</option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          {selectedType === "SCARA" && selectedBlock && (
+            <div className="form-group">
+              <label>Selectează Scara</label>
+              {stairs.map(stair => (
+                <div key={stair.id}>
+                  <input type="checkbox" checked={selectedItems.includes(stair.id)} onChange={() => handleCheckboxChange(stair.id)} /> {stair.name}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {selectedType === "APARTAMENT" && selectedBlock && (
+            <div className="form-group">
+              <label>Selectează Scara</label>
+              <select onChange={(e) => setSelectedStair(e.target.value)} className="form-input">
+                <option value="">Selectează scara</option>
+                {stairs.map(stair => (
+                  <option key={stair.id} value={stair.id}>{stair.name}</option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          {selectedType === "APARTAMENT" && selectedStair && (
+            <div className="form-group">
+              <label>Selectează Apartamente</label>
+              {apartments.map(apartment => (
+                <div key={apartment.id}>
+                  <input type="checkbox" checked={selectedItems.includes(apartment.id)} onChange={() => handleCheckboxChange(apartment.id)} /> {apartment.apartmentNumber}
+                </div>
+              ))}
+            </div>
+          )}
+
+         
           <div className="form-group">
             <label htmlFor="date">Data</label>
             <input
@@ -94,28 +246,6 @@ const ExpensesPage = () => {
               type="text"
               name="paymentType"
               value={formData.paymentType}
-              onChange={handleInputChange}
-              className="form-input"
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="category">Repartizata catre</label>
-            <input
-              type="text"
-              name="category"
-              value={formData.category}
-              onChange={handleInputChange}
-              className="form-input"
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="details">Bloc + Scari</label>
-            <input
-              type="text"
-              name="details"
-              value={formData.details}
               onChange={handleInputChange}
               className="form-input"
             />
