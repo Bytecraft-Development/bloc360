@@ -2,18 +2,19 @@ import React, { useState, useEffect } from "react";
 import "../../../pages/features/styles/expenses.css";
 
 const ExpensesPage = () => {
-  const [expenses, setExpenses] = useState([]);
+ 
   const [formData, setFormData] = useState({
-    date: "",
-    supplier: "",
+    provider: "",
+    serialNumber: "",
     amount: "",
-    paymentType: "",
-    category: "",
-    details: "",
-    document: "",
-    recurring: "Nu", 
-    series: "",
+    consumptionType: 0, 
+    documentDate: "",
+    description: "",
+    reference: "",
+    repeatable: false,
   });
+
+  const [expenses, setExpenses] = useState([]);
 
   const [blocks, setBlocks] = useState([]);
   const [stairs, setStairs] = useState([]);
@@ -41,6 +42,7 @@ const ExpensesPage = () => {
     fetchBlocks();
   }, []);
 
+ 
   useEffect(() => {
     if (selectedBlock) {
       const block = blocks.find(b => b.id === parseInt(selectedBlock));
@@ -50,6 +52,7 @@ const ExpensesPage = () => {
     }
   }, [selectedBlock, blocks]);
 
+ 
   useEffect(() => {
     if (selectedStair) {
       const fetchApartments = async () => {
@@ -72,8 +75,8 @@ const ExpensesPage = () => {
     setSelectedType(e.target.value);
     setSelectedItems([]);
     setSelectAll(false);
-    setSelectedBlock(null); 
-    setSelectedStair(null); 
+    setSelectedBlock(null);
+    setSelectedStair(null);
   };
 
   const handleCheckboxChange = (id) => {
@@ -98,35 +101,123 @@ const ExpensesPage = () => {
   };
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleDocumentUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setFormData({ ...formData, document: file.name });
-    }
-  };
-
-  const handleAddExpense = () => {
-    setExpenses([...expenses, formData]);
+    const { name, value, type, checked } = e.target;
     setFormData({
-      date: "",
-      supplier: "",
-      amount: "",
-      paymentType: "",
-      category: "",
-      details: "",
-      document: "",
-      recurring: "Nu",
-      series: "",
+      ...formData,
+      [name]: type === "checkbox" ? checked : value,
     });
+  };
+
+  const handleAddExpense = async () => {
+    const apiUrl = process.env.REACT_APP_API_URL;
+    let householdIds = [];
+
+    if (selectedType === "BLOC") {
+      if (selectedItems.length === 0) {
+        console.error("Niciun bloc selectat!");
+        return;
+      }
+      
+      const query = selectedItems.map(id => `blockIds=${id}`).join('&');
+      try {
+        const response = await fetch(`${apiUrl}/householdsByBlock?${query}`);
+        if (!response.ok) {
+          throw new Error("Eroare la preluarea household-urilor de la blocuri");
+        }
+        const households = await response.json();
+        householdIds = households.map(h => h.id);
+      } catch (error) {
+        console.error("Eroare fetching households by block:", error);
+        return;
+      }
+    } else if (selectedType === "SCARA") {
+      if (selectedItems.length === 0) {
+        console.error("Nicio scară selectată!");
+        return;
+      }
+      try {
+        const fetchHouseholdsForStair = async (stairId) => {
+          const response = await fetch(`${apiUrl}/stair?stairId=${stairId}`);
+          if (!response.ok) {
+            throw new Error(`Eroare la preluarea household-urilor pentru scara ${stairId}`);
+          }
+          return await response.json();
+        };
+
+        const results = await Promise.all(
+          selectedItems.map(stairId => fetchHouseholdsForStair(stairId))
+        );
+        householdIds = results.flat().map(h => h.id);
+      } catch (error) {
+        console.error("Eroare la preluarea household-urilor pentru scările selectate:", error);
+        return;
+      }
+    } else if (selectedType === "APARTAMENT") {
+      if (selectedItems.length === 0) {
+        console.error("Niciun apartament selectat!");
+        return;
+      }
+      householdIds = selectedItems;
+    }
+
+    if (householdIds.length === 0) {
+      console.error("Lista householdIds este goală!");
+      return;
+    }
+
+   
+    const houseHoldList = householdIds.map(id => ({ id }));
+
+   
+    const expenseData = {
+      provider: formData.provider,
+      serialNumber: formData.serialNumber,
+      amount: parseFloat(formData.amount),
+      consumptionType: formData.consumptionType, 
+      documentDate: formData.documentDate,
+      description: formData.description,
+      reference: formData.reference,
+      repeatable: formData.repeatable,
+      houseHoldList: houseHoldList,
+    };
+
+    console.log("JSON trimis:", JSON.stringify(expenseData, null, 2));
+
+    try {
+      const response = await fetch(`${apiUrl}/createExpense`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(expenseData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Eroare la trimiterea cheltuielii");
+      }
+
+      const newExpense = await response.json();
+      setExpenses([...expenses, newExpense]);
+
+
+      setFormData({
+        provider: "",
+        serialNumber: "",
+        amount: "",
+        consumptionType: 0,
+        documentDate: "",
+        description: "",
+        reference: "",
+        repeatable: false,
+      });
+      setSelectedItems([]);
+    } catch (error) {
+      console.error("Eroare la adăugarea cheltuielii:", error);
+    }
   };
 
   return (
     <div className="expenses-page-container">
-      {/* <Sidebar /> */}
       <div className="expenses-page-content">
         <header className="expenses-header">
           <h1>Cheltuieli asociate</h1>
@@ -136,6 +227,7 @@ const ExpensesPage = () => {
         </header>
 
         <div className="expenses-form">
+        
           <div className="form-group">
             <label htmlFor="category">Repartizată către</label>
             <select name="category" value={selectedType} onChange={handleTypeChange} className="form-input">
@@ -153,7 +245,12 @@ const ExpensesPage = () => {
               </button>
               {blocks.map(block => (
                 <div key={block.id}>
-                  <input type="checkbox" checked={selectedItems.includes(block.id)} onChange={() => handleCheckboxChange(block.id)} /> {block.name}
+                  <input
+                    type="checkbox"
+                    checked={selectedItems.includes(block.id)}
+                    onChange={() => handleCheckboxChange(block.id)}
+                  />{" "}
+                  {block.name}
                 </div>
               ))}
             </div>
@@ -165,7 +262,9 @@ const ExpensesPage = () => {
               <select onChange={(e) => setSelectedBlock(e.target.value)} className="form-input">
                 <option value="">Selectează blocul</option>
                 {blocks.map(block => (
-                  <option key={block.id} value={block.id}>{block.name}</option>
+                  <option key={block.id} value={block.id}>
+                    {block.name}
+                  </option>
                 ))}
               </select>
             </div>
@@ -176,7 +275,12 @@ const ExpensesPage = () => {
               <label>Selectează Scara</label>
               {stairs.map(stair => (
                 <div key={stair.id}>
-                  <input type="checkbox" checked={selectedItems.includes(stair.id)} onChange={() => handleCheckboxChange(stair.id)} /> {stair.name}
+                  <input
+                    type="checkbox"
+                    checked={selectedItems.includes(stair.id)}
+                    onChange={() => handleCheckboxChange(stair.id)}
+                  />{" "}
+                  {stair.name}
                 </div>
               ))}
             </div>
@@ -188,7 +292,9 @@ const ExpensesPage = () => {
               <select onChange={(e) => setSelectedStair(e.target.value)} className="form-input">
                 <option value="">Selectează scara</option>
                 {stairs.map(stair => (
-                  <option key={stair.id} value={stair.id}>{stair.name}</option>
+                  <option key={stair.id} value={stair.id}>
+                    {stair.name}
+                  </option>
                 ))}
               </select>
             </div>
@@ -199,39 +305,45 @@ const ExpensesPage = () => {
               <label>Selectează Apartamente</label>
               {apartments.map(apartment => (
                 <div key={apartment.id}>
-                  <input type="checkbox" checked={selectedItems.includes(apartment.id)} onChange={() => handleCheckboxChange(apartment.id)} /> {apartment.apartmentNumber}
+                  <input
+                    type="checkbox"
+                    checked={selectedItems.includes(apartment.id)}
+                    onChange={() => handleCheckboxChange(apartment.id)}
+                  />{" "}
+                  {apartment.apartmentNumber}
                 </div>
               ))}
             </div>
           )}
 
-         
+       
           <div className="form-group">
-            <label htmlFor="date">Data</label>
-            <input
-              type="date"
-              name="date"
-              value={formData.date}
-              onChange={handleInputChange}
-              className="form-input"
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="supplier">Furnizor</label>
+            <label>Furnizor</label>
             <input
               type="text"
-              name="supplier"
-              value={formData.supplier}
+              name="provider"
+              value={formData.provider}
               onChange={handleInputChange}
               className="form-input"
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="amount">Suma</label>
+            <label>Serial Number</label>
+            <input
+              type="text"
+              name="serialNumber"
+              value={formData.serialNumber}
+              onChange={handleInputChange}
+              className="form-input"
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Suma</label>
             <input
               type="number"
+              step="0.01"
               name="amount"
               value={formData.amount}
               onChange={handleInputChange}
@@ -240,47 +352,62 @@ const ExpensesPage = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="paymentType">Mod repartizare</label>
-            <input
-              type="text"
-              name="paymentType"
-              value={formData.paymentType}
-              onChange={handleInputChange}
-              className="form-input"
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="series">Seria si nr.</label>
-            <input
-              type="text"
-              name="series"
-              value={formData.series}
-              onChange={handleInputChange}
-              className="form-input"
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="document">Document</label>
-            <input
-              type="file"
-              onChange={handleDocumentUpload}
-              className="form-input"
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="recurring">Recurent</label>
+            <label>Tip consum</label>
             <select
-              name="recurring"
-              value={formData.recurring}
-              onChange={handleInputChange}
+              name="consumptionType"
+              value={formData.consumptionType}
+              onChange={(e) =>
+                setFormData({ ...formData, consumptionType: parseInt(e.target.value, 10) })
+              }
               className="form-input"
             >
-              <option value="Da">Da</option>
-              <option value="Nu">Nu</option>
+              <option value={0}>Electricitate</option>
+              <option value={1}>Încălzire</option>
+              <option value={2}>Apă rece</option>
+              <option value={3}>Apă caldă</option>
             </select>
+          </div>
+
+          <div className="form-group">
+            <label>Data documentului</label>
+            <input
+              type="date"
+              name="documentDate"
+              value={formData.documentDate}
+              onChange={handleInputChange}
+              className="form-input"
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Descriere</label>
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleInputChange}
+              className="form-input"
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Referință</label>
+            <input
+              type="text"
+              name="reference"
+              value={formData.reference}
+              onChange={handleInputChange}
+              className="form-input"
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Repetabil</label>
+            <input
+              type="checkbox"
+              name="repeatable"
+              checked={formData.repeatable}
+              onChange={handleInputChange}
+            />
           </div>
 
           <button onClick={handleAddExpense} className="form-submit-button">
@@ -291,23 +418,19 @@ const ExpensesPage = () => {
         <div className="expenses-list">
           {expenses.map((expense, index) => (
             <div className="expense-item" key={index}>
-              <div className="expense-date">{expense.date}</div>
-              <div className="expense-supplier">{expense.supplier}</div>
-              <div className="expense-amount">{expense.amount}</div>
-              <div className="expense-payment-type">{expense.paymentType}</div>
-              <div className="expense-category">{expense.category}</div>
-              <div className="expense-details">{expense.details}</div>
-              <div className="expense-document">
-  <button className="link-button" onClick={() => {}}>
-    {expense.document || "Niciun document"}
-  </button>
-</div>
-              <div className="expense-recurring">
-                {expense.recurring === "Da" ? "Da" : "Nu"}
-              </div>
-              <div className="expense-series">{expense.series}</div>
-              <div className="expense-settings">
-                <button className="settings-icon">⚙️</button>
+              <div><strong>Furnizor:</strong> {expense.provider}</div>
+              <div><strong>Serial Number:</strong> {expense.serialNumber}</div>
+              <div><strong>Suma:</strong> {expense.amount}</div>
+              <div><strong>Tip consum (ordinal):</strong> {expense.consumptionType}</div>
+              <div><strong>Data documentului:</strong> {expense.documentDate}</div>
+              <div><strong>Descriere:</strong> {expense.description}</div>
+              <div><strong>Referință:</strong> {expense.reference}</div>
+              <div><strong>Repetabil:</strong> {expense.repeatable ? "Da" : "Nu"}</div>
+              <div>
+                <strong>Lista Apartamente:</strong>{" "}
+                {expense.houseHoldList.map(h => (
+                  <span key={h.id}>{h.apartmentNumber} </span>
+                ))}
               </div>
             </div>
           ))}
