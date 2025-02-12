@@ -2,6 +2,7 @@ package live.bloc360.backend.service;
 
 
 import live.bloc360.backend.model.Expense;
+import live.bloc360.backend.model.HouseHold;
 
 import java.util.List;
 import java.util.Optional;

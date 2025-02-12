@@ -10,5 +10,4 @@ import java.util.List;
 @Repository
 public interface HouseHoldRepository extends JpaRepository<HouseHold, Integer> {
     List<HouseHold> findByStairId(Integer stairId);
-
 }

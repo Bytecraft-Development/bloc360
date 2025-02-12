@@ -122,6 +122,13 @@ public class AssociationController {
         return ResponseEntity.ok(households);
     }
 
+    @GetMapping("/householdsByBlock")
+    public ResponseEntity<List<HouseHold>> getHouseholdsByBlock(@RequestParam List<Integer> blockIds) {
+        List<HouseHold> households = associationService.getHouseholdsByBlockIds(blockIds);
+        return ResponseEntity.ok(households);
+    }
+
+
 
     @GetMapping("/association")
     public ResponseEntity<Association> getAssociation(Authentication authentication) {

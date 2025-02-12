@@ -14,4 +14,5 @@ public interface AssociationService {
     void addHouseHoldToStair(Integer stairId, List<HouseHold> houseHold);
     List<Block> getBlocksForAssociation(Integer associationId);
     List<HouseHold> getHouseholdsByStairId(Integer stairId);
+    List<HouseHold> getHouseholdsByBlockIds(List<Integer> blockIds);
 }

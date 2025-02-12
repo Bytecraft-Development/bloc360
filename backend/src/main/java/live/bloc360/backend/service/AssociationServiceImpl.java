@@ -16,6 +16,7 @@ import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -110,6 +111,16 @@ public class AssociationServiceImpl implements AssociationService {
         return houseHoldRepository.findByStairId(stairId);
     }
 
+    public List<HouseHold> getHouseholdsByBlockIds(List<Integer> blockIds) {
+        List<HouseHold> households = new ArrayList<>();
+        for (Integer blockId : blockIds) {
+            List<Stair> stairs = stairRepository.findByBlockId(blockId);
+            for (Stair stair : stairs) {
+                households.addAll(stair.getHouseholds());
+            }
+        }
+        return households;
+    }
 
 
     public boolean userHasAssociation(String username) {

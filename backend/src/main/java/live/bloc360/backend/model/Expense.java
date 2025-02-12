@@ -16,6 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Data
 public class Expense {
 
     @Id
@@ -38,7 +39,14 @@ public class Expense {
     private String reference;
     private boolean repeatable;
 
+    @ManyToMany
+    @JoinTable(
+            name = "expense_household",
+            joinColumns = @JoinColumn(name = "expense_id"),
+            inverseJoinColumns = @JoinColumn(name = "household_id")
+    )
+    private List<HouseHold> houseHoldList = new ArrayList<>();
+
     @OneToMany(mappedBy = "expense", cascade = CascadeType.ALL)
     private List<Payment> paymentList = new ArrayList<>();
-
 }

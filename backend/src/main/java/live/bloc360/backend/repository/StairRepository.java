@@ -8,4 +8,5 @@ import java.util.List;
 @Repository
 public interface StairRepository extends JpaRepository<Stair, Integer> {
     List<Stair> findByBlock_Association_Id(Integer associationId);
+    List<Stair> findByBlockId(Integer blockId);
 }
