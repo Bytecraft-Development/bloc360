@@ -7,20 +7,19 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
-import java.util.List;
 
 
 @AllArgsConstructor
 @Service
 public class ExpenseCalculatorService {
 
-    public void distributeExpense(Expense expense, List<HouseHold> customHouseHoldList, ExpenseDistributionType expenseDistributionType) {
+    public void distributeExpense(Expense expense, ExpenseDistributionType expenseDistributionType) {
         switch (expenseDistributionType) {
             case EQUALLY:
                 BigDecimal expensePerHouseHold;
-                Integer numOfHouseHolds = customHouseHoldList.size();
+                Integer numOfHouseHolds = expense.getHouseHoldList().size();
                 expensePerHouseHold = expense.getAmount().divide(BigDecimal.valueOf(numOfHouseHolds), 3, RoundingMode.HALF_EVEN);
-                for (HouseHold houseHold : customHouseHoldList) {
+                for (HouseHold houseHold : expense.getHouseHoldList()) {
                     Payment payment = new Payment();
                     payment.setExpense(expense);
                     payment.setHouseHold(houseHold);
@@ -32,11 +31,11 @@ public class ExpenseCalculatorService {
             case BY_NUMBER_OF_PEOPLE:
                 BigDecimal expensePerHouseHoldMember;
                 Integer numOfHouseHoldMembers = 0;
-                for (HouseHold houseHold : customHouseHoldList) {
+                for (HouseHold houseHold : expense.getHouseHoldList()) {
                     numOfHouseHoldMembers += houseHold.getNumberOfHouseHoldMembers();
                 }
                 expensePerHouseHoldMember = expense.getAmount().divide(BigDecimal.valueOf(numOfHouseHoldMembers), 3, RoundingMode.HALF_EVEN);
-                for (HouseHold houseHold : customHouseHoldList) {
+                for (HouseHold houseHold : expense.getHouseHoldList()) {
                     Payment payment = new Payment();
                     payment.setExpense(expense);
                     payment.setHouseHold(houseHold);
@@ -47,11 +46,11 @@ public class ExpenseCalculatorService {
             case BY_SURFACE:
                 BigDecimal expensePerSurfaceUnit;
                 Double totalSurface = 0.0;
-                for (HouseHold houseHold : customHouseHoldList) {
+                for (HouseHold houseHold : expense.getHouseHoldList()) {
                     totalSurface += houseHold.getSurface();
                 }
                 expensePerSurfaceUnit = expense.getAmount().divide(BigDecimal.valueOf(totalSurface), 3, RoundingMode.HALF_EVEN);
-                for (HouseHold houseHold : customHouseHoldList) {
+                for (HouseHold houseHold : expense.getHouseHoldList()) {
                     Payment payment = new Payment();
                     payment.setExpense(expense);
                     payment.setHouseHold(houseHold);
@@ -62,11 +61,11 @@ public class ExpenseCalculatorService {
             case BY_INDEX:
                 BigDecimal expensePerConsumptionUnit;
                 Double totalConsumption = 0.0;
-                for (HouseHold houseHold : customHouseHoldList) {
+                for (HouseHold houseHold : expense.getHouseHoldList()) {
                     totalConsumption += houseHold.getMonthlyConsumption(LocalDate.now(), expense.getConsumptionType());
                 }
                 expensePerConsumptionUnit = expense.getAmount().divide(BigDecimal.valueOf(totalConsumption),3, RoundingMode.HALF_EVEN);
-                for (HouseHold houseHold : customHouseHoldList) {
+                for (HouseHold houseHold : expense.getHouseHoldList()) {
                     Payment payment = new Payment();
                     payment.setExpense(expense);
                     payment.setHouseHold(houseHold);
@@ -75,7 +74,7 @@ public class ExpenseCalculatorService {
                 }
                 break;
             case FIXED_PERCENTAGE:
-                for (HouseHold houseHold : customHouseHoldList) {
+                for (HouseHold houseHold : expense.getHouseHoldList()) {
                     Payment payment = new Payment();
                     payment.setValue(BigDecimal.valueOf(100));
                     houseHold.getPaymentList().add(payment);
