@@ -1,115 +1,350 @@
-/* ExpensesPage.css */
 .expenses-page-container {
-    display: flex;
-    font-family: Arial, sans-serif;
+  font-family: 'Poppins', sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  margin-left: 350px;
+}
+
+.expenses-page-content {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.expense-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.expense-header h1 {
+  font-size: 24px;
+  color: #8F2D56;
+}
+
+.expense-header-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.expense-select,
+input[type="date"],
+input[name="amount"],
+select,
+.multi-select-wrapper .dropdown-container {
+  font-family: 'Poppins', sans-serif;
+  font-size: 15px;
+  padding: 2px 4px;
+  border: none;
+  border-bottom: 1px solid #337ab7;
+  background-color: transparent;
+  height: 24px;
+  text-align: center;
+}
+
+.expense-add-button {
+  background-color: #f0ad4e;
+  color: white;
+  border: none;
+  padding: 6px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  height: 32px;
+}
+
+.expense-close-month-button {
+  background-color: #fff;
+  color: #337ab7;
+  border: 1px solid #337ab7;
+  padding: 6px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  height: 32px;
+}
+
+.expense-form {
+  background-color: #F9FAFE;
+  border-radius: 8px;
+  padding: 20px;
+  border: 1px solid #e2e8f0;
+}
+
+.expense-row {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.expense-form-group {
+  flex: 1;
+  min-width: 200px;
+}
+
+.flex-row {
+  display: flex;
+  align-items: center;
+}
+
+
+.expense-label {
+  font-weight: 500; 
+  color: #337ab7;
+  margin-right: 15px;
+  min-width: 120px;
+}
+
+
+   .expense-label.tight-data {
+    margin-right: -50px; 
   }
   
-  .expenses-page-content {
-    margin-left: 15%;
-    flex: 1;
-    background-color: #f8f9fa;
-    padding: 20px;
+ 
+  .expense-label.tight-recurenta {
+    margin-right: -10px; 
+   
+  }
+
+  .expense-label.tight-furnizor{
+    margin-right: -20px;
   }
   
-  .expenses-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
+ 
+  .expense-label.tight {
+    margin-right: -10px; 
   }
-  
-  .expenses-header h1 {
-    color: #004085;
-    margin: 0;
-  }
-  
-  .expenses-add-button {
-    background-color: #9b1c31;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-size: 14px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-  }
-  
-  .expenses-add-button .add-button-icon {
-    font-size: 18px;
-    margin-right: 5px;
-  }
-  
-  .expenses-form {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px; /* Reducem gap-ul între grupuri */
-  }
-  
-  .form-group {
-    display: flex;
-    align-items: center;
-    justify-content: left;
-    width: 23%; /* Lățimea este ajustată pentru a fi mai compactă */
-    margin-bottom: 15px;
-  }
-  
-  .form-group label {
-    font-size: 14px;
-    color: #004085;
-    width: 30%; /* Lățimea etichetei este acum 30%, pentru a fi mai aproape de input */
-    text-align: left;
-  }
-  
-  .form-input {
-    padding: 8px; /* Reducem padding-ul pentru a face inputul mai compact */
-    border: 1px solid #ced4da;
-    border-radius: 5px;
-    font-size: 14px;
-    width: 65%; /* Ajustăm lățimea inputului pentru a fi mai apropiat de etichetă */
-  }
-  
-  .form-submit-button {
-    background-color: #9b1c31;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
-  }
-  
-  .expenses-list {
-    display: flex;
+
+ 
+.expense-input.small {
+  flex: 0 0 auto;
+  width: 150px;  
+}
+
+.expense-input::placeholder {
+  text-align: center;
+}
+
+
+
+.expense-input {
+  flex: 1;
+  padding: 6px 0;
+  border: none;
+  border-bottom: 1px solid #337ab7;
+  background-color: transparent;
+  height: 32px;
+}
+
+.expense-input:focus {
+  outline: none;
+  border-bottom: 2px solid #337ab7;
+}
+
+.expense-file-input {
+  display: flex;
+  align-items: center;
+}
+
+/* Pentru câmpul Document, setăm input-ul cu o lățime puțin mai mică */
+.expense-file-input .expense-input {
+  flex: 0 0 auto;
+  width: 150px;
+}
+
+.expense-file-input .expense-input.flex-grow {
+  flex-grow: 1;
+}
+
+.expense-file-button {
+  background-color: #8F2D56;
+  color: white;
+  border: none;
+  margin-left: 12px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  height: 32px;
+}
+
+.expense-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.expense-settings-button {
+  background-color: #e7f1ff;
+  border: none;
+  color: #337ab7;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  height: 32px;
+}
+
+.settings-icon {
+  font-size: 18px;
+}
+
+.distribution-row {
+  flex-wrap: nowrap;
+}
+
+.distribution-target-row,
+.distribution-method-row {
+  flex-wrap: wrap;
+}
+
+.multi-select-row {
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.multi-select-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.multi-select-wrapper {
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Stiluri pentru MultiSelect */
+.multi-select-wrapper .dropdown-container {
+  font-size: 15px !important;
+  height: 35px !important;
+  width: 23%;
+  margin-left: 38%;
+}
+
+.multi-select-container .dropdown-container {
+  border: none;
+  border-bottom: 1px solid #337ab7;
+  background-color: transparent;
+  height: 32px;
+}
+
+.multi-select-container .dropdown-heading {
+  padding: 6px 0;
+}
+
+.multi-select-container .dropdown-content {
+  border: 1px solid #ddd;
+  border-radius: 0 0 4px 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.percentage-inputs-row {
+  flex-wrap: wrap;
+}
+
+.percentage-input {
+  width: 60px;
+  text-align: right;
+  height: 32px;
+}
+
+.percentage-symbol {
+  margin-left: 5px;
+}
+
+/* Input de tip "date" */
+input[type="date"] {
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  width: 100px;
+  padding: 4px 0;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  outline: none;
+  background: transparent;
+  transition: border-color 0.3s;
+}
+
+input[type="date"]:hover {
+  border-color: #3b82f6;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.5);
+  cursor: pointer;
+}
+
+input[type="date"]:focus {
+  border-color: #3b82f6;
+  box-shadow: none;
+}
+
+
+.distribution-method-row {
+  display: flex;
+  justify-content: center;
+}
+
+.distribution-method-row .expense-form-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.distribution-method-row .expense-form-group .expense-input {
+  flex: 0 0 auto;
+  width: 200px;
+}
+
+input[name="amount"],
+select[name="repeatable"] {
+  flex: 0 0 auto;
+  width: 120px;
+}
+
+/* Input pentru Tip Consum */
+select[name="consumptionType"] {
+  flex: 0 0 auto;
+  width: 150px;
+}
+
+/* Apropiem puțin câmpurile Suma și Tip Consum */
+.expense-row.distribution-row {
+  gap: 0px;
+  margin-left: 15%;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .expense-row,
+  .distribution-row,
+  .distribution-target-row,
+  .distribution-method-row {
     flex-direction: column;
-    gap: 10px;
   }
-  
-  .expense-item {
-    background-color: white;
-    padding: 15px;
-    border: 1px solid #ced4da;
-    border-radius: 5px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr) auto;
-    align-items: center;
-    gap: 10px;
+
+  .expenses-page-container {
+    margin-left: 0;
   }
-  
-  .expense-item > div {
-    font-size: 14px;
-    color: #004085;
+
+  .flex-row {
+    flex-direction: column;
+    align-items: flex-start;
   }
-  
-  .expense-document a {
-    color: #0056b3;
-    text-decoration: none;
+
+  .expense-label {
+    margin-bottom: 5px;
   }
-  
-  .expense-settings .settings-icon {
-    background: none;
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
-    color: #004085;
+
+  .expense-input {
+    width: 50%;
   }
+
+  .multi-select-wrapper {
+    width: 100%;
+  }
+}

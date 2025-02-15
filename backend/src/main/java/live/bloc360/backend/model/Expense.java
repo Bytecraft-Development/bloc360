@@ -29,6 +29,9 @@ public class Expense {
     @Enumerated(EnumType.ORDINAL)
     private ConsumptionType consumptionType;
 
+    @Enumerated(EnumType.ORDINAL)
+    private ExpenseDistributionType expenseDistributionType;
+
     @Temporal(TemporalType.DATE)
     private Date documentDate;
 
