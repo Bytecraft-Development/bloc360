@@ -42,6 +42,7 @@ public class HouseHold {
     public boolean isUserAssigned() {
         return userId != null && !userId.isEmpty();
     }
+    private Integer percentage;
 
     public Long getMonthlyConsumption(LocalDate localDate, ConsumptionType consumptionType) {
         Long consumption = 0L;
