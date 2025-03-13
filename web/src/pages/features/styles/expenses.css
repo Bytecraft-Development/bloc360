@@ -1,9 +1,30 @@
+/* Add these styles at the top of your expenses.css file */
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.app-container {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+}
+
 .expenses-page-container {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
+  flex: 1;
   max-width: 1200px;
   margin: 0 auto;
+  margin-left: 250px; /* Match sidebar width */
   padding: 20px;
-  margin-left: 350px;
+  transition: margin-left 0.3s ease;
+  width: calc(100% - 250px); /* Subtract sidebar width */
+}
+
+.expenses-page-container.sidebar-closed {
+  margin-left: 0;
+  width: 100%;
 }
 
 .expenses-page-content {
@@ -22,121 +43,57 @@
 
 .expense-header h1 {
   font-size: 24px;
-  color: #8F2D56;
+  color: #8f2d56;
 }
 
+/* Modificare pentru butoanele din header */
 .expense-header-actions {
   display: flex;
-  gap: 10px;
-}
-
-.expense-select,
-input[type="date"],
-input[name="amount"],
-select,
-.multi-select-wrapper .dropdown-container {
-  font-family: 'Poppins', sans-serif;
-  font-size: 15px;
-  padding: 2px 4px;
-  border: none;
-  border-bottom: 1px solid #337ab7;
-  background-color: transparent;
-  height: 24px;
-  text-align: center;
-}
-
-.expense-add-button {
-  background-color: #f0ad4e;
-  color: white;
-  border: none;
-  padding: 6px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  display: flex;
+  gap: 16px; /* Mărit gap-ul între elemente */
   align-items: center;
-  height: 32px;
 }
 
-.expense-close-month-button {
-  background-color: #fff;
-  color: #337ab7;
-  border: 1px solid #337ab7;
-  padding: 6px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  height: 32px;
-}
-
+/* Form layout */
 .expense-form {
-  background-color: #F9FAFE;
+  background-color: #f9fafe;
   border-radius: 8px;
   padding: 20px;
   border: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
+/* Row styling */
 .expense-row {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  align-items: start;
 }
 
 .expense-form-group {
-  flex: 1;
-  min-width: 200px;
-}
-
-.flex-row {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
 }
-
 
 .expense-label {
-  font-weight: 500; 
+  font-weight: 500;
   color: #337ab7;
-  margin-right: 15px;
-  min-width: 120px;
+  font-size: 14px;
 }
 
-
-   .expense-label.tight-data {
-    margin-right: -50px; 
-  }
-  
- 
-  .expense-label.tight-recurenta {
-    margin-right: -10px; 
-   
-  }
-
-  .expense-label.tight-furnizor{
-    margin-right: -20px;
-  }
-  
- 
-  .expense-label.tight {
-    margin-right: -10px; 
-  }
-
- 
-.expense-input.small {
-  flex: 0 0 auto;
-  width: 150px;  
-}
-
-.expense-input::placeholder {
-  text-align: center;
-}
-
-
-
+/* Input styling with blue underline */
 .expense-input {
-  flex: 1;
-  padding: 6px 0;
   border: none;
   border-bottom: 1px solid #337ab7;
   background-color: transparent;
-  height: 32px;
+  padding: 6px 0;
+  font-size: 14px;
+  transition: border-color 0.2s;
+  width: 100%;
 }
 
 .expense-input:focus {
@@ -144,36 +101,145 @@ select,
   border-bottom: 2px solid #337ab7;
 }
 
+.expense-input::placeholder {
+  color: #a0aec0;
+  font-size: 13px;
+}
+
+/* Custom select styling */
+.select-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.select-wrapper select {
+  appearance: none;
+  width: 100%;
+  cursor: pointer;
+  padding-right: 24px;
+}
+
+.select-icon {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #337ab7;
+  font-size: 10px;
+}
+
+/* MultiSelect styling */
+.multi-select-container {
+  margin: 0; /* Remove margins */
+  width: 100%; /* Full width of grid cell */
+}
+
+.multi-select-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  height: 100%;
+}
+
+.multi-select-wrapper {
+  width: 100%;
+}
+
+.custom-multi-select {
+  width: 100%;
+}
+
+.custom-multi-select .dropdown-container {
+  border: none !important;
+  border-bottom: 1px solid #337ab7 !important;
+  border-radius: 0 !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  min-height: 32px !important;
+  width: 100% !important;
+}
+
+.custom-multi-select .dropdown-heading {
+  height: 32px !important;
+  padding: 4px 0 !important; /* Reduced padding */
+  font-size: 13px !important;
+}
+
+.custom-multi-select .dropdown-content {
+  padding: 2px !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 4px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  margin-top: 4px !important;
+  width: 100% !important;
+  z-index: 100;
+  max-height: 300px;
+  overflow-y: auto;
+  gap: 2px !important;
+}
+
+.custom-multi-select .select-item {
+  padding: 0 !important;
+}
+
+/* File input styling */
 .expense-file-input {
   display: flex;
   align-items: center;
-}
-
-/* Pentru câmpul Document, setăm input-ul cu o lățime puțin mai mică */
-.expense-file-input .expense-input {
-  flex: 0 0 auto;
-  width: 150px;
-}
-
-.expense-file-input .expense-input.flex-grow {
-  flex-grow: 1;
+  gap: 8px;
 }
 
 .expense-file-button {
-  background-color: #8F2D56;
+  background-color: #8f2d56;
   color: white;
   border: none;
-  margin-left: 12px;
-  padding: 6px 12px;
-  border-radius: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  height: 32px;
+  font-size: 16px;
 }
 
-.expense-form-actions {
+/* Percentage inputs */
+.percentage-inputs,
+.percentage-input-item,
+.percentage-input-wrapper {
+  display: none;
+}
+
+/* Buttons */
+.expense-add-button {
+  background-color: #f0ad4e;
+  color: white;
+  border: none;
+  padding: 6px 24px;
+  border-radius: 4px;
+  cursor: pointer;
   display: flex;
-  justify-content: flex-end;
-  margin-top: 20px;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  font-size: 14px;
+  min-width: 160px;
+  justify-content: center;
+  white-space: nowrap; /* Previne împărțirea textului pe mai multe rânduri */
+}
+
+.expense-close-month-button {
+  background-color: #fff;
+  color: #337ab7;
+  border: 1px solid #337ab7;
+  padding: 6px 24px; /* Mărit padding-ul lateral */
+  border-radius: 4px;
+  cursor: pointer;
+  height: 32px;
+  font-size: 14px;
+  min-width: 140px; /* Lățime minimă pentru buton */
+  white-space: nowrap; /* Previne wrapping textului */
 }
 
 .expense-settings-button {
@@ -186,165 +252,184 @@ select,
   height: 32px;
 }
 
-.settings-icon {
-  font-size: 18px;
-}
-
-.distribution-row {
-  flex-wrap: nowrap;
-}
-
-.distribution-target-row,
-.distribution-method-row {
-  flex-wrap: wrap;
-}
-
-.multi-select-row {
-  justify-content: center;
-  margin-bottom: 20px;
-}
-
-.multi-select-group {
+.expense-form-actions {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
+  justify-content: flex-end;
+  margin-top: 16px;
 }
 
-.multi-select-wrapper {
-  width: 100%;
-  margin: 0 auto;
-}
-
-/* Stiluri pentru MultiSelect */
-.multi-select-wrapper .dropdown-container {
-  font-size: 15px !important;
-  height: 35px !important;
-  width: 23%;
-  margin-left: 38%;
-}
-
-.multi-select-container .dropdown-container {
+/* Month select in header */
+.expense-select {
+  min-width: 160px; /* Lățime minimă pentru select */
   border: none;
   border-bottom: 1px solid #337ab7;
   background-color: transparent;
-  height: 32px;
-}
-
-.multi-select-container .dropdown-heading {
-  padding: 6px 0;
-}
-
-.multi-select-container .dropdown-content {
-  border: 1px solid #ddd;
-  border-radius: 0 0 4px 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.percentage-inputs-row {
-  flex-wrap: wrap;
-}
-
-.percentage-input {
-  width: 60px;
-  text-align: right;
-  height: 32px;
-}
-
-.percentage-symbol {
-  margin-left: 5px;
-}
-
-/* Input de tip "date" */
-input[type="date"] {
-  font-family: 'Poppins', sans-serif;
+  padding: 4px 24px 4px 4px;
   font-size: 14px;
-  width: 100px;
-  padding: 4px 0;
-  border: none;
-  border-bottom: 1px solid #ccc;
-  outline: none;
-  background: transparent;
-  transition: border-color 0.3s;
-}
-
-input[type="date"]:hover {
-  border-color: #3b82f6;
-}
-
-input[type="date"]::-webkit-calendar-picker-indicator {
-  filter: invert(0.5);
+  color: #337ab7;
   cursor: pointer;
+  appearance: none;
 }
 
-input[type="date"]:focus {
-  border-color: #3b82f6;
-  box-shadow: none;
-}
-
-
-.distribution-method-row {
+/* Add styles for the combined select and percentage inputs */
+.select-with-percentages {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.distribution-method-row .expense-form-group {
+/* Add these new styles */
+.custom-option {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 10px;
+  justify-content: space-between;
+  padding: 6px 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
-.distribution-method-row .expense-form-group .expense-input {
-  flex: 0 0 auto;
-  width: 200px;
+.custom-option:hover {
+  background-color: #f0f4f8;
 }
 
-input[name="amount"],
-select[name="repeatable"] {
-  flex: 0 0 auto;
-  width: 120px;
+.option-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-/* Input pentru Tip Consum */
-select[name="consumptionType"] {
-  flex: 0 0 auto;
-  width: 150px;
+.option-checkbox {
+  margin: 0;
 }
 
-/* Apropiem puțin câmpurile Suma și Tip Consum */
-.expense-row.distribution-row {
-  gap: 0px;
-  margin-left: 15%;
+.option-label {
+  font-size: 13px;
 }
 
-/* Responsive design */
-@media (max-width: 768px) {
-  .expense-row,
-  .distribution-row,
-  .distribution-target-row,
-  .distribution-method-row {
-    flex-direction: column;
+.option-percentage {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.percentage-input-small {
+  width: 40px;
+  border: none;
+  border-bottom: 1px solid #337ab7;
+  background-color: transparent;
+  padding: 2px 4px;
+  text-align: right;
+  font-size: 12px;
+}
+
+.percentage-input-small:focus {
+  outline: none;
+  border-bottom: 2px solid #337ab7;
+}
+
+.percentage-symbol-small {
+  font-size: 12px;
+  color: #4a5568;
+}
+
+/* Stiluri pentru a face rândul 2 să încapă toate 5 elemente */
+.expense-row.dynamic-row {
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px; /* Reduced from 16px */
+}
+
+/* Stiluri pentru a face elementele din rândul 2 mai înguste */
+.expense-row.dynamic-row .expense-form-group {
+  min-width: 0;
+}
+
+/* Add this new style for the currency input wrapper */
+.currency-input-wrapper {
+  position: relative;
+  width: 55%;
+}
+
+.currency-input-wrapper input {
+  padding-right: 0px; /* Increased to make room for the circular RON badge */
+}
+
+/* Update the currency symbol styling */
+.currency-symbol {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #337ab7;
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid #337ab7;
+  border-radius: 12px;
+  padding: 2px 8px;
+  background: white;
+}
+
+/* Responsive styles for sidebar integration */
+@media (max-width: 992px) {
+  .expense-row {
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .expenses-page-container {
-    margin-left: 0;
-  }
-
-  .flex-row {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .expense-label {
-    margin-bottom: 5px;
-  }
-
-  .expense-input {
-    width: 50%;
-  }
-
-  .multi-select-wrapper {
-    width: 100%;
+    margin-left: 0 !important;
+    width: 100% !important;
   }
 }
+
+@media (max-width: 768px) {
+  .expenses-page-container {
+    padding: 10px;
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+
+  .expense-header-actions {
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .expense-select,
+  .expense-add-button,
+  .expense-close-month-button {
+    flex: 1;
+    min-width: 120px;
+  }
+
+  .expense-row {
+    grid-template-columns: 1fr;
+  }
+
+  .expense-row.dynamic-row {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .expense-row.dynamic-row > .expense-form-group:nth-child(1),
+  .expense-row.dynamic-row > .expense-form-group:nth-child(2) {
+    grid-column: span 1;
+  }
+
+  .expense-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .expense-header-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 480px) {
+  .expense-row.dynamic-row {
+    grid-template-columns: 1fr;
+  }
+}
+

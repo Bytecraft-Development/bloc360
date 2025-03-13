@@ -1,112 +1,108 @@
-body {
-  font-family: 'Inter', sans-serif;
-}
-
+/* Update these styles in your sidemenu.css */
 .sidebar {
   width: 250px;
   height: 100vh;
-  background-color: #275DAD; 
+  background-color: #275dad;
   color: white;
   position: fixed;
   top: 0;
   left: 0;
   padding-top: 20px;
-  transition: left 0.3s ease;
+  transition: transform 0.3s ease;
+  z-index: 1000;
 }
 
+.sidebar.closed {
+  transform: translateX(-250px);
+}
 
 .logo {
   text-align: center;
   margin-bottom: 30px;
+  padding: 0 20px;
 }
 
 .logo-img {
-  width: 200px;
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+}
+
+.menu {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.menu ul {
+  list-style: none;
+  padding-left: 25px;
+  margin: 0;
+}
+
+.menu li {
+  margin: 15px 0;
+}
+
+.menu-link {
+  text-decoration: none;
+  color: white;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  padding: 10px 25px;
+  transition: background-color 0.3s;
+}
+
+.menu-link:hover,
+.menu-link.active {
+  background-color: #3b82f6;
+}
+
+.menu-icon {
+  margin-right: 10px;
+  font-size: 18px;
+  color: orange;
+}
+
+.divider-line {
+  border: 0;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.2);
+  margin: 10px 20px;
 }
 
 .hamburger {
   display: none;
-  font-size: 30px;
-  background-color: transparent;
-  color: white;
-  border: none;
   position: fixed;
   top: 20px;
   left: 20px;
-  padding: 15px;
-  cursor: pointer;
-}
-
-/* Menu */
-.menu {
-  padding-left: 35px;
-  list-style: none;
-  padding-left: 0;
-}
-
-.menu ul {
-  padding-left: 25;
-}
-
-.menu li {
-  display: flex;
-  align-items: center;
-  margin: 20px 0;
-}
-
-.menu li a {
-  text-decoration: none;
+  background: transparent;
+  border: none;
   color: white;
-  font-size: 18px;
-  display: flex;
-  align-items: center;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 1001;
   padding: 10px;
-  transition: background-color 0.3s ease;
 }
-
-.menu li a .menu-icon {
-  margin-right: 10px;
-  font-size: 20px;
-  color: orange;
-}
-
-.menu li a:hover {
-  background-color: #3B82F6;
-  border-radius: 5px;
-}
-
 
 @media screen and (max-width: 768px) {
- 
   .hamburger {
     display: block;
   }
 
-
   .sidebar {
-    left: -250px;
+    transform: translateX(-250px);
   }
 
- 
   .sidebar.open {
-    left: 0;
+    transform: translateX(0);
   }
 
-  
-  .main-content.shifted {
-    margin-left: 250px;
-  }
-
-  
-  .menu ul {
-    padding-left: 0;
-  }
-
-  .menu li {
-    margin: 15px 0;
-  }
-
-  .menu li a {
-    font-size: 16px;
+  .expenses-page-container {
+    margin-left: 0;
+    width: 100%;
+    padding: 20px;
   }
 }
+

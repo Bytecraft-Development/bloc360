@@ -107,9 +107,9 @@ public class ExpenseCalcTestService_TBD {
         // Water meter test end
 
 
-        ExpenseCalculatorService es = new ExpenseCalculatorService();
-        es.distributeExpense(expense1, ExpenseDistributionType.EQUALLY);
-        es.distributeExpense(expense2, ExpenseDistributionType.EQUALLY);
+//        ExpenseCalculatorService es = new ExpenseCalculatorService();
+//        es.distributeExpense(expense1, ExpenseDistributionType.EQUALLY);
+//        es.distributeExpense(expense2, ExpenseDistributionType.EQUALLY);
 
         houseHoldRepository.save(houseHold1);
         houseHoldRepository.save(houseHold2);

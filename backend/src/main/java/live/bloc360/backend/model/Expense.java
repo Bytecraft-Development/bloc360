@@ -1,6 +1,7 @@
 package live.bloc360.backend.model;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -8,7 +9,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 
 @Entity
 @Getter
@@ -42,13 +42,10 @@ public class Expense {
     private String reference;
     private boolean repeatable;
 
-    @ManyToMany
-    @JoinTable(
-            name = "expense_household",
-            joinColumns = @JoinColumn(name = "expense_id"),
-            inverseJoinColumns = @JoinColumn(name = "household_id")
-    )
-    private List<HouseHold> houseHoldList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "expense", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<ExpenseHouseholds> expenseHouseholds = new ArrayList<>();
 
     @OneToMany(mappedBy = "expense", cascade = CascadeType.ALL)
     private List<Payment> paymentList = new ArrayList<>();
