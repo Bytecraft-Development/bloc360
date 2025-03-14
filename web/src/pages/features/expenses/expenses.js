@@ -45,7 +45,11 @@ const CustomOption = ({ option, isSelected, selectOption, percentages, onPercent
 const ExpensesPage = () => {
  
 
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  const handleSidebarToggle = (isOpen) => {
+    setSidebarOpen(isOpen);
+  };
 
   const [formData, setFormData] = useState({
     provider: "",
@@ -410,17 +414,11 @@ const ExpensesPage = () => {
     return null;
   };
 
-
-  
-const [sidebarOpen, setSidebarOpen] = useState(false);
-  const handleSidebarToggle = (isOpen) => {
-    setSidebarOpen(isOpen)
-  }
     return (
       <div className="app-container">
-        <Sidebar onToggle={handleSidebarToggle} />
-        <div className={`expenses-page-container ${!sidebarOpen ? "sidebar-closed" : ""}`}>
-          <div className="expenses-page-content">
+        <Sidebar/>
+        <div className={`expenses-page-container ${sidebarOpen ? "sidebar-open" : "sidebar-closed"}`}>
+        <div className="expenses-page-content">
             <header className="expense-header">
               <h1>Cheltuieli asociație</h1>
               <div className="expense-header-actions">

@@ -2,6 +2,7 @@
 body {
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
 }
 
 .app-container {
@@ -14,16 +15,18 @@ body {
 .expenses-page-container {
   font-family: "Poppins", sans-serif;
   flex: 1;
-  max-width: 1200px;
-  margin: 0 auto;
-  margin-left: 250px; /* Match sidebar width */
-  padding: 20px;
-  transition: margin-left 0.3s ease;
-  width: calc(100% - 250px); /* Subtract sidebar width */
+  transition: margin-left 0.3s ease, width 0.3s ease;
 }
 
+/* Când sidebar-ul este deschis */
+.expenses-page-container.sidebar-open {
+  margin-left: 250px;
+  width: calc(100% - 250px);
+}
+
+/* Când sidebar-ul este închis */
 .expenses-page-container.sidebar-closed {
-  margin-left: 0;
+  margin-left: 250px;
   width: 100%;
 }
 

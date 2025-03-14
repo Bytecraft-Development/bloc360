@@ -1,4 +1,4 @@
-/* Update these styles in your sidemenu.css */
+/* Stiluri de bază pentru sidebar */
 .sidebar {
   width: 250px;
   height: 100vh;
@@ -8,12 +8,13 @@
   top: 0;
   left: 0;
   padding-top: 20px;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   z-index: 1000;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar.closed {
-  transform: translateX(-250px);
+  transform: translateX(-250px) !important;
 }
 
 .logo {
@@ -72,37 +73,45 @@
   margin: 10px 20px;
 }
 
+/* Stiluri pentru butonul hamburger */
 .hamburger {
-  display: none;
   position: fixed;
-  top: 20px;
-  left: 20px;
-  background: transparent;
+  top: 10px;
+  left: 10px;
+  background-color: #fff;
   border: none;
-  color: white;
-  font-size: 24px;
+  color: #333;
+  font-size: 20px;
   cursor: pointer;
   z-index: 1001;
-  padding: 10px;
+  padding: 6px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  /* Elimină opacity: 0 și pointer-events: none */
+  opacity: 1;
+  pointer-events: all;
 }
 
-@media screen and (max-width: 768px) {
-  .hamburger {
-    display: block;
-  }
+.hamburger.visible {
+  opacity: 1;
+  pointer-events: all;
+  background-color: #f0f0f0;
+}
 
+.hamburger:hover {
+  background-color: #e0e0e0;
+  transform: scale(1.05);
+}
+
+/* Responsive: La ecrane mici sidebar-ul va fi închis inițial */
+@media screen and (max-width: 990px) {
   .sidebar {
     transform: translateX(-250px);
+    box-shadow: none;
   }
-
   .sidebar.open {
     transform: translateX(0);
-  }
-
-  .expenses-page-container {
-    margin-left: 0;
-    width: 100%;
-    padding: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
   }
 }
-
