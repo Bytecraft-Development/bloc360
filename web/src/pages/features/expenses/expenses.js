@@ -43,9 +43,8 @@ const CustomOption = ({ option, isSelected, selectOption, percentages, onPercent
 };
 
 const ExpensesPage = () => {
- 
 
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const sidebarOpen = useState(false);
 
   const [formData, setFormData] = useState({
     provider: "",
