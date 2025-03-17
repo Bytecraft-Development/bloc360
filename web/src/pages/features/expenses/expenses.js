@@ -47,10 +47,6 @@ const ExpensesPage = () => {
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const handleSidebarToggle = (isOpen) => {
-    setSidebarOpen(isOpen);
-  };
-
   const [formData, setFormData] = useState({
     provider: "",
     serialNumber: "",
