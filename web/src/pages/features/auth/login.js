@@ -84,7 +84,7 @@ const LoginView = () => {
       <div className="login-content">
         <div className="login-left">
           <h1>Intra in cont</h1>
-          <p className="subheading">Bine ai venit! Alege o metoda de log in:</p>
+          <p className="subheading">Welcome! Alege o metoda de log in:</p>
           <div className="login-buttons">
           <button className="login-btn">
           <img className="btn-icon" src={googleLogo} alt="Google Logo" />
