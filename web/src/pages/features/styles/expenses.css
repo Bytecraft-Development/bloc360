@@ -35,6 +35,8 @@ body {
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .expense-header {
@@ -70,7 +72,7 @@ body {
 /* Row styling */
 .expense-row {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 16px;
   align-items: start;
 }
@@ -337,8 +339,8 @@ body {
 
 /* Stiluri pentru a face rândul 2 să încapă toate 5 elemente */
 .expense-row.dynamic-row {
-  grid-template-columns: repeat(5, 1fr);
-  gap: 8px; /* Reduced from 16px */
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
 }
 
 /* Stiluri pentru a face elementele din rândul 2 mai înguste */
@@ -349,17 +351,17 @@ body {
 /* Add this new style for the currency input wrapper */
 .currency-input-wrapper {
   position: relative;
-  width: 55%;
+  width: 100%;
 }
 
 .currency-input-wrapper input {
-  padding-right: 0px; /* Increased to make room for the circular RON badge */
+  padding-right: 10px; /* Increased to make room for the circular RON badge */
 }
 
 /* Update the currency symbol styling */
 .currency-symbol {
   position: absolute;
-  right: 0;
+  right: 8px; /* Added some spacing from the right edge */
   top: 50%;
   transform: translateY(-50%);
   color: #337ab7;
@@ -369,11 +371,27 @@ body {
   border-radius: 12px;
   padding: 2px 8px;
   background: white;
+  z-index: 1; /* Ensure it appears above the input */
 }
 
 /* Responsive styles for sidebar integration */
+@media (max-width: 1200px) {
+  .expense-row {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  
+  .expense-row.dynamic-row {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
 @media (max-width: 992px) {
   .expense-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .expense-row.dynamic-row {
     grid-template-columns: repeat(2, 1fr);
   }
 
@@ -435,4 +453,3 @@ body {
     grid-template-columns: 1fr;
   }
 }
-
