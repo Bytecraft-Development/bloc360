@@ -53,11 +53,17 @@
   align-items: center;
   padding: 10px 25px;
   transition: background-color 0.3s;
+  border-radius: 0 25px 25px 0;
 }
 
-.menu-link:hover,
+/* Separate hover and active states */
+.menu-link:hover:not(.active) {
+  background-color: rgba(59, 130, 246, 0.7); /* Slightly transparent blue only when not active */
+}
+
 .menu-link.active {
-  background-color: #3b82f6;
+  background-color: #3b82f6; /* Solid blue for active state */
+  font-weight: 500;
 }
 
 .menu-icon {
@@ -73,7 +79,7 @@
   margin: 10px 20px;
 }
 
-/* Stiluri pentru butonul hamburger */
+/* Stiluri pentru butonul hamburger - REDUCED SIZE */
 .hamburger {
   position: fixed;
   top: 10px;
@@ -81,14 +87,18 @@
   background-color: #fff;
   border: none;
   color: #333;
-  font-size: 20px;
+  font-size: 16px; /* Reduced from 20px */
   cursor: pointer;
   z-index: 1001;
-  padding: 6px;
+  padding: 4px; /* Reduced from 6px */
+  width: 30px; /* Added fixed width */
+  height: 30px; /* Added fixed height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
   transition: all 0.3s ease;
-  /* Elimină opacity: 0 și pointer-events: none */
   opacity: 1;
   pointer-events: all;
 }
@@ -114,4 +124,17 @@
     transform: translateX(0);
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
   }
+
+  /* Show hamburger only on mobile */
+  .hamburger {
+    display: flex;
+  }
 }
+
+@media screen and (min-width: 991px) {
+  /* Hide hamburger on desktop */
+  .hamburger {
+    display: none;
+  }
+}
+
