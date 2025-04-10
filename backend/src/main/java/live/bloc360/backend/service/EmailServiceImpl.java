@@ -32,7 +32,7 @@
 //        prop.put("mail.smtp.socketFactory.port", "465");
 //        prop.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 //        prop.put("mail.smtp.socketFactory.fallback", "false");
-//        prop.put("mail.smtp.host", "bloc360.live");
+//        prop.put("mail.smtp.host", "bloc360.ro");
 //        prop.put("mail.smtp.port", "465");
 //
 //        Session session = Session.getInstance(prop, new Authenticator() {
@@ -43,7 +43,7 @@
 //        });
 //
 //        Message message = new MimeMessage(session);
-//        message.setFrom(new InternetAddress("noreply@bloc360.live"));
+//        message.setFrom(new InternetAddress("noreply@bloc360.ro"));
 //        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
 //        message.setSubject(subject);
 //

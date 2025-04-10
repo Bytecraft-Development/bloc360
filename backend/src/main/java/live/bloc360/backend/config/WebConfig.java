@@ -13,13 +13,13 @@ class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**").allowedOrigins("http://localhost");
         registry.addMapping("/**").allowedOrigins("https://localhost");
-        registry.addMapping("/**").allowedOrigins("http://bloc360.live");
-        registry.addMapping("/**").allowedOrigins("http://bloc360.live//**");
-        registry.addMapping("/**").allowedOrigins("http://bloc360.live/**");
-        registry.addMapping("/**").allowedOrigins("https://bloc360.live");
-        registry.addMapping("/**").allowedOrigins("https://bloc360.live:8443");
-        registry.addMapping("/**").allowedOrigins("https://bloc360.live:8080");
-        registry.addMapping("/**").allowedOrigins("https://bloc360.live:8443/realms/bloc360/protocol/openid-connect/token");
+        registry.addMapping("/**").allowedOrigins("http://bloc360.ro");
+        registry.addMapping("/**").allowedOrigins("http://bloc360.ro//**");
+        registry.addMapping("/**").allowedOrigins("http://bloc360.ro/**");
+        registry.addMapping("/**").allowedOrigins("https://bloc360.ro");
+        registry.addMapping("/**").allowedOrigins("https://bloc360.ro:8443");
+        registry.addMapping("/**").allowedOrigins("https://bloc360.ro:8080");
+        registry.addMapping("/**").allowedOrigins("https://bloc360.ro:8443/realms/bloc360/protocol/openid-connect/token");
     }
 }
 

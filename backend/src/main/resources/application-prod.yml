@@ -17,7 +17,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: https://bloc360.live:8443/realms/bloc360
+          issuer-uri: https://bloc360.ro:8443/realms/bloc360
   ssl:
     bundle:
       jks:
@@ -31,4 +31,4 @@ spring:
       pem:
         client:
           truststore:
-            certificate: "classpath:domain.pem"
+            certificate: "classpath:fullchain.pem"

@@ -5,7 +5,7 @@ const Logout = () => {
     const navigate = useNavigate();
 
     // Keycloak token revocation URL
-    const keycloakRevokeUrl = "https://bloc360.live:8443/realms/bloc360/protocol/openid-connect/revoke";
+    const keycloakRevokeUrl = "https://bloc360.ro:8443/realms/bloc360/protocol/openid-connect/revoke";
 
     useEffect(() => {
         // Clear local storage and cookies

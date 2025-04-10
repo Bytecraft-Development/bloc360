@@ -68,9 +68,9 @@ jobs:
 #          flutter-version: 3.19.0
 #      - run: |
 #              flutter build ipa \
-#              --dart-define=KEYCLOAK_BASE_URL=https://bloc360.live:8443/realms/bloc360 \
-#              --dart-define=API_URL=https://bloc360.live:8080 \
-#              --dart-define=BASE_URL=https://bloc360.live \
+#              --dart-define=KEYCLOAK_BASE_URL=https://bloc360.ro:8443/realms/bloc360 \
+#              --dart-define=API_URL=https://bloc360.ro:8080 \
+#              --dart-define=BASE_URL=https://bloc360.ro \
 #              --dart-define=KEYCLOAK_CLIENT_ID=${{ secrets.KEYCLOAK_CLIENT_ID }}
 
   build-web:

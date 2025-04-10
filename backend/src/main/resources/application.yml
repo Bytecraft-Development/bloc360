@@ -5,7 +5,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: https://bloc360.live:8443/realms/bloc360
+          issuer-uri: https://bloc360.ro:8443/realms/bloc360
   application:
     name: backend
   datasource:
@@ -17,7 +17,7 @@ spring:
       ddl-auto: create
     show-sql: true
   mail:
-    host: bloc360.live
+    host: bloc360.ro
     port: 465
     username: ${EMAIL_APP_USER}
     password: ${EMAIL_APP_PASSWORD}

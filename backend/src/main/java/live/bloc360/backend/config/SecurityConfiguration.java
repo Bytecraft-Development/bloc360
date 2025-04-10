@@ -60,7 +60,7 @@ public class SecurityConfiguration {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(List.of("http://localhost/*", "http://localhost*", "https://bloc360.live", "https://bloc360.live/*"));
+        configuration.setAllowedOriginPatterns(List.of("http://localhost/*", "http://localhost*", "https://bloc360.ro", "https://bloc360.ro/*"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         configuration.setAllowCredentials(true);
         configuration.applyPermitDefaultValues();

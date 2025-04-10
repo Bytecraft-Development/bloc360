@@ -2,7 +2,7 @@
     "clientId": "bloc360",
     "name": "bloc360",
     "description": "",
-    "rootUrl": "https://bloc360.live:8443/app",
+    "rootUrl": "https://bloc360.ro:8443/app",
     "adminUrl": "",
     "baseUrl": "",
     "surrogateAuthRequired": false,

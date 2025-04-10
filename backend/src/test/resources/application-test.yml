@@ -1,11 +1,11 @@
 keycloak:
   realm: bloc360
-  domain: bloc360.live:8443
+  domain: bloc360.ro:8443
   adminClientId: test
   adminClientSecret: test
   client: test
   urls:
-    auth: https://bloc360.live:8443/
+    auth: https://bloc360.ro:8443/
 spring:
   application:
     name: backend
